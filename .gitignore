@@ -73,3 +73,14 @@ logs/
 
 # Local tooling
 *.local
+
+# Python
+.venv/
+__pycache__/
+*.egg-info/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
