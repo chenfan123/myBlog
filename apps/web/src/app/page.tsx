@@ -19,6 +19,10 @@ import { SiteHeader } from '@/components/site/site-header';
 import { fetchResume, type ResumeData } from '@/lib/resume';
 import Link from 'next/link';
 
+function splitStack(items: string[]): string[] {
+  return items.flatMap((item) => item.split(/[、,，；;|/]+/).map((value) => value.trim()).filter(Boolean));
+}
+
 const fallbackResume: ResumeData = {
   profile: {
     name: '陈建华',
@@ -420,7 +424,7 @@ export default async function Home() {
                 </p>
                 <ResumeList title="个人贡献" items={project.contribution} />
                 <div className="mt-6 flex flex-wrap gap-2">
-                  {project.stack.map((item) => (
+                  {splitStack(project.stack).map((item) => (
                     <Badge
                       key={item}
                       variant="outline"
