@@ -49,6 +49,14 @@ export function sendRegistrationEmailCode(data: {
   });
 }
 
+export function sendForgotPasswordCode(data: { email: string; captcha_verify_param: string }) {
+  return api.post<{ message: string; retry_after_seconds: number; expires_in_seconds: number }>("/api/v1/auth/forgot-password/email-code", { body: data, skipAuth: true });
+}
+
+export function resetPassword(data: { email: string; email_code: string; password: string }) {
+  return api.post<AuthResponse>("/api/v1/auth/forgot-password/reset", { body: data, skipAuth: true });
+}
+
 export function getCurrentUser() {
   return api.get<AuthUser>("/api/v1/auth/me", { skipAuth: true });
 }

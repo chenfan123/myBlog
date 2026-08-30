@@ -187,6 +187,7 @@ export function AuthForm({
                 </button>
               </div>
             </div>
+            {!isRegister ? <div className="-mt-2 text-right"><Link href="/forgot-password" className="text-sm text-primary hover:underline">忘记密码？</Link></div> : null}
             {isRegister ? <Field icon={LockKeyhole} label="确认密码" name="confirmPassword" type="password" placeholder="再次输入密码" autoComplete="new-password" minLength={8} /> : null}
 
             {error ? <p role="alert" className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">{error}</p> : null}

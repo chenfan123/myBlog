@@ -82,6 +82,17 @@ def authenticate_user(db: Session, *, email: str, password: str) -> User | None:
     return user
 
 
+def reset_user_password(db: Session, *, email: str, password: str) -> User | None:
+    """更新已注册用户的密码哈希；调用方应先完成邮箱验证码校验。"""
+    user = get_user_by_email(db, email)
+    if user is None or not user.is_active:
+        return None
+    user.password_hash = password_hash.hash(password)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
 def create_access_token(user_id: UUID) -> str:
     """创建带签发时间和过期时间的 HS256 JWT。"""
     settings = get_settings()

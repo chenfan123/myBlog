@@ -16,10 +16,12 @@ from app.db.session import get_db
 from app.models.user import User
 from app.schemas.auth import (
     AuthResponse,
+    ForgotPasswordCodeRequest,
     LoginRequest,
     RegisterRequest,
     SendEmailCodeRequest,
     SendEmailCodeResponse,
+    ResetPasswordRequest,
     UserResponse,
 )
 from app.services.auth import (
@@ -27,6 +29,7 @@ from app.services.auth import (
     create_access_token,
     create_user,
     get_user_by_email,
+    reset_user_password,
 )
 from app.services.captcha import (
     get_captcha_error_message,
@@ -183,6 +186,53 @@ def login(
     user = authenticate_user(db, email=data.email, password=data.password)
     if user is None:
         raise HTTPException(status_code=401, detail="邮箱或密码错误")
+    set_auth_cookie(response, create_access_token(user.id))
+    return AuthResponse(user=UserResponse.model_validate(user))
+
+
+@router.post("/forgot-password/email-code", response_model=SendEmailCodeResponse)
+def send_forgot_password_code(
+    data: ForgotPasswordCodeRequest,
+    request: Request,
+    db: Annotated[Session, Depends(get_db)],
+) -> SendEmailCodeResponse:
+    """仅向已注册邮箱发送重置密码验证码，并复用现有 50 秒限流。"""
+    if get_user_by_email(db, data.email) is None:
+        raise HTTPException(status_code=404, detail="该邮箱尚未注册")
+    try:
+        retry_after = get_email_code_retry_after(data.email)
+        if retry_after:
+            raise HTTPException(status_code=429, detail=f"发送过于频繁，请在 {retry_after} 秒后重试", headers={"Retry-After": str(retry_after)})
+        captcha_result = verify_captcha(data.captcha_verify_param)
+        record_captcha_verification(db, action="forgot_password", email=data.email, user_ip=get_client_ip(request), result=captcha_result)
+        if not captcha_result.success:
+            raise HTTPException(status_code=400, detail=get_captcha_error_message(captcha_result))
+        cooldown, expires_in = send_registration_code(data.email)
+    except EmailServiceUnavailableError as error:
+        raise HTTPException(status_code=503, detail="验证码服务暂时不可用") from error
+    except EmailCodeRateLimitedError as error:
+        raise HTTPException(status_code=429, detail=f"发送过于频繁，请在 {error.retry_after} 秒后重试", headers={"Retry-After": str(error.retry_after)}) from error
+    return SendEmailCodeResponse(message="验证码已发送，请检查邮箱", retry_after_seconds=max(cooldown, 60), expires_in_seconds=expires_in)
+
+
+@router.post("/forgot-password/reset", response_model=AuthResponse)
+def reset_password(
+    data: ResetPasswordRequest,
+    response: Response,
+    db: Annotated[Session, Depends(get_db)],
+) -> AuthResponse:
+    """校验一次性邮箱验证码并更新密码，成功后自动登录。"""
+    if get_user_by_email(db, data.email) is None:
+        raise HTTPException(status_code=404, detail="该邮箱尚未注册")
+    try:
+        verified = verify_registration_code(data.email, data.email_code)
+    except EmailServiceUnavailableError as error:
+        raise HTTPException(status_code=503, detail="验证码服务暂时不可用") from error
+    if not verified:
+        raise HTTPException(status_code=400, detail="邮箱验证码错误或已过期")
+    user = reset_user_password(db, email=data.email, password=data.password)
+    if user is None:
+        raise HTTPException(status_code=404, detail="该邮箱尚未注册")
     set_auth_cookie(response, create_access_token(user.id))
     return AuthResponse(user=UserResponse.model_validate(user))
 

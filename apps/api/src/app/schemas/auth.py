@@ -85,6 +85,41 @@ class SendEmailCodeResponse(BaseModel):
     expires_in_seconds: int
 
 
+class ForgotPasswordCodeRequest(BaseModel):
+    """忘记密码时发送验证码；服务端只允许已注册邮箱使用。"""
+
+    email: str = Field(min_length=5, max_length=320)
+    captcha_verify_param: str = Field(min_length=1, max_length=8192)
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        normalized = value.strip().lower()
+        if "@" not in normalized or normalized.startswith("@") or normalized.endswith("@"):
+            raise ValueError("请输入有效的邮箱地址")
+        return normalized
+
+
+class ResetPasswordRequest(BaseModel):
+    """使用邮箱验证码设置新密码。"""
+
+    email: str = Field(min_length=5, max_length=320)
+    email_code: str = Field(pattern=r"^\d{6}$")
+    password: str = Field(min_length=8, max_length=128)
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        return value.strip().lower()
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, value: str) -> str:
+        if not any(character.isalpha() for character in value) or not any(character.isdigit() for character in value):
+            raise ValueError("密码必须包含字母和数字")
+        return value
+
+
 class UserResponse(BaseModel):
     """可以安全返回给前端的用户字段，刻意排除了 password_hash。"""
 

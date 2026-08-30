@@ -22,7 +22,7 @@ export default function MedicalTriagePage() {
           <span className="rounded-full border bg-card px-3 py-1.5 text-xs text-muted-foreground">本地演示</span>
         </div>
 
-        <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+        <section className="space-y-8">
           <div className="rounded-[2rem] border bg-card/90 p-7 shadow-sm sm:p-10">
             <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <Stethoscope className="size-6" />
@@ -35,6 +35,12 @@ export default function MedicalTriagePage() {
             <div className="mt-8 flex flex-wrap gap-2">
               {['FastAPI', 'LangGraph', 'RAG', 'Milvus'].map((item) => <span key={item} className="rounded-full border bg-background px-3 py-1.5 font-mono text-xs text-muted-foreground">{item}</span>)}
             </div>
+            <div className="mt-8 rounded-2xl border border-primary/20 bg-primary/5 p-5">
+              <p className="text-sm font-medium text-primary">关于知识库和检索效果</p>
+              <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                当前 RAG 使用医院官网公开的科室介绍进行分块和向量化，并不是基于真实病例症状训练，因此在复杂、非典型的症状描述上，准确度不会像病例数据直接建库那样高。仅按照科室介绍进行检索时，目前测试准确率在 94% 以上，后续接入更多脱敏病例数据后还可以继续优化。
+              </p>
+            </div>
             <div className="mt-10 grid gap-4 border-t pt-6 sm:grid-cols-3">
               <ProjectFact icon={GitBranch} title="多轮对话" text="根据回答继续追问" />
               <ProjectFact icon={ShieldCheck} title="风险优先" text="先识别紧急情况" />
@@ -42,7 +48,7 @@ export default function MedicalTriagePage() {
             </div>
           </div>
 
-          <TriageDemo />
+          <div className="w-full"><TriageDemo /></div>
         </section>
 
         <section className="mt-10 grid gap-5 md:grid-cols-3">

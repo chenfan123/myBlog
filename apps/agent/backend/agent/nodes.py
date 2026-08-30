@@ -12,7 +12,7 @@ from backend.agent.clinical_priors import (
     try_deterministic_selection,
 )
 from backend.agent.dept_focus import resolve_focus_dept, is_dept_challenge, extract_dept_mentions
-from backend.agent.intent import classify_intent, is_end_consultation
+from backend.agent.intent import classify_intent, is_end_consultation, llm_classify_intent
 from backend.agent.review import review_department_candidates
 from backend.agent.safety import (
     OFF_TOPIC_REPLY,
@@ -119,7 +119,9 @@ def node_intent(state: TriageState) -> dict[str, Any]:
     if enriched and enriched != raw and summary_all.endswith(raw):
         summary_all = (summary_before + ("；" if summary_before else "") + enriched).strip("；")
 
-    intent = classify_intent(
+    # 首轮先让大模型理解自然语言，再由规则做安全兜底；后续轮次沿用上下文规则，减少成本和延迟。
+    llm_intent = llm_classify_intent(enriched) if not state.get("messages") or len(state.get("messages") or []) <= 1 else None
+    intent = llm_intent or classify_intent(
         enriched,
         last_intent=last_intent,  # type: ignore[arg-type]
         last_stage=last_stage,

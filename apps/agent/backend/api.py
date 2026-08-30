@@ -11,12 +11,13 @@ import json
 import threading
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from starlette.responses import StreamingResponse
 
 from backend.agent.session import iter_turn_events
+from backend.persistence import init_db, save_turn, list_sessions, get_messages, delete_session, create_session
 
 app = FastAPI(title="浙大一院智能导诊", version="0.1.0")
 app.add_middleware(
@@ -31,11 +32,31 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.on_event("startup")
+def startup_db() -> None:
+    init_db()
 
 
 class ChatRequest(BaseModel):
     session_id: str = Field(default="")
     message: str
+
+@app.get("/sessions")
+def sessions() -> list[dict]: return list_sessions()
+
+@app.post("/sessions")
+def new_session() -> dict[str, str]:
+    import uuid
+    sid = uuid.uuid4().hex[:12]
+    create_session(sid)
+    return {"id": sid, "title": "新会话"}
+
+@app.get("/sessions/{session_id}/messages")
+def session_messages(session_id: str) -> list[dict]: return get_messages(session_id)
+
+@app.delete("/sessions/{session_id}", status_code=204)
+def remove_session(session_id: str) -> None:
+    delete_session(session_id)
 
 
 def _sse(data: dict[str, Any]) -> str:
@@ -123,6 +144,8 @@ async def chat(req: ChatRequest) -> StreamingResponse:
                 "high_risk": bool(result.get("high_risk")),
             }
         )
+        if result:
+            save_turn(result.get("session_id") or req.session_id, req.message, result.get("reply") or "")
 
     return StreamingResponse(
         event_stream(),

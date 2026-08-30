@@ -3,12 +3,31 @@
 from __future__ import annotations
 
 import re
+import json
 
 from backend.agent.dept_focus import extract_dept_mentions, is_dept_correction, is_dept_challenge
 from backend.agent.safety import is_chitchat, is_prompt_probe
 from backend.agent.state import Intent, Stage
 from backend.agent.sufficiency import has_age_info, has_duration_info, looks_serious
 from backend.agent.timeparse import is_schedule_followup
+
+def llm_classify_intent(text: str) -> Intent | None:
+    """首轮用大模型做语义判断；失败或输出异常时返回 None 交给规则兜底。"""
+    try:
+        from backend.llm import build_chat_model
+        prompt = (
+            "你是医疗导诊意图分类器。只输出 JSON，不要解释。"
+            "分类只能是 triage(症状/健康问题/想知道挂什么科)、schedule(出诊排班号源)、"
+            "expert(医生专家)、other(闲聊或无关)、end。"
+            f"用户原话：{text}\n输出格式：{{\"intent\":\"triage\"}}"
+        )
+        result = build_chat_model(temperature=0).invoke(prompt)
+        raw = result.content if isinstance(result.content, str) else str(result.content)
+        match = re.search(r"\{.*?\}", raw, re.S)
+        value = json.loads(match.group(0))["intent"] if match else raw.strip().lower()
+        return value if value in {"triage", "schedule", "expert", "other", "end"} else None  # type: ignore[return-value]
+    except Exception:
+        return None
 
 _SCHEDULE_HINTS = (
     "出诊", "排班", "门诊时间", "周几", "星期", "上午", "下午",
@@ -22,7 +41,7 @@ _EXPERT_HINTS = (
 _TRIAGE_HINTS = (
     "挂什么科", "看什么科", "哪个科", "什么科", "不舒服", "症状", "疼", "痛",
     "发烧", "咳嗽", "复查", "难受", "恶心", "头晕", "腹泻", "皮疹",
-    "包块", "肿块", "结节", "肿瘤",
+    "包块", "肿块", "结节", "肿瘤", "血糖", "血压", "心慌", "心悸", "口渴", "乏力", "失眠", "尿频", "便秘", "胸闷", "气短", "关节", "腰酸", "耳鸣",
 )
 
 # 结束问诊：按钮文案 + 口语
