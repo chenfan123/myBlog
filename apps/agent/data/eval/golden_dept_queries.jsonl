@@ -1,0 +1,247 @@
+{"id": "q001", "query": "胃痛反酸挂什么科", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）", "胃肠外科"], "category": "消化"}
+{"id": "q002", "query": "胸口闷痛怀疑心脏问题", "primary": ["心血管内科"], "acceptable": ["心血管内科", "心脏大血管外科", "庆春院区急诊科", "之江院区急诊科", "余杭院区急诊科"], "category": "心血管"}
+{"id": "q003", "query": "甲状腺结节要看哪个科", "primary": ["甲状腺外科"], "acceptable": ["甲状腺外科", "内分泌科", "肿瘤外科"], "category": "甲状腺"}
+{"id": "q004", "query": "孩子发烧咳嗽", "primary": ["儿科"], "acceptable": ["儿科", "呼吸内科"], "category": "儿科"}
+{"id": "q005", "query": "皮肤起红疹很痒", "primary": ["皮肤科"], "acceptable": ["皮肤科", "变态反应（过敏）科"], "category": "皮肤"}
+{"id": "q006", "query": "关节痛类风湿", "primary": ["风湿免疫科"], "acceptable": ["风湿免疫科", "骨科"], "category": "风湿"}
+{"id": "q007", "query": "失眠焦虑睡不着", "primary": ["精神卫生科"], "acceptable": ["精神卫生科", "神经内科"], "category": "精神"}
+{"id": "q008", "query": "体检发现肺结节", "primary": ["普胸外科", "呼吸内科"], "acceptable": ["普胸外科", "肺移植及普胸外科", "呼吸内科", "肿瘤外科"], "category": "呼吸/胸外"}
+{"id": "q009", "query": "乳腺癌术后复查", "primary": ["乳腺外科"], "acceptable": ["乳腺外科", "肿瘤内科", "肿瘤内科（一）", "肿瘤内科（二）", "肿瘤内科（三）", "肿瘤内科（四）", "肿瘤内科（五）"], "category": "乳腺"}
+{"id": "q010", "query": "痔疮便血", "primary": ["结直肠外科"], "acceptable": ["结直肠外科", "消化内科（一）", "消化内科（二）"], "category": "结直肠"}
+{"id": "q011", "query": "尿频尿急尿痛", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "余杭院区泌尿外科", "肾脏病中心"], "category": "泌尿"}
+{"id": "q012", "query": "血糖高怀疑糖尿病", "primary": ["内分泌科"], "acceptable": ["内分泌科"], "category": "内分泌"}
+{"id": "q013", "query": "头痛头晕经常发作", "primary": ["神经内科"], "acceptable": ["神经内科", "神经外科"], "category": "神经"}
+{"id": "q014", "query": "眼睛干涩视力模糊", "primary": ["眼科"], "acceptable": ["眼科"], "category": "眼科"}
+{"id": "q015", "query": "牙痛牙龈肿", "primary": ["口腔科"], "acceptable": ["口腔科"], "category": "口腔"}
+{"id": "q016", "query": "鼻子不通气流鼻涕过敏", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科", "变态反应（过敏）科"], "category": "耳鼻喉"}
+{"id": "q017", "query": "月经不调痛经", "primary": ["妇科"], "acceptable": ["妇科", "生殖医学中心"], "category": "妇科"}
+{"id": "q018", "query": "腰痛腿麻可能腰椎间盘突出", "primary": ["骨科"], "acceptable": ["骨科", "疼痛科", "康复医学科", "神经外科"], "category": "骨科"}
+{"id": "q019", "query": "肝区疼痛怀疑肝病", "primary": ["肝胆胰外科", "感染病科"], "acceptable": ["肝胆胰外科", "感染病科", "消化内科（一）", "消化内科（二）"], "category": "肝胆"}
+{"id": "q020", "query": "肾炎尿蛋白高", "primary": ["肾脏病中心"], "acceptable": ["肾脏病中心", "泌尿外科"], "category": "肾脏"}
+{"id": "q021", "query": "贫血白细胞低", "primary": ["血液科", "血液科骨髓移植中心"], "acceptable": ["血液科", "血液科骨髓移植中心"], "category": "血液"}
+{"id": "q022", "query": "哮喘反复发作喘不上气", "primary": ["呼吸内科"], "acceptable": ["呼吸内科", "变态反应（过敏）科"], "category": "呼吸"}
+{"id": "q023", "query": "胃癌化疗复查", "primary": ["肿瘤内科", "肿瘤内科（一）", "胃肠外科"], "acceptable": ["肿瘤内科", "肿瘤内科（一）", "肿瘤内科（二）", "肿瘤内科（三）", "肿瘤内科（四）", "肿瘤内科（五）", "胃肠外科", "消化内科（一）", "消化内科（二）"], "category": "肿瘤"}
+{"id": "q024", "query": "中风后肢体活动不便想做康复", "primary": ["康复医学科"], "acceptable": ["康复医学科", "神经内科"], "category": "康复"}
+{"id": "q025", "query": "腰腿痛想打封闭止痛", "primary": ["疼痛科"], "acceptable": ["疼痛科", "骨科", "麻醉科"], "category": "疼痛"}
+{"id": "q026", "query": "脸上长斑想做医美", "primary": ["整形美容中心", "整形外科"], "acceptable": ["整形美容中心", "整形外科", "皮肤科"], "category": "整形"}
+{"id": "q027", "query": "备孕检查不孕", "primary": ["生殖医学中心"], "acceptable": ["生殖医学中心", "妇科"], "category": "生殖"}
+{"id": "q028", "query": "怀孕产检", "primary": ["产科"], "acceptable": ["产科"], "category": "产科"}
+{"id": "q029", "query": "甲亢手抖心跳快", "primary": ["内分泌科"], "acceptable": ["内分泌科", "甲状腺外科"], "category": "内分泌"}
+{"id": "q030", "query": "胆结石右上腹痛", "primary": ["肝胆胰外科"], "acceptable": ["肝胆胰外科", "消化内科（一）", "消化内科（二）"], "category": "肝胆"}
+{"id": "q031", "query": "前列腺增生夜尿多", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "余杭院区泌尿外科"], "category": "泌尿"}
+{"id": "q032", "query": "高血压长期随访", "primary": ["心血管内科"], "acceptable": ["心血管内科", "全科医学科", "老年医学科"], "category": "心血管"}
+{"id": "q033", "query": "老人记忆力下降怀疑痴呆", "primary": ["老年医学科", "神经内科"], "acceptable": ["老年医学科", "神经内科", "精神卫生科"], "category": "老年"}
+{"id": "q034", "query": "过敏性鼻炎反复打喷嚏", "primary": ["变态反应（过敏）科", "耳鼻喉科"], "acceptable": ["变态反应（过敏）科", "耳鼻喉科"], "category": "过敏"}
+{"id": "q035", "query": "中医调理脾胃虚弱", "primary": ["中医科"], "acceptable": ["中医科", "消化内科（一）", "消化内科（二）"], "category": "中医"}
+{"id": "q036", "query": "脑瘤术后复查", "primary": ["神经外科"], "acceptable": ["神经外科", "神经内科", "放疗科"], "category": "神外"}
+{"id": "q037", "query": "下肢静脉曲张", "primary": ["血管外科"], "acceptable": ["血管外科"], "category": "血管"}
+{"id": "q038", "query": "胃癌手术后复诊", "primary": ["胃肠外科"], "acceptable": ["胃肠外科", "肿瘤外科", "肿瘤内科", "肿瘤内科（一）"], "category": "胃肠外"}
+{"id": "q039", "query": "嗓子痛扁桃体发炎", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科", "感染病科"], "category": "耳鼻喉"}
+{"id": "q040", "query": "乳房摸到肿块", "primary": ["乳腺外科"], "acceptable": ["乳腺外科", "肿瘤外科"], "category": "乳腺"}
+{"id": "q041", "query": "慢性肝炎随访", "primary": ["感染病科"], "acceptable": ["感染病科", "肝胆胰外科"], "category": "感染"}
+{"id": "q042", "query": "肺癌放疗咨询", "primary": ["放疗科"], "acceptable": ["放疗科", "普胸外科", "肿瘤内科", "肿瘤内科（一）"], "category": "放疗"}
+{"id": "q043", "query": "全身乏力想先看全科", "primary": ["全科医学科"], "acceptable": ["全科医学科", "老年医学科"], "category": "全科"}
+{"id": "q044", "query": "手指关节变形晨僵", "primary": ["风湿免疫科"], "acceptable": ["风湿免疫科", "骨科"], "category": "风湿"}
+{"id": "q045", "query": "小孩反复喘息咳嗽像哮喘", "primary": ["儿科"], "acceptable": ["儿科", "呼吸内科", "变态反应（过敏）科"], "category": "儿科"}
+{"id": "q046", "query": "反酸烧心胃溃疡", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）"], "category": "消化"}
+{"id": "q047", "query": "突发胸痛大汗淋漓", "primary": ["庆春院区急诊科", "之江院区急诊科", "余杭院区急诊科", "心血管内科"], "acceptable": ["庆春院区急诊科", "之江院区急诊科", "余杭院区急诊科", "心血管内科", "余杭院区急诊科（急诊创伤中心）"], "category": "急诊/心", "notes": "危急重症倾向，期望急诊或心内科"}
+{"id": "q048", "query": "体检发现甲状腺癌", "primary": ["甲状腺外科"], "acceptable": ["甲状腺外科", "肿瘤外科", "内分泌科"], "category": "甲状腺"}
+{"id": "q049", "query": "便秘大便带血", "primary": ["结直肠外科"], "acceptable": ["结直肠外科", "消化内科（一）", "消化内科（二）"], "category": "结直肠"}
+{"id": "q050", "query": "颈椎病脖子肩膀痛", "primary": ["骨科"], "acceptable": ["骨科", "疼痛科", "康复医学科"], "category": "骨科"}
+{"id": "q051", "query": "上腹痛恶心想吐", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）", "肝胆胰外科"], "category": "消化"}
+{"id": "q052", "query": "黑便怀疑消化道出血", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）", "结直肠外科", "庆春院区急诊科"], "category": "消化"}
+{"id": "q053", "query": "慢性胃炎复诊", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）"], "category": "消化"}
+{"id": "q054", "query": "吞咽困难怀疑食管问题", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）", "普胸外科"], "category": "消化"}
+{"id": "q055", "query": "腹泻拉肚子好几天", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）", "感染病科"], "category": "消化"}
+{"id": "q056", "query": "心慌胸闷气短", "primary": ["心血管内科"], "acceptable": ["心血管内科", "呼吸内科"], "category": "心血管"}
+{"id": "q057", "query": "心跳不规则房颤", "primary": ["心血管内科"], "acceptable": ["心血管内科"], "category": "心血管"}
+{"id": "q058", "query": "走路就心慌爬楼喘", "primary": ["心血管内科"], "acceptable": ["心血管内科", "呼吸内科"], "category": "心血管"}
+{"id": "q059", "query": "冠心病支架术后复查", "primary": ["心血管内科"], "acceptable": ["心血管内科", "心脏大血管外科"], "category": "心血管"}
+{"id": "q060", "query": "腿肿怀疑心衰", "primary": ["心血管内科"], "acceptable": ["心血管内科", "肾脏病中心"], "category": "心血管"}
+{"id": "q061", "query": "脖子前面有个包块", "primary": ["甲状腺外科"], "acceptable": ["甲状腺外科", "内分泌科"], "category": "甲状腺"}
+{"id": "q062", "query": "体检甲功异常", "primary": ["内分泌科"], "acceptable": ["内分泌科", "甲状腺外科"], "category": "内分泌"}
+{"id": "q063", "query": "肥胖想查内分泌", "primary": ["内分泌科"], "acceptable": ["内分泌科"], "category": "内分泌"}
+{"id": "q064", "query": "骨质疏松骨折后查代谢", "primary": ["内分泌科"], "acceptable": ["内分泌科", "骨科"], "category": "内分泌"}
+{"id": "q065", "query": "多喝多尿消瘦", "primary": ["内分泌科"], "acceptable": ["内分泌科"], "category": "内分泌"}
+{"id": "q066", "query": "宝宝拉肚子发烧", "primary": ["儿科"], "acceptable": ["儿科", "消化内科（一）", "消化内科（二）"], "category": "儿科"}
+{"id": "q067", "query": "小孩皮疹发热", "primary": ["儿科"], "acceptable": ["儿科", "皮肤科", "感染病科"], "category": "儿科"}
+{"id": "q068", "query": "儿童反复呼吸道感染", "primary": ["儿科"], "acceptable": ["儿科", "呼吸内科"], "category": "儿科"}
+{"id": "q069", "query": "婴儿黄疸要看哪个科", "primary": ["儿科"], "acceptable": ["儿科"], "category": "儿科"}
+{"id": "q070", "query": "孩子遗尿晚上尿床", "primary": ["儿科"], "acceptable": ["儿科", "泌尿外科"], "category": "儿科"}
+{"id": "q071", "query": "小儿腹痛哭闹", "primary": ["儿科"], "acceptable": ["儿科", "胃肠外科"], "category": "儿科"}
+{"id": "q072", "query": "小朋友过敏老是咳嗽", "primary": ["儿科"], "acceptable": ["儿科", "变态反应（过敏）科", "呼吸内科"], "category": "儿科"}
+{"id": "q073", "query": "脸上长痘很严重", "primary": ["皮肤科"], "acceptable": ["皮肤科", "整形美容中心"], "category": "皮肤"}
+{"id": "q074", "query": "身上起荨麻疹", "primary": ["皮肤科"], "acceptable": ["皮肤科", "变态反应（过敏）科"], "category": "皮肤"}
+{"id": "q075", "query": "灰指甲脚气", "primary": ["皮肤科"], "acceptable": ["皮肤科"], "category": "皮肤"}
+{"id": "q076", "query": "白癜风白斑", "primary": ["皮肤科"], "acceptable": ["皮肤科"], "category": "皮肤"}
+{"id": "q077", "query": "湿疹反复发作", "primary": ["皮肤科"], "acceptable": ["皮肤科", "变态反应（过敏）科"], "category": "皮肤"}
+{"id": "q078", "query": "膝关节肿痛积液", "primary": ["骨科"], "acceptable": ["骨科", "风湿免疫科", "疼痛科"], "category": "骨科"}
+{"id": "q079", "query": "痛风脚趾红肿", "primary": ["风湿免疫科"], "acceptable": ["风湿免疫科", "内分泌科"], "category": "风湿"}
+{"id": "q080", "query": "强直性脊柱炎腰痛", "primary": ["风湿免疫科"], "acceptable": ["风湿免疫科", "骨科"], "category": "风湿"}
+{"id": "q081", "query": "肩周炎抬不了胳膊", "primary": ["骨科"], "acceptable": ["骨科", "康复医学科", "疼痛科"], "category": "骨科"}
+{"id": "q082", "query": "骨折后钢板取出", "primary": ["骨科"], "acceptable": ["骨科"], "category": "骨科"}
+{"id": "q083", "query": "髋关节置换咨询", "primary": ["骨科"], "acceptable": ["骨科"], "category": "骨科"}
+{"id": "q084", "query": "情绪低落不想出门", "primary": ["精神卫生科"], "acceptable": ["精神卫生科"], "category": "精神"}
+{"id": "q085", "query": "抑郁失眠想看心理", "primary": ["精神卫生科"], "acceptable": ["精神卫生科"], "category": "精神"}
+{"id": "q086", "query": "手抖帕金森样症状", "primary": ["神经内科"], "acceptable": ["神经内科"], "category": "神经"}
+{"id": "q087", "query": "癫痫发作后复查", "primary": ["神经内科"], "acceptable": ["神经内科", "神经外科"], "category": "神经"}
+{"id": "q088", "query": "偏头痛一阵一阵的", "primary": ["神经内科"], "acceptable": ["神经内科", "疼痛科"], "category": "神经"}
+{"id": "q089", "query": "手脚麻木怀疑神经病变", "primary": ["神经内科"], "acceptable": ["神经内科", "内分泌科"], "category": "神经"}
+{"id": "q090", "query": "睡眠障碍长期失眠", "primary": ["精神卫生科"], "acceptable": ["精神卫生科", "神经内科"], "category": "精神"}
+{"id": "q091", "query": "咳血痰中带血", "primary": ["呼吸内科"], "acceptable": ["呼吸内科", "普胸外科", "庆春院区急诊科"], "category": "呼吸"}
+{"id": "q092", "query": "慢性支气管炎咳喘", "primary": ["呼吸内科"], "acceptable": ["呼吸内科"], "category": "呼吸"}
+{"id": "q093", "query": "睡眠呼吸暂停打鼾", "primary": ["呼吸内科"], "acceptable": ["呼吸内科", "耳鼻喉科"], "category": "呼吸"}
+{"id": "q094", "query": "气胸突然胸痛气促", "primary": ["普胸外科"], "acceptable": ["普胸外科", "肺移植及普胸外科", "庆春院区急诊科", "呼吸内科"], "category": "呼吸/胸外"}
+{"id": "q095", "query": "肺结核随访", "primary": ["感染病科"], "acceptable": ["感染病科", "呼吸内科"], "category": "感染"}
+{"id": "q096", "query": "乳头溢液", "primary": ["乳腺外科"], "acceptable": ["乳腺外科"], "category": "乳腺"}
+{"id": "q097", "query": "乳腺增生胀痛", "primary": ["乳腺外科"], "acceptable": ["乳腺外科"], "category": "乳腺"}
+{"id": "q098", "query": "乳腺癌化疗方案咨询", "primary": ["肿瘤内科", "肿瘤内科（一）", "乳腺外科"], "acceptable": ["肿瘤内科", "肿瘤内科（一）", "肿瘤内科（二）", "肿瘤内科（三）", "肿瘤内科（四）", "肿瘤内科（五）", "乳腺外科"], "category": "肿瘤"}
+{"id": "q099", "query": "阴道不规则出血", "primary": ["妇科"], "acceptable": ["妇科"], "category": "妇科"}
+{"id": "q100", "query": "卵巢囊肿随访", "primary": ["妇科"], "acceptable": ["妇科"], "category": "妇科"}
+{"id": "q101", "query": "子宫肌瘤手术咨询", "primary": ["妇科"], "acceptable": ["妇科"], "category": "妇科"}
+{"id": "q102", "query": "宫外孕腹痛", "primary": ["妇科"], "acceptable": ["妇科", "庆春院区急诊科", "之江院区急诊科"], "category": "妇科"}
+{"id": "q103", "query": "产后恶露不净", "primary": ["产科"], "acceptable": ["产科", "妇科"], "category": "产科"}
+{"id": "q104", "query": "想做人流", "primary": ["妇科"], "acceptable": ["妇科"], "category": "妇科"}
+{"id": "q105", "query": "血尿发现血丝", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "肾脏病中心"], "category": "泌尿"}
+{"id": "q106", "query": "肾结石腰痛", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "肾脏病中心"], "category": "泌尿"}
+{"id": "q107", "query": "阳痿早泄", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "生殖医学中心"], "category": "泌尿"}
+{"id": "q108", "query": "肾衰竭透析咨询", "primary": ["肾脏病中心"], "acceptable": ["肾脏病中心"], "category": "肾脏"}
+{"id": "q109", "query": "慢性肾炎复查", "primary": ["肾脏病中心"], "acceptable": ["肾脏病中心"], "category": "肾脏"}
+{"id": "q110", "query": "包皮过长手术", "primary": ["泌尿外科"], "acceptable": ["泌尿外科"], "category": "泌尿"}
+{"id": "q111", "query": "胰腺炎腹痛", "primary": ["消化内科（一）", "消化内科（二）", "肝胆胰外科"], "acceptable": ["消化内科（一）", "消化内科（二）", "肝胆胰外科"], "category": "肝胆"}
+{"id": "q112", "query": "黄疸皮肤发黄", "primary": ["感染病科", "肝胆胰外科"], "acceptable": ["感染病科", "肝胆胰外科", "消化内科（一）"], "category": "肝胆"}
+{"id": "q113", "query": "肝癌手术评估", "primary": ["肝胆胰外科"], "acceptable": ["肝胆胰外科", "肿瘤外科"], "category": "肝胆"}
+{"id": "q114", "query": "阑尾炎右下腹痛", "primary": ["胃肠外科"], "acceptable": ["胃肠外科", "庆春院区急诊科"], "category": "胃肠外"}
+{"id": "q115", "query": "胃穿孔急腹症", "primary": ["胃肠外科"], "acceptable": ["胃肠外科", "庆春院区急诊科"], "category": "胃肠外"}
+{"id": "q116", "query": "疝气腹股沟鼓包", "primary": ["胃肠外科"], "acceptable": ["胃肠外科"], "category": "胃肠外"}
+{"id": "q117", "query": "肛裂疼痛", "primary": ["结直肠外科"], "acceptable": ["结直肠外科"], "category": "结直肠"}
+{"id": "q118", "query": "大便习惯改变消瘦", "primary": ["结直肠外科"], "acceptable": ["结直肠外科", "消化内科（一）", "消化内科（二）"], "category": "结直肠"}
+{"id": "q119", "query": "肠息肉切除后复查", "primary": ["结直肠外科"], "acceptable": ["结直肠外科", "消化内科（一）"], "category": "结直肠"}
+{"id": "q120", "query": "飞蚊症眼前黑影", "primary": ["眼科"], "acceptable": ["眼科"], "category": "眼科"}
+{"id": "q121", "query": "青光眼眼压高", "primary": ["眼科"], "acceptable": ["眼科"], "category": "眼科"}
+{"id": "q122", "query": "白内障视力下降", "primary": ["眼科"], "acceptable": ["眼科"], "category": "眼科"}
+{"id": "q123", "query": "中耳炎耳朵流脓", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科"], "category": "耳鼻喉"}
+{"id": "q124", "query": "听力下降耳鸣", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科"], "category": "耳鼻喉"}
+{"id": "q125", "query": "声带息肉声音嘶哑", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科"], "category": "耳鼻喉"}
+{"id": "q126", "query": "智齿发炎脸肿", "primary": ["口腔科"], "acceptable": ["口腔科"], "category": "口腔"}
+{"id": "q127", "query": "口腔溃疡反复", "primary": ["口腔科"], "acceptable": ["口腔科", "皮肤科"], "category": "口腔"}
+{"id": "q128", "query": "颞下颌关节弹响", "primary": ["口腔科"], "acceptable": ["口腔科", "疼痛科"], "category": "口腔"}
+{"id": "q129", "query": "淋巴结肿大", "primary": ["血液科", "血液科骨髓移植中心"], "acceptable": ["血液科", "血液科骨髓移植中心", "肿瘤内科", "感染病科"], "category": "血液"}
+{"id": "q130", "query": "血小板减少紫癜", "primary": ["血液科"], "acceptable": ["血液科", "血液科骨髓移植中心"], "category": "血液"}
+{"id": "q131", "query": "淋巴瘤化疗", "primary": ["血液科骨髓移植中心", "血液科"], "acceptable": ["血液科骨髓移植中心", "血液科", "肿瘤内科"], "category": "血液"}
+{"id": "q132", "query": "结肠癌靶向治疗", "primary": ["肿瘤内科", "肿瘤内科（一）"], "acceptable": ["肿瘤内科", "肿瘤内科（一）", "肿瘤内科（二）", "肿瘤内科（三）", "肿瘤内科（四）", "肿瘤内科（五）", "结直肠外科"], "category": "肿瘤"}
+{"id": "q133", "query": "食管癌放疗", "primary": ["放疗科"], "acceptable": ["放疗科", "普胸外科", "肿瘤内科"], "category": "放疗"}
+{"id": "q134", "query": "带状疱疹后神经痛", "primary": ["疼痛科"], "acceptable": ["疼痛科", "皮肤科", "神经内科"], "category": "疼痛"}
+{"id": "q135", "query": "三叉神经痛脸痛", "primary": ["疼痛科"], "acceptable": ["疼痛科", "神经内科", "神经外科"], "category": "疼痛"}
+{"id": "q136", "query": "运动损伤扭伤康复", "primary": ["康复医学科"], "acceptable": ["康复医学科", "骨科"], "category": "康复"}
+{"id": "q137", "query": "脑瘫儿童康复", "primary": ["康复医学科"], "acceptable": ["康复医学科", "儿科"], "category": "康复"}
+{"id": "q138", "query": "疤痕增生想修复", "primary": ["整形外科"], "acceptable": ["整形外科", "整形美容中心", "皮肤科"], "category": "整形"}
+{"id": "q139", "query": "重睑双眼皮咨询", "primary": ["整形美容中心"], "acceptable": ["整形美容中心", "整形外科"], "category": "整形"}
+{"id": "q140", "query": "食物过敏起疹", "primary": ["变态反应（过敏）科"], "acceptable": ["变态反应（过敏）科", "皮肤科"], "category": "过敏"}
+{"id": "q141", "query": "药物过敏要排查", "primary": ["变态反应（过敏）科"], "acceptable": ["变态反应（过敏）科"], "category": "过敏"}
+{"id": "q142", "query": "中医针灸调理颈椎", "primary": ["中医科"], "acceptable": ["中医科", "骨科", "疼痛科"], "category": "中医"}
+{"id": "q143", "query": "想开中药调理体质", "primary": ["中医科"], "acceptable": ["中医科"], "category": "中医"}
+{"id": "q144", "query": "老年人多种慢病一起看", "primary": ["老年医学科", "全科医学科"], "acceptable": ["老年医学科", "全科医学科"], "category": "老年"}
+{"id": "q145", "query": "不知道挂什么科先看全科", "primary": ["全科医学科"], "acceptable": ["全科医学科"], "category": "全科"}
+{"id": "q146", "query": "体检异常指标想咨询", "primary": ["全科医学科"], "acceptable": ["全科医学科", "健康管理中心"], "category": "全科"}
+{"id": "q147", "query": "脑出血后复查", "primary": ["神经外科"], "acceptable": ["神经外科", "神经内科"], "category": "神外"}
+{"id": "q148", "query": "脑血管瘤咨询手术", "primary": ["神经外科"], "acceptable": ["神经外科"], "category": "神外"}
+{"id": "q149", "query": "颈动脉狭窄", "primary": ["血管外科"], "acceptable": ["血管外科", "神经外科", "心血管内科"], "category": "血管"}
+{"id": "q150", "query": "主动脉夹层胸背痛", "primary": ["心脏大血管外科"], "acceptable": ["心脏大血管外科", "心血管内科", "庆春院区急诊科"], "category": "心血管"}
+{"id": "q151", "query": "心脏瓣膜病手术", "primary": ["心脏大血管外科"], "acceptable": ["心脏大血管外科", "心血管内科"], "category": "心血管"}
+{"id": "q152", "query": "发热待查持续高烧", "primary": ["感染病科"], "acceptable": ["感染病科", "全科医学科", "庆春院区急诊科"], "category": "感染"}
+{"id": "q153", "query": "艾滋病咨询检测", "primary": ["感染病科"], "acceptable": ["感染病科"], "category": "感染"}
+{"id": "q154", "query": "脓毒症休克", "primary": ["重症医学科", "庆春院区急诊科"], "acceptable": ["重症医学科", "庆春院区急诊科", "之江院区急诊科", "感染病科"], "category": "急诊/心"}
+{"id": "q155", "query": "车祸外伤多发伤", "primary": ["余杭院区急诊科（急诊创伤中心）", "庆春院区急诊科"], "acceptable": ["余杭院区急诊科（急诊创伤中心）", "庆春院区急诊科", "之江院区急诊科", "骨科"], "category": "急诊/心"}
+{"id": "q156", "query": "突然说不出话一侧肢体无力", "primary": ["庆春院区急诊科", "之江院区急诊科", "神经内科"], "acceptable": ["庆春院区急诊科", "之江院区急诊科", "余杭院区急诊科", "神经内科", "神经外科"], "category": "急诊/心"}
+{"id": "q157", "query": "老是反酸想吐酸水", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）"], "category": "消化"}
+{"id": "q158", "query": "胸口像压着石头", "primary": ["心血管内科"], "acceptable": ["心血管内科", "普胸外科", "庆春院区急诊科"], "category": "心血管"}
+{"id": "q159", "query": "甲状腺彩超有结节", "primary": ["甲状腺外科"], "acceptable": ["甲状腺外科", "内分泌科"], "category": "甲状腺"}
+{"id": "q160", "query": "娃烧到三十九度还咳嗽", "primary": ["儿科"], "acceptable": ["儿科", "呼吸内科"], "category": "儿科"}
+{"id": "q161", "query": "皮肤过敏痒得不行", "primary": ["皮肤科"], "acceptable": ["皮肤科", "变态反应（过敏）科"], "category": "皮肤"}
+{"id": "q162", "query": "类风湿因子阳性关节肿", "primary": ["风湿免疫科"], "acceptable": ["风湿免疫科"], "category": "风湿"}
+{"id": "q163", "query": "焦虑得睡不着觉", "primary": ["精神卫生科"], "acceptable": ["精神卫生科"], "category": "精神"}
+{"id": "q164", "query": "CT发现肺部小结节", "primary": ["普胸外科", "呼吸内科"], "acceptable": ["普胸外科", "肺移植及普胸外科", "呼吸内科"], "category": "呼吸/胸外"}
+{"id": "q165", "query": "乳癌手术后定期检查", "primary": ["乳腺外科"], "acceptable": ["乳腺外科", "肿瘤内科", "肿瘤内科（一）"], "category": "乳腺"}
+{"id": "q166", "query": "大便带鲜血疼痛", "primary": ["结直肠外科"], "acceptable": ["结直肠外科", "消化内科（一）"], "category": "结直肠"}
+{"id": "q167", "query": "小便灼热频繁", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "肾脏病中心"], "category": "泌尿"}
+{"id": "q168", "query": "糖尿病要调胰岛素", "primary": ["内分泌科"], "acceptable": ["内分泌科"], "category": "内分泌"}
+{"id": "q169", "query": "经常偏头痛恶心", "primary": ["神经内科"], "acceptable": ["神经内科", "疼痛科"], "category": "神经"}
+{"id": "q170", "query": "眼睛红充血怕光", "primary": ["眼科"], "acceptable": ["眼科"], "category": "眼科"}
+{"id": "q171", "query": "蛀牙疼得吃不下", "primary": ["口腔科"], "acceptable": ["口腔科"], "category": "口腔"}
+{"id": "q172", "query": "鼻子堵得睡不着还过敏", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科", "变态反应（过敏）科"], "category": "耳鼻喉"}
+{"id": "q173", "query": "月经量特别多", "primary": ["妇科"], "acceptable": ["妇科"], "category": "妇科"}
+{"id": "q174", "query": "腰突压迫坐骨神经", "primary": ["骨科"], "acceptable": ["骨科", "疼痛科", "神经外科"], "category": "骨科"}
+{"id": "q175", "query": "乙肝大三阳随访", "primary": ["感染病科"], "acceptable": ["感染病科"], "category": "感染"}
+{"id": "q176", "query": "蛋白尿肌酐升高", "primary": ["肾脏病中心"], "acceptable": ["肾脏病中心"], "category": "肾脏"}
+{"id": "q177", "query": "白细胞减少贫血乏力", "primary": ["血液科"], "acceptable": ["血液科", "血液科骨髓移植中心"], "category": "血液"}
+{"id": "q178", "query": "支气管哮喘要调药", "primary": ["呼吸内科"], "acceptable": ["呼吸内科", "变态反应（过敏）科"], "category": "呼吸"}
+{"id": "q179", "query": "胃癌做完化疗复查血象", "primary": ["肿瘤内科", "肿瘤内科（一）"], "acceptable": ["肿瘤内科", "肿瘤内科（一）", "肿瘤内科（二）", "胃肠外科"], "category": "肿瘤"}
+{"id": "q180", "query": "中风后走路不稳做康复", "primary": ["康复医学科"], "acceptable": ["康复医学科", "神经内科"], "category": "康复"}
+{"id": "q181", "query": "腰痛想做神经阻滞", "primary": ["疼痛科"], "acceptable": ["疼痛科", "骨科", "麻醉科"], "category": "疼痛"}
+{"id": "q182", "query": "祛斑美白医美咨询", "primary": ["整形美容中心"], "acceptable": ["整形美容中心", "整形外科", "皮肤科"], "category": "整形"}
+{"id": "q183", "query": "试管婴儿咨询", "primary": ["生殖医学中心"], "acceptable": ["生殖医学中心", "妇科"], "category": "生殖"}
+{"id": "q184", "query": "孕期建档产检", "primary": ["产科"], "acceptable": ["产科"], "category": "产科"}
+{"id": "q185", "query": "甲状腺功能亢进", "primary": ["内分泌科"], "acceptable": ["内分泌科", "甲状腺外科"], "category": "内分泌"}
+{"id": "q186", "query": "胆囊结石反复绞痛", "primary": ["肝胆胰外科"], "acceptable": ["肝胆胰外科", "消化内科（一）"], "category": "肝胆"}
+{"id": "q187", "query": "夜尿次数多影响睡眠", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "余杭院区泌尿外科"], "category": "泌尿"}
+{"id": "q188", "query": "血压控制不好头晕", "primary": ["心血管内科"], "acceptable": ["心血管内科", "神经内科", "全科医学科"], "category": "心血管"}
+{"id": "q189", "query": "老年认知功能下降", "primary": ["老年医学科", "神经内科"], "acceptable": ["老年医学科", "神经内科", "精神卫生科"], "category": "老年"}
+{"id": "q190", "query": "花粉症季节性鼻炎", "primary": ["变态反应（过敏）科"], "acceptable": ["变态反应（过敏）科", "耳鼻喉科"], "category": "过敏"}
+{"id": "q191", "query": "想吃中药调脾胃", "primary": ["中医科"], "acceptable": ["中医科"], "category": "中医"}
+{"id": "q192", "query": "颅内占位术后随访", "primary": ["神经外科"], "acceptable": ["神经外科", "放疗科"], "category": "神外"}
+{"id": "q193", "query": "腿部静脉曲张溃疡", "primary": ["血管外科"], "acceptable": ["血管外科"], "category": "血管"}
+{"id": "q194", "query": "胃部分切除术后复查", "primary": ["胃肠外科"], "acceptable": ["胃肠外科", "消化内科（一）"], "category": "胃肠外"}
+{"id": "q195", "query": "咽喉肿痛发热", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科", "感染病科"], "category": "耳鼻喉"}
+{"id": "q196", "query": "乳腺钼靶有肿块", "primary": ["乳腺外科"], "acceptable": ["乳腺外科"], "category": "乳腺"}
+{"id": "q197", "query": "丙肝抗病毒治疗", "primary": ["感染病科"], "acceptable": ["感染病科"], "category": "感染"}
+{"id": "q198", "query": "肺癌要做放疗吗", "primary": ["放疗科"], "acceptable": ["放疗科", "普胸外科", "肿瘤内科"], "category": "放疗"}
+{"id": "q199", "query": "身体不适不知挂哪科", "primary": ["全科医学科"], "acceptable": ["全科医学科"], "category": "全科"}
+{"id": "q200", "query": "晨起手指僵硬握拳困难", "primary": ["风湿免疫科"], "acceptable": ["风湿免疫科"], "category": "风湿"}
+{"id": "q201", "query": "幼儿喘息样发作", "primary": ["儿科"], "acceptable": ["儿科", "呼吸内科"], "category": "儿科"}
+{"id": "q202", "query": "胃溃疡幽门螺杆菌阳性", "primary": ["消化内科（一）", "消化内科（二）"], "acceptable": ["消化内科（一）", "消化内科（二）"], "category": "消化"}
+{"id": "q203", "query": "胸口剧痛冷汗", "primary": ["庆春院区急诊科", "心血管内科"], "acceptable": ["庆春院区急诊科", "之江院区急诊科", "余杭院区急诊科", "心血管内科"], "category": "急诊/心"}
+{"id": "q204", "query": "甲状腺恶性结节", "primary": ["甲状腺外科"], "acceptable": ["甲状腺外科", "肿瘤外科"], "category": "甲状腺"}
+{"id": "q205", "query": "便血颜色鲜红", "primary": ["结直肠外科"], "acceptable": ["结直肠外科", "消化内科（一）"], "category": "结直肠"}
+{"id": "q206", "query": "落枕脖子转不动", "primary": ["骨科"], "acceptable": ["骨科", "疼痛科", "康复医学科", "中医科"], "category": "骨科"}
+{"id": "q207", "query": "耳鼻喉科看鼻窦炎", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科"], "category": "耳鼻喉"}
+{"id": "q208", "query": "生殖中心看输卵管不通", "primary": ["生殖医学中心"], "acceptable": ["生殖医学中心", "妇科"], "category": "生殖"}
+{"id": "q209", "query": "血管瘤皮肤红痣", "primary": ["血管外科", "皮肤科"], "acceptable": ["血管外科", "皮肤科", "整形外科"], "category": "血管"}
+{"id": "q210", "query": "口腔科洗牙出血", "primary": ["口腔科"], "acceptable": ["口腔科"], "category": "口腔"}
+{"id": "q211", "query": "眼科近视激光咨询", "primary": ["眼科"], "acceptable": ["眼科"], "category": "眼科"}
+{"id": "q212", "query": "疼痛科癌痛镇痛", "primary": ["疼痛科"], "acceptable": ["疼痛科", "肿瘤内科", "麻醉科"], "category": "疼痛"}
+{"id": "q213", "query": "康复科骨折后功能锻炼", "primary": ["康复医学科"], "acceptable": ["康复医学科", "骨科"], "category": "康复"}
+{"id": "q214", "query": "精神卫生科强迫症", "primary": ["精神卫生科"], "acceptable": ["精神卫生科"], "category": "精神"}
+{"id": "q215", "query": "血液科骨髓穿刺", "primary": ["血液科", "血液科骨髓移植中心"], "acceptable": ["血液科", "血液科骨髓移植中心"], "category": "血液"}
+{"id": "q216", "query": "肾脏病中心肾病综合征", "primary": ["肾脏病中心"], "acceptable": ["肾脏病中心"], "category": "肾脏"}
+{"id": "q217", "query": "普胸外科纵隔肿瘤", "primary": ["普胸外科"], "acceptable": ["普胸外科", "肺移植及普胸外科", "肿瘤外科"], "category": "呼吸/胸外"}
+{"id": "q218", "query": "心脏外科冠脉搭桥咨询", "primary": ["心脏大血管外科"], "acceptable": ["心脏大血管外科", "心血管内科"], "category": "心血管"}
+{"id": "q219", "query": "麻醉科无痛分娩咨询", "primary": ["麻醉科", "产科"], "acceptable": ["麻醉科", "产科", "疼痛科"], "category": "产科"}
+{"id": "q220", "query": "重症监护转出后随访", "primary": ["重症医学科", "全科医学科"], "acceptable": ["重症医学科", "全科医学科", "呼吸内科"], "category": "急诊/心"}
+{"id": "q221", "query": "余杭院区外伤急诊", "primary": ["余杭院区急诊科", "余杭院区急诊科（急诊创伤中心）"], "acceptable": ["余杭院区急诊科", "余杭院区急诊科（急诊创伤中心）", "庆春院区急诊科"], "category": "急诊/心"}
+{"id": "q222", "query": "之江院区发热急诊", "primary": ["之江院区急诊科"], "acceptable": ["之江院区急诊科", "庆春院区急诊科", "感染病科"], "category": "急诊/心"}
+{"id": "q223", "query": "庆春院区胸痛急诊", "primary": ["庆春院区急诊科"], "acceptable": ["庆春院区急诊科", "心血管内科"], "category": "急诊/心"}
+{"id": "q224", "query": "过敏性哮喘要看过敏科吗", "primary": ["变态反应（过敏）科"], "acceptable": ["变态反应（过敏）科", "呼吸内科"], "category": "过敏"}
+{"id": "q225", "query": "中医看月经不调", "primary": ["中医科"], "acceptable": ["中医科", "妇科"], "category": "中医"}
+{"id": "q226", "query": "老年医学科多重用药评估", "primary": ["老年医学科"], "acceptable": ["老年医学科", "全科医学科"], "category": "老年"}
+{"id": "q227", "query": "神经外科微创手术咨询", "primary": ["神经外科"], "acceptable": ["神经外科"], "category": "神外"}
+{"id": "q228", "query": "耳鸣听力下降半年", "primary": ["耳鼻喉科"], "acceptable": ["耳鼻喉科"], "category": "耳鼻喉"}
+{"id": "q229", "query": "反复口腔溃疡伴发热", "primary": ["口腔科"], "acceptable": ["口腔科", "风湿免疫科", "血液科"], "category": "口腔"}
+{"id": "q230", "query": "眼睛突然看不清", "primary": ["眼科"], "acceptable": ["眼科", "庆春院区急诊科", "神经内科"], "category": "眼科"}
+{"id": "q231", "query": "膝关节半月板损伤", "primary": ["骨科"], "acceptable": ["骨科", "康复医学科"], "category": "骨科"}
+{"id": "q232", "query": "尿路感染反复发作", "primary": ["泌尿外科"], "acceptable": ["泌尿外科", "肾脏病中心"], "category": "泌尿"}
+{"id": "q233", "query": "脂肪肝转氨酶高", "primary": ["感染病科", "消化内科（一）"], "acceptable": ["感染病科", "消化内科（一）", "消化内科（二）", "内分泌科"], "category": "肝胆"}
+{"id": "q234", "query": "胰腺占位手术评估", "primary": ["肝胆胰外科"], "acceptable": ["肝胆胰外科", "肿瘤外科"], "category": "肝胆"}
+{"id": "q235", "query": "结肠癌术后复查", "primary": ["结直肠外科"], "acceptable": ["结直肠外科", "肿瘤内科", "肿瘤内科（一）"], "category": "结直肠"}
+{"id": "q236", "query": "乳腺炎哺乳期胀痛", "primary": ["乳腺外科"], "acceptable": ["乳腺外科", "产科"], "category": "乳腺"}
+{"id": "q237", "query": "更年期潮热出汗", "primary": ["妇科", "内分泌科"], "acceptable": ["妇科", "内分泌科"], "category": "妇科"}
+{"id": "q238", "query": "先兆流产保胎", "primary": ["产科"], "acceptable": ["产科", "妇科"], "category": "产科"}
+{"id": "q239", "query": "不孕症检查流程", "primary": ["生殖医学中心"], "acceptable": ["生殖医学中心", "妇科"], "category": "生殖"}
+{"id": "q240", "query": "孩子多动注意力不集中", "primary": ["儿科", "精神卫生科"], "acceptable": ["儿科", "精神卫生科"], "category": "儿科"}
+{"id": "q241", "query": "青少年抑郁症", "primary": ["精神卫生科"], "acceptable": ["精神卫生科", "儿科"], "category": "精神"}
+{"id": "q242", "query": "老人骨质疏松腰痛", "primary": ["老年医学科", "骨科", "内分泌科"], "acceptable": ["老年医学科", "骨科", "内分泌科", "疼痛科"], "category": "老年"}
+{"id": "q243", "query": "皮疹伴关节痛", "primary": ["风湿免疫科", "皮肤科"], "acceptable": ["风湿免疫科", "皮肤科"], "category": "风湿"}
+{"id": "q244", "query": "长期低热盗汗消瘦", "primary": ["感染病科"], "acceptable": ["感染病科", "呼吸内科", "肿瘤内科"], "category": "感染"}
+{"id": "q245", "query": "化疗后白细胞低", "primary": ["肿瘤内科", "肿瘤内科（一）", "血液科"], "acceptable": ["肿瘤内科", "肿瘤内科（一）", "肿瘤内科（二）", "血液科"], "category": "肿瘤"}
+{"id": "q246", "query": "放疗后皮肤反应", "primary": ["放疗科"], "acceptable": ["放疗科", "皮肤科"], "category": "放疗"}
+{"id": "q247", "query": "手术麻醉风险评估", "primary": ["麻醉科"], "acceptable": ["麻醉科"], "category": "疼痛"}

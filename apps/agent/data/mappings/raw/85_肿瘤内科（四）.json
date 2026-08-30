@@ -1,0 +1,143 @@
+[
+  {
+    "mapping_id": "95c81e75442fbf6585fa4bdd",
+    "dept_id": "85",
+    "dept_name": "肿瘤内科（四）",
+    "entity_type": "disease",
+    "keywords": [
+      "肺部有包块",
+      "老咳嗽咳血",
+      "胸口闷痛",
+      "体检发现肺结节",
+      "肺癌"
+    ],
+    "category_label": "胸部肿瘤方向",
+    "source_chunk_id": "ab5e0b2905079c2446574aba",
+    "source_section": "科研教学",
+    "source_md": "data/clean/departments/85_肿瘤内科（四）.md",
+    "evidence": "科室以胸部肿瘤、泌尿系肿瘤、消化道肿瘤为主...每年主办“肺癌西子论坛”省级继续教育学习班",
+    "confidence": 0.9,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:12:05.182846+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "506e24f2541da88791865c78",
+    "dept_id": "85",
+    "dept_name": "肿瘤内科（四）",
+    "entity_type": "disease",
+    "keywords": [
+      "小便带血",
+      "尿频尿急尿痛",
+      "腰酸腰痛",
+      "肾癌",
+      "膀胱癌"
+    ],
+    "category_label": "泌尿系肿瘤方向",
+    "source_chunk_id": "ab5e0b2905079c2446574aba",
+    "source_section": "科研教学",
+    "source_md": "data/clean/departments/85_肿瘤内科（四）.md",
+    "evidence": "科室以胸部肿瘤、泌尿系肿瘤、消化道肿瘤为主...",
+    "confidence": 0.9,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:12:05.182846+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "ef26d7847ade970dcce6bffb",
+    "dept_id": "85",
+    "dept_name": "肿瘤内科（四）",
+    "entity_type": "disease",
+    "keywords": [
+      "肚子胀痛",
+      "吃饭噎得慌",
+      "拉黑便",
+      "胃癌",
+      "肠癌"
+    ],
+    "category_label": "消化道肿瘤方向",
+    "source_chunk_id": "ab5e0b2905079c2446574aba",
+    "source_section": "科研教学",
+    "source_md": "data/clean/departments/85_肿瘤内科（四）.md",
+    "evidence": "科室以胸部肿瘤、泌尿系肿瘤、消化道肿瘤为主...",
+    "confidence": 0.9,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:12:05.182846+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "9407757341911fdb9dff4dc7",
+    "dept_id": "85",
+    "dept_name": "肿瘤内科（四）",
+    "entity_type": "condition",
+    "keywords": [
+      "确诊癌症要化疗",
+      "吃靶向药",
+      "打免疫针",
+      "肿瘤内分泌治疗",
+      "中西医结合治癌"
+    ],
+    "category_label": "综合肿瘤治疗/日间诊疗",
+    "source_chunk_id": "4fbd7ce0fbe98132315f9d2b",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/85_肿瘤内科（四）.md",
+    "evidence": "集化疗、靶向治疗、免疫治疗、内分泌治疗、中西医结合治疗等综合治疗为一体的肿瘤诊疗中心。",
+    "confidence": 0.9,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:12:05.182846+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "611a7e5be79e2cfbdd330c47",
+    "dept_id": "85",
+    "dept_name": "肿瘤内科（四）",
+    "entity_type": "condition",
+    "keywords": [
+      "病情复杂拿不准方案",
+      "多处转移",
+      "晚期肿瘤找专家会诊",
+      "多学科联合诊治"
+    ],
+    "category_label": "多学科综合诊治(MDT)",
+    "source_chunk_id": "cf452f37c0ad39161ad226d2",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/85_肿瘤内科（四）.md",
+    "evidence": "严谨科学的多学科综合诊治（MDT）：通过多学科专家一起讨论，为肿瘤患者提供最优的治疗方案。",
+    "confidence": 0.85,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:12:05.182846+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "2cb30cb8c1343960329c3407",
+    "dept_id": "85",
+    "dept_name": "肿瘤内科（四）",
+    "entity_type": "condition",
+    "keywords": [
+      "想尝试最新抗癌药",
+      "参加新药临床试验",
+      "常规治疗效果不佳寻新方案"
+    ],
+    "category_label": "临床研究/新药试验",
+    "source_chunk_id": "cf452f37c0ad39161ad226d2",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/85_肿瘤内科（四）.md",
+    "evidence": "临床研究提供更多选择：作为国内领先的新药临床研究中心之一，肿瘤患者将在我科获得更多的新药治疗机会。",
+    "confidence": 0.85,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:12:05.182846+00:00",
+    "llm_model": "qwen3.7-flash"
+  }
+]

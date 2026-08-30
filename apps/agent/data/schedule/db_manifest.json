@@ -1,0 +1,8 @@
+{
+  "loaded_at": "2026-08-28T12:16:42.521992+00:00",
+  "database_url": "<from env DATABASE_URL>",
+  "doctors": 838,
+  "schedule_entries": 2863,
+  "source_schedule": "data/schedule/schedule.json",
+  "source_doctors": "data/schedule/doctors.jsonl"
+}

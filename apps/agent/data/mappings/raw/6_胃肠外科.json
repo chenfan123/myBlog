@@ -1,0 +1,242 @@
+[
+  {
+    "mapping_id": "94ecb829833cdeb35b5881aa",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "disease",
+    "keywords": [
+      "胃痛胃胀、大便发黑带血、吃东西堵得慌、排便习惯改变、不明原因消瘦"
+    ],
+    "category_label": "胃肠肿瘤方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介 / 专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "主要收治的病种涵盖：胃肠道肿瘤（胃癌、结直肠癌、胃肠间质瘤、小肠肿瘤等）；规范化、精准化、微创化手术治疗胃肠道肿瘤",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "a63b4560b2694c8ac88d14eb",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "condition",
+    "keywords": [
+      "肚子上鼓包、站立咳嗽时突出、平躺可回纳、局部坠胀痛"
+    ],
+    "category_label": "疝与腹壁方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介 / 专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "各种腹壁疝（腹股沟疝、切口疝等）；除了开展腹股沟疝、脐疝、腰疝等常规手术以外，对于疑难复杂腹壁疾病如切口疝，造口旁疝，巨大腹壁缺损的治疗有丰富经验。",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "7d89787da0b6f93d06e4a7dd",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "disease",
+    "keywords": [
+      "反酸烧心、胸骨后灼痛、饭后打嗝反水、咽喉异物感"
+    ],
+    "category_label": "胃肠动力与反流方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介 / 专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "胃食管反流疾病；在食道裂孔疝、胃食道反流疾病及产后腹直肌分离的修复和整形方面，有先进的技术和理念。",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "d9d3831329f668520a5217c6",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "disease",
+    "keywords": [
+      "肚子胀痛不排气、频繁呕吐、停止排便、阵发性绞痛"
+    ],
+    "category_label": "胃肠基础疾病方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介 / 专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "肠梗阻、阑尾炎等急腹症；注重于规范化、精准化、微创化手术治疗...肠梗阻等胃肠道疾病。",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "dcb21cad8b9b0ad60e57cc04",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "disease",
+    "keywords": [
+      "右下腹阵痛、转移性右下腹痛、按压痛反跳痛、伴发热恶心"
+    ],
+    "category_label": "急腹症方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "肠梗阻、阑尾炎等急腹症",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "7b93c5df400ce6b153018233",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "condition",
+    "keywords": [
+      "伤口漏粪水或胆汁、引流管持续流出消化液、皮肤溃烂渗液"
+    ],
+    "category_label": "胃肠基础疾病方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "各种消化道瘘",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": false,
+    "validation_notes": "evidence 过短",
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "101265a2f003b75ae87bea98",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "condition",
+    "keywords": [
+      "严重超重减重失败、糖尿病高血压控制不佳、脂肪肝伴呼吸困难"
+    ],
+    "category_label": "代谢与减重方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介 / 专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "肥胖合并代谢性疾病等；注重于规范化、精准化、微创化手术治疗...肥胖症",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "314e88eb4705c760233b2c46",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "symptom",
+    "keywords": [
+      "车祸刀伤腹部剧痛、腹部板状硬、突发剧烈腹痛伴休克"
+    ],
+    "category_label": "急腹症方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "腹部外伤；各种消化道瘘；肠梗阻、阑尾炎等急腹症",
+    "confidence": 0.9,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "b54accff305edd661ca211af",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "condition",
+    "keywords": [
+      "褥疮压疮、糖尿病脚烂不愈合、手术后伤口长期流水、烧伤感染溃烂"
+    ],
+    "category_label": "创面修复与护理方向",
+    "source_chunk_id": "eae675c215181cf9d8177cf4",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "科室居家上门护理团队在慢性创面治疗方面具有丰富临床实践经验，包括褥疮，糖尿病足，术后难愈性创面、烧伤、感染创面等",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "13c2845d1aef42842aabb7f5",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "disease",
+    "keywords": [
+      "腹部摸到包块、不明原因消化道出血、反复腹痛腹胀"
+    ],
+    "category_label": "胃肠肿瘤方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介 / 专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "胃肠道肿瘤（...胃肠间质瘤...）；学科擅长胃肠肿瘤腹腔镜手术治疗，注重胃肠间质瘤患者的全程化规范管理",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "c8a4ff4816e6d9fbd05a6cad",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "condition",
+    "keywords": [
+      "生完孩子肚子松垮凸出、腰部酸痛无力、腹部中间能插入多指"
+    ],
+    "category_label": "疝与腹壁方向",
+    "source_chunk_id": "eae675c215181cf9d8177cf4",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "在食道裂孔疝、胃食道反流疾病及产后腹直肌分离的修复和整形方面，有先进的技术和理念。",
+    "confidence": 0.9,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "12f61d507010ef8292223483",
+    "dept_id": "6",
+    "dept_name": "胃肠外科",
+    "entity_type": "condition",
+    "keywords": [
+      "肚子里长东西、腹部摸到硬块、逐渐增大包块、伴随消瘦乏力"
+    ],
+    "category_label": "胃肠肿瘤方向",
+    "source_chunk_id": "feaf99db5ed695379889d44f",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/6_胃肠外科.md",
+    "evidence": "腹部肿块（腹壁、腹腔及腹膜后肿瘤等）",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:41:19.998897+00:00",
+    "llm_model": "qwen3.7-flash"
+  }
+]

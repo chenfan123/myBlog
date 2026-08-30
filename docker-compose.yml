@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: myblog-postgres
+    environment:
+      POSTGRES_DB: myblog
+      POSTGRES_USER: myblog
+      POSTGRES_PASSWORD: myblog_local
+    ports:
+      - "5432:5432"
+    volumes:
+      - myblog_postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myblog -d myblog"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:latest
+    container_name: myblog-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - myblog_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  agent:
+    build:
+      context: ./apps/agent
+      args:
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.cloud.tencent.com/pypi/simple}
+    env_file:
+      - ./apps/agent/.env.local
+    environment:
+      DATABASE_URL: postgresql+psycopg://myblog:myblog_local@postgres:5432/myblog
+      MILVUS_URI: ${MILVUS_URI:-http://host.docker.internal:19530}
+    ports:
+      - "8002:8002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  myblog_postgres_data:
+  myblog_redis_data:

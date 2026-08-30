@@ -1,0 +1,163 @@
+[
+  {
+    "mapping_id": "533cc155d6549d434db68754",
+    "dept_id": "59",
+    "dept_name": "临床药学部",
+    "entity_type": "condition",
+    "keywords": [
+      "药物副作用",
+      "吃药后难受",
+      "药物过敏",
+      "不良反应"
+    ],
+    "category_label": "药物安全与不良反应监测",
+    "source_chunk_id": "4d9c87188aa2bd4a4332fb81",
+    "source_section": "科室简介 / 专科特色",
+    "source_md": "data/clean/departments/59_临床药学部.md",
+    "evidence": "“国家不良反应监测哨点”、“不良反应监测”",
+    "confidence": 0.9,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:03:28.277394+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "bf7b7448e07781e346ace5ff",
+    "dept_id": "59",
+    "dept_name": "临床药学部",
+    "entity_type": "condition",
+    "keywords": [
+      "调药量",
+      "测血药浓度",
+      "药物浓度低",
+      "药效不稳"
+    ],
+    "category_label": "治疗药物监测(TDM)",
+    "source_chunk_id": "f5c5968ade38879969ca1bfc",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/59_临床药学部.md",
+    "evidence": "“血药浓度监测系统”、“智能化全程药学服务平台”",
+    "confidence": 0.9,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:03:28.277394+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "a934cf988497369d0fb9e149",
+    "dept_id": "59",
+    "dept_name": "临床药学部",
+    "entity_type": "disease",
+    "keywords": [
+      "肿瘤",
+      "癌症",
+      "化疗耐药",
+      "靶向药效果差"
+    ],
+    "category_label": "肿瘤药学与个体化治疗",
+    "source_chunk_id": "f5c5968ade38879969ca1bfc",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/59_临床药学部.md",
+    "evidence": "“肿瘤细胞化疗药物敏感性检测”、“多模态个体化用药研究平台”",
+    "confidence": 0.85,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:03:28.277394+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "80842daa9999b96a72a59677",
+    "dept_id": "59",
+    "dept_name": "临床药学部",
+    "entity_type": "condition",
+    "keywords": [
+      "按基因吃药",
+      "精准用药",
+      "体质特殊需调药",
+      "个体化服药"
+    ],
+    "category_label": "临床药学与基因检测",
+    "source_chunk_id": "f5c5968ade38879969ca1bfc",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/59_临床药学部.md",
+    "evidence": "“个体化用药基因检测”、“多模态个体化用药研究平台”",
+    "confidence": 0.85,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:03:28.277394+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "45ba96886a3faed1452ee617",
+    "dept_id": "59",
+    "dept_name": "临床药学部",
+    "entity_type": "disease",
+    "keywords": [
+      "细菌感染",
+      "抗生素滥用",
+      "耐药菌感染",
+      "反复发炎"
+    ],
+    "category_label": "抗菌药物管理与合理用药",
+    "source_chunk_id": "4d9c87188aa2bd4a4332fb81",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/59_临床药学部.md",
+    "evidence": "“抗菌药物临床应用监测网、细菌耐药监测网（牵头单位）、合理用药监测网成员单位”",
+    "confidence": 0.8,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:03:28.277394+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "f73dc93b25e7f07c00092fa1",
+    "dept_id": "59",
+    "dept_name": "临床药学部",
+    "entity_type": "condition",
+    "keywords": [
+      "用药咨询",
+      "处方审核",
+      "重复用药",
+      "药物相互作用"
+    ],
+    "category_label": "药师门诊与用药管理",
+    "source_chunk_id": "f5c5968ade38879969ca1bfc",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/59_临床药学部.md",
+    "evidence": "“逐步形成以药师门诊...等多位一体的全程化药学服务链”、“全医嘱审核系统”",
+    "confidence": 0.85,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:03:28.277394+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "d9348ddef2af0c795a1965a6",
+    "dept_id": "59",
+    "dept_name": "临床药学部",
+    "entity_type": "condition",
+    "keywords": [
+      "新药试验",
+      "创新药招募",
+      "难治性疾病新疗法",
+      "临床试验"
+    ],
+    "category_label": "药物临床试验(GCP)",
+    "source_chunk_id": "f5c5968ade38879969ca1bfc",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/59_临床药学部.md",
+    "evidence": "“承接国内外各类新药临床研究，并开展药物创新研究活动”、“拥有独立的I期临床研究病房”",
+    "confidence": 0.75,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:03:28.277394+00:00",
+    "llm_model": "qwen3.7-flash"
+  }
+]

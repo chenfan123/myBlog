@@ -1,0 +1,12 @@
+{
+  "source_url": "https://www.zy91.com/server",
+  "generated_at": "2026-08-28T06:22:17.892629+00:00",
+  "total_doctors": 838,
+  "success": 837,
+  "failed": 1,
+  "total_schedule_slots": 1768,
+  "unique_doctors_in_schedule": 838,
+  "failed_doctors": [
+    "张岳林"
+  ]
+}

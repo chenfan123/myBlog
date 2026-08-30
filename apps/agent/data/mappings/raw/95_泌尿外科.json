@@ -1,0 +1,262 @@
+[
+  {
+    "mapping_id": "b9a067ea8d44d62c4d82cc34",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "排尿费力、尿频尿急、夜尿增多、尿线变细、憋不住尿"
+    ],
+    "category_label": "前列腺疾病",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-1. 前列腺疾病的诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "在国际上首创经尿道前列腺汽化剜切术（TVERP）及经尿道前列腺汽化剜除术（TVEP）治疗前列腺增生，显著提高前列腺增生的疗效和手术安全性",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "ab600fbfd39bffd383870618",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "前列腺长东西、体检指标异常、骨头莫名疼、排尿困难消瘦、直肠摸到硬块"
+    ],
+    "category_label": "前列腺疾病",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-1. 前列腺疾病的诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "与德国合作，将人工神经网络分析技术与经直肠超声影像结合，用于早期前列腺癌的诊断，以较少的穿刺针数取得较高的前列腺穿刺阳性率",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "6f4c11c0f08bc653ccc07fc0",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "腰部包块、无痛性血尿、侧腹痛、腹部摸到硬块、不明原因发热"
+    ],
+    "category_label": "泌尿系肿瘤",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-2. 泌尿系肿瘤的诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "尤其擅长复杂性泌尿男生殖系统肿瘤的手术治疗，包括巨大肾上腺肿瘤切除术，巨大肾肿瘤根治性切除术",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "e499101c2e27c7eebcc040b0",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "全程肉眼血尿、排尿刺痛、尿频尿急伴血、下腹部坠胀、膀胱区疼痛"
+    ],
+    "category_label": "泌尿系肿瘤",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-2. 泌尿系肿瘤的诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "解剖性膀胱根治性切除术及各类尿流改道手术如回肠膀胱术与原位回肠膀胱术等",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "f318a5f3caac98336779556d",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "腹部隐痛、腹胀、摸到腹部包块、压迫引起腰痛、单侧肾积水"
+    ],
+    "category_label": "泌尿系肿瘤",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-2. 泌尿系肿瘤的诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "腹膜后肿瘤、肾癌累及心脏大血管手术，孤立肾较大或多发肾癌的保留肾脏手术",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "6516d79b9d2f7b681f5ca80c",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "剧烈腰绞痛、放射至腹股沟痛、排尿中断、尿中带血、恶心呕吐伴腰痛"
+    ],
+    "category_label": "尿路结石",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-4. 尿路结石的诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "常规开展输尿管镜下钬激光碎石及经皮肾镜碎石取石手术，每年完成内镜手术1000余例，其中大多数手术为复杂性尿路结石",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "ed9969b10853e344624b61cc",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "勃起不坚、同房时间短、早泄、性欲减退、举而不坚"
+    ],
+    "category_label": "男科学",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-5. 男科学",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "擅长男性性功能障碍、男性不育及迟发性男性性腺功能低下的诊治",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "ab57a8457aec8e3890a079df",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "备孕多年没动静、精液稀薄量少、精子跑不动、查不出怀不上原因、精液带血丝"
+    ],
+    "category_label": "男科学",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-5. 男科学",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "擅长男性性功能障碍、男性不育及迟发性男性性腺功能低下的诊治。熟练运用显微男性外科技术，积极开展显微镜下精索静脉转流术",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "24d0b13b33aa3bbd0c607656",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "同房疼痛变形、外伤后肿胀出血、勃起角度异常、包皮或阴茎撕裂伤、佩罗尼氏病"
+    ],
+    "category_label": "男科学",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-5. 男科学",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "重视阴茎假体植入、阴茎弯曲矫正、严重阴茎损伤修复重建等男科疾病的临床研究",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "fc09719a3cdea3712341a4ae",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "condition",
+    "keywords": [
+      "咳喘跳跑漏尿、大笑憋不住、生完孩子漏尿、提重物漏尿、内裤总湿"
+    ],
+    "category_label": "盆底及尿道疾病",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-6.盆底及尿道疾病诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "采用多种方法治疗女性压力性尿失禁，取得良好效果；开展女性盆腔脏器脱垂修复手术及膀胱功能障碍的电刺激治疗",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "2fd73959e67f118d1790d208",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "condition",
+    "keywords": [
+      "阴道口有肉球掉出、下坠感腰酸、走路摩擦不适、排便排尿费力、子宫脱垂"
+    ],
+    "category_label": "盆底及尿道疾病",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-6.盆底及尿道疾病诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "开展女性盆腔脏器脱垂修复手术及膀胱功能障碍的电刺激治疗",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "8c0f87b5eca9d212353ef606",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "尿线变细无力、排尿费力分叉、尿潴留插不上尿管、术后排尿不畅、尿道闭锁"
+    ],
+    "category_label": "盆底及尿道疾病",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-6.盆底及尿道疾病诊治",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "采用不同手术途径治疗复杂性尿道狭窄，手术量每年近100例，治疗效果达到国内先进水平",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "bea32b54f202886cd11e5c3d",
+    "dept_id": "95",
+    "dept_name": "泌尿外科",
+    "entity_type": "disease",
+    "keywords": [
+      "血尿伴左腹痛、运动后腰酸、左侧精索静脉曲张、青少年反复血尿、左肾静脉受压"
+    ],
+    "category_label": "机器人辅助微创手术",
+    "source_chunk_id": "1c74e529800eedd40a9cfdea",
+    "source_section": "专科特色-3. 机器人辅助腹腔镜手术",
+    "source_md": "data/clean/departments/95_泌尿外科.md",
+    "evidence": "机器人辅助“胡桃夹综合征”左肾静脉移位术",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T16:15:26.546714+00:00",
+    "llm_model": "qwen3.7-flash"
+  }
+]

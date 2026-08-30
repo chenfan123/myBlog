@@ -1,5 +1,6 @@
 export type ApiErrorPayload = {
   code?: string;
+  detail?: string;
   details?: unknown;
   message?: string;
 };
@@ -26,6 +27,10 @@ function getErrorMessage(
 ) {
   if (isApiErrorPayload(payload) && payload.message) {
     return payload.message;
+  }
+
+  if (isApiErrorPayload(payload) && payload.detail) {
+    return payload.detail;
   }
 
   return response.statusText || `Request failed with status ${response.status}`;

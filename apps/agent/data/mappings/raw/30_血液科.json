@@ -1,0 +1,122 @@
+[
+  {
+    "mapping_id": "8ea967f4981c38f2315183eb",
+    "dept_id": "30",
+    "dept_name": "血液科",
+    "entity_type": "disease",
+    "keywords": [
+      "血癌",
+      "血液肿瘤",
+      "恶性血液病",
+      "淋巴/骨髓肿瘤",
+      "血液癌症"
+    ],
+    "category_label": "血液肿瘤亚专科",
+    "source_chunk_id": "3a12474bff50191d4769a7e1",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/30_血液科.md",
+    "evidence": "“血液系统恶性肿瘤特别是白血病的诊治方面在全国位居前列”、“构建的生物样本库平台拥有五万余例恶性血液病生物样品”",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:51:25.318692+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "547759251daff27043d6eaad",
+    "dept_id": "30",
+    "dept_name": "血液科",
+    "entity_type": "disease",
+    "keywords": [
+      "白血病",
+      "血癌",
+      "急慢性白血病",
+      "儿童/成人白血病",
+      "白细胞异常增生"
+    ],
+    "category_label": "白血病亚专科",
+    "source_chunk_id": "3a12474bff50191d4769a7e1",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/30_血液科.md",
+    "evidence": "“学科专注于白血病等严重危害人类健康的血液肿瘤防治和转化研究。”",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:51:25.318692+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "f762bd920951bb8970ed9e9c",
+    "dept_id": "30",
+    "dept_name": "血液科",
+    "entity_type": "disease",
+    "keywords": [
+      "急性髓系白血病",
+      "急性粒细胞白血病",
+      "AML",
+      "髓系白血病",
+      "急性白血病"
+    ],
+    "category_label": "白血病亚专科",
+    "source_chunk_id": "3a12474bff50191d4769a7e1",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/30_血液科.md",
+    "evidence": "“高三尖杉酯碱为基础的HAA方案用于急性髓系白血病诱导治疗方案目前已在国内国际取得卓越疗效和认可”",
+    "confidence": 0.95,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:51:25.318692+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "ff642b715d689249ad2ad3f6",
+    "dept_id": "30",
+    "dept_name": "血液科",
+    "entity_type": "disease",
+    "keywords": [
+      "血液病",
+      "各种血象异常",
+      "血液系统疾病",
+      "疑难血液问题",
+      "综合性血液病"
+    ],
+    "category_label": "血液内科综合",
+    "source_chunk_id": "fb92609de068427aafd4c22e",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/30_血液科.md",
+    "evidence": "“浙江省血液病医疗中心...集教学、医疗、科研为一体的综合性血液病专科之一”",
+    "confidence": 0.92,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:51:25.318692+00:00",
+    "llm_model": "qwen3.7-flash"
+  },
+  {
+    "mapping_id": "f5a90718b632129a12ea3397",
+    "dept_id": "30",
+    "dept_name": "血液科",
+    "entity_type": "condition",
+    "keywords": [
+      "血常规异常",
+      "骨髓报告异常",
+      "染色体/基因突变",
+      "血液指标不对劲",
+      "需精准分型的血液病"
+    ],
+    "category_label": "血液病诊断与检测",
+    "source_chunk_id": "3a12474bff50191d4769a7e1",
+    "source_section": "专科特色",
+    "source_md": "data/clean/departments/30_血液科.md",
+    "evidence": "“在血液病细胞形态学、细胞遗传学和分子生物学检测和研究方面在全省起着指导作用。”",
+    "confidence": 0.82,
+    "recommendable": true,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:51:25.318692+00:00",
+    "llm_model": "qwen3.7-flash"
+  }
+]

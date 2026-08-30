@@ -1,0 +1,6 @@
+{
+  "loaded_at": "2026-08-28T16:21:43.658791+00:00",
+  "mapping_count": 735,
+  "source_jsonl": "data/mappings/dept_symptom_mapping.jsonl",
+  "table": "zy91_dept_mappings"
+}

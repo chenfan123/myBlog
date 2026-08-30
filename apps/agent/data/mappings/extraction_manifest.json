@@ -1,0 +1,726 @@
+{
+  "generated_at": "2026-08-28T16:18:49.748382+00:00",
+  "llm_model": "qwen3.7-flash",
+  "llm_api_base": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "source_clean_manifest": "data/clean/manifest.json",
+  "total_departments": 79,
+  "success_departments": 79,
+  "failed_departments": 0,
+  "total_mappings": 735,
+  "validated_mappings": 725,
+  "recommendable_mappings": 592,
+  "output_jsonl": "data/mappings/dept_symptom_mapping.jsonl",
+  "items": [
+    {
+      "dept_id": "5",
+      "dept_name": "肝胆胰外科",
+      "source_md": "data/clean/departments/5_肝胆胰外科.md",
+      "item_count": 9,
+      "validated_count": 9,
+      "elapsed_sec": 34.01,
+      "ok": true
+    },
+    {
+      "dept_id": "6",
+      "dept_name": "胃肠外科",
+      "source_md": "data/clean/departments/6_胃肠外科.md",
+      "item_count": 12,
+      "validated_count": 11,
+      "elapsed_sec": 26.79,
+      "ok": true
+    },
+    {
+      "dept_id": "7",
+      "dept_name": "甲状腺外科",
+      "source_md": "data/clean/departments/7_甲状腺外科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 24.85,
+      "ok": true
+    },
+    {
+      "dept_id": "8",
+      "dept_name": "乳腺外科",
+      "source_md": "data/clean/departments/8_乳腺外科.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 28.19,
+      "ok": true
+    },
+    {
+      "dept_id": "9",
+      "dept_name": "结直肠外科",
+      "source_md": "data/clean/departments/9_结直肠外科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 27.64,
+      "ok": true
+    },
+    {
+      "dept_id": "10",
+      "dept_name": "血管外科",
+      "source_md": "data/clean/departments/10_血管外科.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 21.92,
+      "ok": true
+    },
+    {
+      "dept_id": "11",
+      "dept_name": "心脏大血管外科",
+      "source_md": "data/clean/departments/11_心脏大血管外科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 43.48,
+      "ok": true
+    },
+    {
+      "dept_id": "12",
+      "dept_name": "普胸外科",
+      "source_md": "data/clean/departments/12_普胸外科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 35.57,
+      "ok": true
+    },
+    {
+      "dept_id": "13",
+      "dept_name": "肺移植及普胸外科",
+      "source_md": "data/clean/departments/13_肺移植及普胸外科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 23.59,
+      "ok": true
+    },
+    {
+      "dept_id": "15",
+      "dept_name": "神经外科",
+      "source_md": "data/clean/departments/15_神经外科.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 26.97,
+      "ok": true
+    },
+    {
+      "dept_id": "16",
+      "dept_name": "骨科",
+      "source_md": "data/clean/departments/16_骨科.md",
+      "item_count": 13,
+      "validated_count": 13,
+      "elapsed_sec": 27.83,
+      "ok": true
+    },
+    {
+      "dept_id": "17",
+      "dept_name": "肿瘤外科",
+      "source_md": "data/clean/departments/17_肿瘤外科.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 22.57,
+      "ok": true
+    },
+    {
+      "dept_id": "18",
+      "dept_name": "整形外科",
+      "source_md": "data/clean/departments/18_整形外科.md",
+      "item_count": 14,
+      "validated_count": 14,
+      "elapsed_sec": 29.57,
+      "ok": true
+    },
+    {
+      "dept_id": "19",
+      "dept_name": "整形美容中心",
+      "source_md": "data/clean/departments/19_整形美容中心.md",
+      "item_count": 15,
+      "validated_count": 14,
+      "elapsed_sec": 28.86,
+      "ok": true
+    },
+    {
+      "dept_id": "20",
+      "dept_name": "眼科",
+      "source_md": "data/clean/departments/20_眼科.md",
+      "item_count": 13,
+      "validated_count": 13,
+      "elapsed_sec": 32.91,
+      "ok": true
+    },
+    {
+      "dept_id": "21",
+      "dept_name": "耳鼻喉科",
+      "source_md": "data/clean/departments/21_耳鼻喉科.md",
+      "item_count": 13,
+      "validated_count": 13,
+      "elapsed_sec": 36.13,
+      "ok": true
+    },
+    {
+      "dept_id": "22",
+      "dept_name": "口腔科",
+      "source_md": "data/clean/departments/22_口腔科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 25.12,
+      "ok": true
+    },
+    {
+      "dept_id": "24",
+      "dept_name": "生殖医学中心",
+      "source_md": "data/clean/departments/24_生殖医学中心.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 23.68,
+      "ok": true
+    },
+    {
+      "dept_id": "25",
+      "dept_name": "疼痛科",
+      "source_md": "data/clean/departments/25_疼痛科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 21.46,
+      "ok": true
+    },
+    {
+      "dept_id": "27",
+      "dept_name": "日间手术中心",
+      "source_md": "data/clean/departments/27_日间手术中心.md",
+      "item_count": 1,
+      "validated_count": 1,
+      "elapsed_sec": 17.3,
+      "ok": true
+    },
+    {
+      "dept_id": "28",
+      "dept_name": "感染病科",
+      "source_md": "data/clean/departments/28_感染病科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 42.8,
+      "ok": true
+    },
+    {
+      "dept_id": "29",
+      "dept_name": "血液科骨髓移植中心",
+      "source_md": "data/clean/departments/29_血液科骨髓移植中心.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 26.23,
+      "ok": true
+    },
+    {
+      "dept_id": "30",
+      "dept_name": "血液科",
+      "source_md": "data/clean/departments/30_血液科.md",
+      "item_count": 5,
+      "validated_count": 5,
+      "elapsed_sec": 31.96,
+      "ok": true
+    },
+    {
+      "dept_id": "31",
+      "dept_name": "肾脏病中心",
+      "source_md": "data/clean/departments/31_肾脏病中心.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 23.83,
+      "ok": true
+    },
+    {
+      "dept_id": "33",
+      "dept_name": "心血管内科",
+      "source_md": "data/clean/departments/33_心血管内科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 29.98,
+      "ok": true
+    },
+    {
+      "dept_id": "34",
+      "dept_name": "呼吸内科",
+      "source_md": "data/clean/departments/34_呼吸内科.md",
+      "item_count": 11,
+      "validated_count": 11,
+      "elapsed_sec": 30.23,
+      "ok": true
+    },
+    {
+      "dept_id": "35",
+      "dept_name": "老年医学科",
+      "source_md": "data/clean/departments/35_老年医学科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 24.02,
+      "ok": true
+    },
+    {
+      "dept_id": "37",
+      "dept_name": "放疗科",
+      "source_md": "data/clean/departments/37_放疗科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 22.94,
+      "ok": true
+    },
+    {
+      "dept_id": "38",
+      "dept_name": "内分泌科",
+      "source_md": "data/clean/departments/38_内分泌科.md",
+      "item_count": 10,
+      "validated_count": 5,
+      "elapsed_sec": 20.43,
+      "ok": true
+    },
+    {
+      "dept_id": "39",
+      "dept_name": "神经内科",
+      "source_md": "data/clean/departments/39_神经内科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 34.97,
+      "ok": true
+    },
+    {
+      "dept_id": "40",
+      "dept_name": "风湿免疫科",
+      "source_md": "data/clean/departments/40_风湿免疫科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 28.71,
+      "ok": true
+    },
+    {
+      "dept_id": "41",
+      "dept_name": "精神卫生科",
+      "source_md": "data/clean/departments/41_精神卫生科.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 26.6,
+      "ok": true
+    },
+    {
+      "dept_id": "42",
+      "dept_name": "重症医学科",
+      "source_md": "data/clean/departments/42_重症医学科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 22.46,
+      "ok": true
+    },
+    {
+      "dept_id": "43",
+      "dept_name": "庆春院区急诊科",
+      "source_md": "data/clean/departments/43_庆春院区急诊科.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 25.87,
+      "ok": true
+    },
+    {
+      "dept_id": "44",
+      "dept_name": "康复医学科",
+      "source_md": "data/clean/departments/44_康复医学科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 25.37,
+      "ok": true
+    },
+    {
+      "dept_id": "45",
+      "dept_name": "全科医学科",
+      "source_md": "data/clean/departments/45_全科医学科.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 20.28,
+      "ok": true
+    },
+    {
+      "dept_id": "46",
+      "dept_name": "儿科",
+      "source_md": "data/clean/departments/46_儿科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 30.11,
+      "ok": true
+    },
+    {
+      "dept_id": "47",
+      "dept_name": "皮肤科",
+      "source_md": "data/clean/departments/47_皮肤科.md",
+      "item_count": 13,
+      "validated_count": 13,
+      "elapsed_sec": 31.08,
+      "ok": true
+    },
+    {
+      "dept_id": "48",
+      "dept_name": "中医科",
+      "source_md": "data/clean/departments/48_中医科.md",
+      "item_count": 14,
+      "validated_count": 14,
+      "elapsed_sec": 36.69,
+      "ok": true
+    },
+    {
+      "dept_id": "49",
+      "dept_name": "职业病科",
+      "source_md": "data/clean/departments/49_职业病科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 29.57,
+      "ok": true
+    },
+    {
+      "dept_id": "50",
+      "dept_name": "健康管理中心",
+      "source_md": "data/clean/departments/50_健康管理中心.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 22.7,
+      "ok": true
+    },
+    {
+      "dept_id": "51",
+      "dept_name": "放射科",
+      "source_md": "data/clean/departments/51_放射科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 21.91,
+      "ok": true
+    },
+    {
+      "dept_id": "52",
+      "dept_name": "超声医学科",
+      "source_md": "data/clean/departments/52_超声医学科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 33.12,
+      "ok": true
+    },
+    {
+      "dept_id": "53",
+      "dept_name": "心血管超声中心",
+      "source_md": "data/clean/departments/53_心血管超声中心.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 26.53,
+      "ok": true
+    },
+    {
+      "dept_id": "54",
+      "dept_name": "核医学科",
+      "source_md": "data/clean/departments/54_核医学科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 35.64,
+      "ok": true
+    },
+    {
+      "dept_id": "56",
+      "dept_name": "病理科",
+      "source_md": "data/clean/departments/56_病理科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 28.7,
+      "ok": true
+    },
+    {
+      "dept_id": "57",
+      "dept_name": "检验科",
+      "source_md": "data/clean/departments/57_检验科.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 25.78,
+      "ok": true
+    },
+    {
+      "dept_id": "58",
+      "dept_name": "输血科",
+      "source_md": "data/clean/departments/58_输血科.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 31.28,
+      "ok": true
+    },
+    {
+      "dept_id": "59",
+      "dept_name": "临床药学部",
+      "source_md": "data/clean/departments/59_临床药学部.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 25.9,
+      "ok": true
+    },
+    {
+      "dept_id": "60",
+      "dept_name": "中药房",
+      "source_md": "data/clean/departments/60_中药房.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 32.18,
+      "ok": true
+    },
+    {
+      "dept_id": "61",
+      "dept_name": "心电图室",
+      "source_md": "data/clean/departments/61_心电图室.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 25.63,
+      "ok": true
+    },
+    {
+      "dept_id": "62",
+      "dept_name": "营养科",
+      "source_md": "data/clean/departments/62_营养科.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 27.1,
+      "ok": true
+    },
+    {
+      "dept_id": "63",
+      "dept_name": "呼吸治疗科",
+      "source_md": "data/clean/departments/63_呼吸治疗科.md",
+      "item_count": 8,
+      "validated_count": 7,
+      "elapsed_sec": 27.06,
+      "ok": true
+    },
+    {
+      "dept_id": "64",
+      "dept_name": "余杭院区急诊科（急诊创伤中心）",
+      "source_md": "data/clean/departments/64_余杭院区急诊科（急诊创伤中心）.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 27.96,
+      "ok": true
+    },
+    {
+      "dept_id": "74",
+      "dept_name": "消化内镜中心",
+      "source_md": "data/clean/departments/74_消化内镜中心.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 32.68,
+      "ok": true
+    },
+    {
+      "dept_id": "75",
+      "dept_name": "高压氧治疗中心",
+      "source_md": "data/clean/departments/75_高压氧治疗中心.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 24.58,
+      "ok": true
+    },
+    {
+      "dept_id": "76",
+      "dept_name": "泌尿外科",
+      "source_md": "data/clean/departments/76_泌尿外科.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 30.12,
+      "ok": true
+    },
+    {
+      "dept_id": "77",
+      "dept_name": "余杭院区泌尿外科",
+      "source_md": "data/clean/departments/77_余杭院区泌尿外科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 32.06,
+      "ok": true
+    },
+    {
+      "dept_id": "78",
+      "dept_name": "麻醉科",
+      "source_md": "data/clean/departments/78_麻醉科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 32.33,
+      "ok": true
+    },
+    {
+      "dept_id": "79",
+      "dept_name": "余杭院区麻醉科",
+      "source_md": "data/clean/departments/79_余杭院区麻醉科.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 21.92,
+      "ok": true
+    },
+    {
+      "dept_id": "80",
+      "dept_name": "消化内科（一）",
+      "source_md": "data/clean/departments/80_消化内科（一）.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 38.86,
+      "ok": true
+    },
+    {
+      "dept_id": "81",
+      "dept_name": "消化内科（二）",
+      "source_md": "data/clean/departments/81_消化内科（二）.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 36.82,
+      "ok": true
+    },
+    {
+      "dept_id": "82",
+      "dept_name": "肿瘤内科（一）",
+      "source_md": "data/clean/departments/82_肿瘤内科（一）.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 33.07,
+      "ok": true
+    },
+    {
+      "dept_id": "83",
+      "dept_name": "肿瘤内科（二）",
+      "source_md": "data/clean/departments/83_肿瘤内科（二）.md",
+      "item_count": 8,
+      "validated_count": 8,
+      "elapsed_sec": 30.83,
+      "ok": true
+    },
+    {
+      "dept_id": "84",
+      "dept_name": "肿瘤内科（三）",
+      "source_md": "data/clean/departments/84_肿瘤内科（三）.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 34.37,
+      "ok": true
+    },
+    {
+      "dept_id": "85",
+      "dept_name": "肿瘤内科（四）",
+      "source_md": "data/clean/departments/85_肿瘤内科（四）.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 23.88,
+      "ok": true
+    },
+    {
+      "dept_id": "88",
+      "dept_name": "妇科",
+      "source_md": "data/clean/departments/88_妇科.md",
+      "item_count": 9,
+      "validated_count": 9,
+      "elapsed_sec": 32.53,
+      "ok": true
+    },
+    {
+      "dept_id": "91",
+      "dept_name": "泌尿外科",
+      "source_md": "data/clean/departments/91_泌尿外科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 26.14,
+      "ok": true
+    },
+    {
+      "dept_id": "92",
+      "dept_name": "麻醉科",
+      "source_md": "data/clean/departments/92_麻醉科.md",
+      "item_count": 7,
+      "validated_count": 6,
+      "elapsed_sec": 26.76,
+      "ok": true
+    },
+    {
+      "dept_id": "93",
+      "dept_name": "消化内科（一）",
+      "source_md": "data/clean/departments/93_消化内科（一）.md",
+      "item_count": 14,
+      "validated_count": 14,
+      "elapsed_sec": 37.04,
+      "ok": true
+    },
+    {
+      "dept_id": "94",
+      "dept_name": "消化内科（二）",
+      "source_md": "data/clean/departments/94_消化内科（二）.md",
+      "item_count": 11,
+      "validated_count": 10,
+      "elapsed_sec": 37.28,
+      "ok": true
+    },
+    {
+      "dept_id": "95",
+      "dept_name": "泌尿外科",
+      "source_md": "data/clean/departments/95_泌尿外科.md",
+      "item_count": 13,
+      "validated_count": 13,
+      "elapsed_sec": 39.76,
+      "ok": true
+    },
+    {
+      "dept_id": "96",
+      "dept_name": "肿瘤内科",
+      "source_md": "data/clean/departments/96_肿瘤内科.md",
+      "item_count": 6,
+      "validated_count": 6,
+      "elapsed_sec": 29.43,
+      "ok": true
+    },
+    {
+      "dept_id": "98",
+      "dept_name": "超声医学中心",
+      "source_md": "data/clean/departments/98_超声医学中心.md",
+      "item_count": 10,
+      "validated_count": 10,
+      "elapsed_sec": 22.82,
+      "ok": true
+    },
+    {
+      "dept_id": "99",
+      "dept_name": "麻醉科",
+      "source_md": "data/clean/departments/99_麻醉科.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 32.7,
+      "ok": true
+    },
+    {
+      "dept_id": "101",
+      "dept_name": "产科",
+      "source_md": "data/clean/departments/101_产科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 37.29,
+      "ok": true
+    },
+    {
+      "dept_id": "102",
+      "dept_name": "之江院区急诊科",
+      "source_md": "data/clean/departments/102_之江院区急诊科.md",
+      "item_count": 7,
+      "validated_count": 7,
+      "elapsed_sec": 23.82,
+      "ok": true
+    },
+    {
+      "dept_id": "103",
+      "dept_name": "变态反应（过敏）科",
+      "source_md": "data/clean/departments/103_变态反应（过敏）科.md",
+      "item_count": 12,
+      "validated_count": 12,
+      "elapsed_sec": 28.72,
+      "ok": true
+    },
+    {
+      "dept_id": "104",
+      "dept_name": "肿瘤内科（五）",
+      "source_md": "data/clean/departments/104_肿瘤内科（五）.md",
+      "item_count": 9,
+      "validated_count": 9,
+      "elapsed_sec": 26.23,
+      "ok": true
+    }
+  ]
+}

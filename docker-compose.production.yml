@@ -1,0 +1,149 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: myblog
+      POSTGRES_USER: myblog
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myblog -d myblog"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [backend]
+
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [backend]
+
+  api:
+    build:
+      context: ./apps/api
+      args:
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.cloud.tencent.com/pypi/simple}
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+psycopg://myblog:${POSTGRES_PASSWORD}@postgres:5432/myblog
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET is required}
+      AUTH_COOKIE_SECURE: "true"
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
+      BOOTSTRAP_ADMIN_NAME: ${BOOTSTRAP_ADMIN_NAME:-管理员}
+      ALIYUN_CAPTCHA_PREFIX: ${ALIYUN_CAPTCHA_PREFIX:?ALIYUN_CAPTCHA_PREFIX is required}
+      ALIYUN_CAPTCHA_EKEY: ${ALIYUN_CAPTCHA_EKEY:-}
+      ALIYUN_CAPTCHA_SCENE_ID: ${ALIYUN_CAPTCHA_SCENE_ID:?ALIYUN_CAPTCHA_SCENE_ID is required}
+      ALIYUN_CAPTCHA_REGION: ${ALIYUN_CAPTCHA_REGION:-cn}
+      ALIYUN_CAPTCHA_ENDPOINT: ${ALIYUN_CAPTCHA_ENDPOINT:-captcha.cn-shanghai.aliyuncs.com}
+      ALIYUN_ACCESS_KEY_ID: ${ALIYUN_ACCESS_KEY_ID:?ALIYUN_ACCESS_KEY_ID is required}
+      ALIYUN_ACCESS_KEY_SECRET: ${ALIYUN_ACCESS_KEY_SECRET:?ALIYUN_ACCESS_KEY_SECRET is required}
+      CAPTCHA_REQUIRED: "true"
+      CAPTCHA_LOG_RETENTION_DAYS: "7"
+      CAPTCHA_LOG_CLEANUP_INTERVAL_SECONDS: "86400"
+      REDIS_URL: redis://redis:6379/0
+      MAIL_HOST: ${MAIL_HOST:?MAIL_HOST is required}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_SECURE: ${MAIL_SECURE:-false}
+      MAIL_USER: ${MAIL_USER:?MAIL_USER is required}
+      MAIL_PASS: ${MAIL_PASS:?MAIL_PASS is required}
+      MAIL_FROM: ${MAIL_FROM:?MAIL_FROM is required}
+      EMAIL_CODE_EXPIRE_SECONDS: "600"
+      EMAIL_CODE_COOLDOWN_SECONDS: "50"
+      EMAIL_CODE_MAX_ATTEMPTS: "5"
+      CORS_ORIGINS: https://ainew.gz.cn,https://www.ainew.gz.cn
+    command: >-
+      sh -c "alembic upgrade head &&
+      uvicorn app.main:app --app-dir src --host 0.0.0.0 --port 8000 --proxy-headers"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks: [backend]
+
+  agent:
+    build:
+      context: ./apps/agent
+      args:
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.cloud.tencent.com/pypi/simple}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://myblog:${POSTGRES_PASSWORD}@postgres:5432/myblog
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      DASHSCOPE_API_BASE: ${DASHSCOPE_API_BASE:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      DASHSCOPE_MODEL: ${DASHSCOPE_MODEL:-qwen-plus}
+      EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+      EMBEDDING_API_BASE: ${EMBEDDING_API_BASE:-}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-text-embedding-3-large}
+      MILVUS_URI: ${MILVUS_URI:-http://host.docker.internal:19530}
+      MILVUS_DB: ${MILVUS_DB:-zy91_triage}
+      MILVUS_COLLECTION: ${MILVUS_COLLECTION:-dept_chunks}
+      MILVUS_DOCTOR_COLLECTION: ${MILVUS_DOCTOR_COLLECTION:-doctor_profiles}
+      MILVUS_DEPT_HIER_COLLECTION: ${MILVUS_DEPT_HIER_COLLECTION:-dept_chunks_hierarchical}
+      MILVUS_MAPPING_COLLECTION: ${MILVUS_MAPPING_COLLECTION:-dept_symptom_mappings}
+      RERANK_ENABLED: ${RERANK_ENABLED:-false}
+      RERANK_API_KEY: ${RERANK_API_KEY:-}
+      RERANK_API_URL: ${RERANK_API_URL:-https://dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank}
+      RERANK_MODEL: ${RERANK_MODEL:-qwen3-vl-rerank}
+      RERANK_TOP_N: ${RERANK_TOP_N:-5}
+      RERANK_TIMEOUT: ${RERANK_TIMEOUT:-30}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >-
+      sh -c "python -m backend.init_db &&
+      uvicorn backend.api:app --host 0.0.0.0 --port 8002 --proxy-headers"
+    networks: [backend]
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_API_BASE_URL: https://ainew.gz.cn
+    restart: unless-stopped
+    environment:
+      API_INTERNAL_URL: http://api:8000
+      TRIAGE_AGENT_URL: http://agent:8002
+      NEXT_PUBLIC_API_BASE_URL: https://ainew.gz.cn
+      CDN_API_HOST: https://api.heribase.com
+      CDN_API_PATH: /app/v1
+      CDN_UPLOAD_UT: ${CDN_UPLOAD_UT:-}
+      CDN_UPLOAD_UUID: ${CDN_UPLOAD_UUID:-}
+      ALIYUN_CAPTCHA_PREFIX: ${ALIYUN_CAPTCHA_PREFIX:?ALIYUN_CAPTCHA_PREFIX is required}
+      ALIYUN_CAPTCHA_SCENE_ID: ${ALIYUN_CAPTCHA_SCENE_ID:?ALIYUN_CAPTCHA_SCENE_ID is required}
+      ALIYUN_CAPTCHA_REGION: ${ALIYUN_CAPTCHA_REGION:-cn}
+    depends_on: [api, agent]
+    networks: [backend]
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on: [web, api, agent]
+    networks: [backend]
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  backend:

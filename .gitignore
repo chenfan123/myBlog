@@ -28,8 +28,9 @@ coverage/
 # Environment variables
 .env
 .env.*
+# 允许提交不包含真实密钥的配置模板，例如 .env.production.example。
 !.env.example
-!.env.local.example
+!.env.*.example
 
 # Vercel
 .vercel
@@ -66,21 +67,43 @@ Desktop.ini
 # Debug & logs
 *.log
 logs/
+*.pid
 
 # Certificates & keys
 *.pem
 *.key
+*.p12
+*.pfx
 
 # Local tooling
 *.local
 
 # Python
 .venv/
+venv/
+env/
 __pycache__/
 *.egg-info/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.pyright/
+.tox/
+.nox/
 .coverage
+.coverage.*
 htmlcov/
+
+# Local runtime data
+dump.rdb
+appendonly.aof
+uploads/
+tmp/
+temp/
+.env
+.env.local
+.env.production
+node_modules
+.next
+__pycache__

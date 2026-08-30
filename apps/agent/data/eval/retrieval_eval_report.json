@@ -1,0 +1,3157 @@
+{
+  "generated_at": "2026-08-29T07:25:24.989988+00:00",
+  "golden": "data/eval/golden_dept_queries_v1_50.jsonl",
+  "rerank": true,
+  "top_k": 3,
+  "summary": {
+    "n": 50,
+    "top1_primary": 0.74,
+    "top1_acceptable": 0.86,
+    "top3_acceptable": 0.96,
+    "illegal_top1_rate": 0.0,
+    "thresholds": {
+      "top1": 0.7,
+      "top3": 0.9,
+      "illegal": 0.0
+    },
+    "pass": {
+      "top1": true,
+      "top3": true,
+      "illegal": true
+    },
+    "by_category": {
+      "中医": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "乳腺": {
+        "n": 2,
+        "top1_primary": 0.5,
+        "top1_acceptable": 0.5,
+        "top3_acceptable": 1.0
+      },
+      "产科": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "儿科": {
+        "n": 2,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "全科": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "内分泌": {
+        "n": 2,
+        "top1_primary": 0.5,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "口腔": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "呼吸": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "呼吸/胸外": {
+        "n": 1,
+        "top1_primary": 0.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "妇科": {
+        "n": 1,
+        "top1_primary": 0.0,
+        "top1_acceptable": 0.0,
+        "top3_acceptable": 1.0
+      },
+      "康复": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "心血管": {
+        "n": 2,
+        "top1_primary": 0.0,
+        "top1_acceptable": 0.0,
+        "top3_acceptable": 1.0
+      },
+      "急诊/心": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "感染": {
+        "n": 1,
+        "top1_primary": 0.0,
+        "top1_acceptable": 0.0,
+        "top3_acceptable": 1.0
+      },
+      "放疗": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "整形": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "泌尿": {
+        "n": 2,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "消化": {
+        "n": 2,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "生殖": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "甲状腺": {
+        "n": 2,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "疼痛": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "皮肤": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "眼科": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "神外": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "神经": {
+        "n": 1,
+        "top1_primary": 0.0,
+        "top1_acceptable": 0.0,
+        "top3_acceptable": 0.0
+      },
+      "精神": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "结直肠": {
+        "n": 2,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "老年": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "耳鼻喉": {
+        "n": 2,
+        "top1_primary": 0.5,
+        "top1_acceptable": 0.5,
+        "top3_acceptable": 0.5
+      },
+      "肝胆": {
+        "n": 2,
+        "top1_primary": 0.5,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "肾脏": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "肿瘤": {
+        "n": 1,
+        "top1_primary": 0.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "胃肠外": {
+        "n": 1,
+        "top1_primary": 0.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "血液": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "血管": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "过敏": {
+        "n": 1,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "风湿": {
+        "n": 2,
+        "top1_primary": 1.0,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      },
+      "骨科": {
+        "n": 2,
+        "top1_primary": 0.5,
+        "top1_acceptable": 1.0,
+        "top3_acceptable": 1.0
+      }
+    },
+    "miss_top1_ids": [
+      "q002",
+      "q008",
+      "q009",
+      "q013",
+      "q016",
+      "q017",
+      "q019",
+      "q023",
+      "q029",
+      "q032",
+      "q038",
+      "q041",
+      "q050"
+    ],
+    "miss_top3_ids": [
+      "q013",
+      "q016"
+    ],
+    "illegal_ids": [],
+    "top1_pred_distribution": {
+      "消化内科（一）": 5,
+      "余杭院区急诊科（急诊创伤中心）": 2,
+      "甲状腺外科": 3,
+      "儿科": 2,
+      "皮肤科": 1,
+      "风湿免疫科": 2,
+      "精神卫生科": 1,
+      "肺移植及普胸外科": 1,
+      "康复医学科": 2,
+      "结直肠外科": 2,
+      "泌尿外科": 2,
+      "内分泌科": 1,
+      "眼科": 1,
+      "口腔科": 1,
+      "中医科": 3,
+      "骨科": 1,
+      "肾脏病中心": 1,
+      "血液科骨髓移植中心": 1,
+      "呼吸内科": 1,
+      "肿瘤内科（二）": 1,
+      "疼痛科": 2,
+      "整形外科": 1,
+      "生殖医学中心": 1,
+      "产科": 1,
+      "肝胆胰外科": 1,
+      "神经内科": 1,
+      "耳鼻喉科": 2,
+      "神经外科": 1,
+      "血管外科": 1,
+      "肿瘤外科": 1,
+      "乳腺外科": 1,
+      "放疗科": 1,
+      "全科医学科": 1,
+      "心血管内科": 1
+    }
+  },
+  "cases": [
+    {
+      "id": "q001",
+      "query": "胃痛反酸挂什么科",
+      "category": "消化",
+      "primary": [
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "acceptable": [
+        "消化内科（一）",
+        "消化内科（二）",
+        "胃肠外科"
+      ],
+      "predicted": [
+        "消化内科（一）",
+        "中医科",
+        "胃肠外科"
+      ],
+      "top1": "消化内科（一）",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.95,
+          "rerank_score": 0.8605,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "中医科",
+          "fused_score": 0.7656,
+          "rerank_score": 0.8425,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "胃肠外科",
+          "fused_score": 0.6316,
+          "rerank_score": 0.7258,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q002",
+      "query": "胸口闷痛怀疑心脏问题",
+      "category": "心血管",
+      "primary": [
+        "心血管内科"
+      ],
+      "acceptable": [
+        "心血管内科",
+        "心脏大血管外科",
+        "庆春院区急诊科",
+        "之江院区急诊科",
+        "余杭院区急诊科"
+      ],
+      "predicted": [
+        "余杭院区急诊科（急诊创伤中心）",
+        "之江院区急诊科",
+        "康复医学科"
+      ],
+      "top1": "余杭院区急诊科（急诊创伤中心）",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": false,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "余杭院区急诊科（急诊创伤中心）",
+          "fused_score": 0.8006,
+          "rerank_score": 0.7906,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "之江院区急诊科",
+          "fused_score": 0.7852,
+          "rerank_score": 0.7737,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "康复医学科",
+          "fused_score": 0.7709,
+          "rerank_score": 0.6967,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q003",
+      "query": "甲状腺结节要看哪个科",
+      "category": "甲状腺",
+      "primary": [
+        "甲状腺外科"
+      ],
+      "acceptable": [
+        "甲状腺外科",
+        "内分泌科",
+        "肿瘤外科"
+      ],
+      "predicted": [
+        "甲状腺外科",
+        "内分泌科",
+        "肿瘤外科"
+      ],
+      "top1": "甲状腺外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "甲状腺外科",
+          "fused_score": 0.95,
+          "rerank_score": 0.8698,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "内分泌科",
+          "fused_score": 0.95,
+          "rerank_score": 0.8628,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "肿瘤外科",
+          "fused_score": 0.95,
+          "rerank_score": 0.8244,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "query": "孩子发烧咳嗽",
+      "category": "儿科",
+      "primary": [
+        "儿科"
+      ],
+      "acceptable": [
+        "儿科",
+        "呼吸内科"
+      ],
+      "predicted": [
+        "儿科",
+        "呼吸内科",
+        "普胸外科"
+      ],
+      "top1": "儿科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "儿科",
+          "fused_score": 0.9297,
+          "rerank_score": 0.655,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "呼吸内科",
+          "fused_score": 0.6272,
+          "rerank_score": 0.6038,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "普胸外科",
+          "fused_score": 0.752,
+          "rerank_score": 0.5662,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q005",
+      "query": "皮肤起红疹很痒",
+      "category": "皮肤",
+      "primary": [
+        "皮肤科"
+      ],
+      "acceptable": [
+        "皮肤科",
+        "变态反应（过敏）科"
+      ],
+      "predicted": [
+        "皮肤科",
+        "风湿免疫科",
+        "疼痛科"
+      ],
+      "top1": "皮肤科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "皮肤科",
+          "fused_score": 0.7822,
+          "rerank_score": 0.7062,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "风湿免疫科",
+          "fused_score": 0.7496,
+          "rerank_score": 0.5998,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "疼痛科",
+          "fused_score": 0.7498,
+          "rerank_score": 0.5158,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q006",
+      "query": "关节痛类风湿",
+      "category": "风湿",
+      "primary": [
+        "风湿免疫科"
+      ],
+      "acceptable": [
+        "风湿免疫科",
+        "骨科"
+      ],
+      "predicted": [
+        "风湿免疫科",
+        "康复医学科",
+        "骨科"
+      ],
+      "top1": "风湿免疫科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "风湿免疫科",
+          "fused_score": 0.6867,
+          "rerank_score": 0.7089,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "康复医学科",
+          "fused_score": 0.76,
+          "rerank_score": 0.6528,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "骨科",
+          "fused_score": 0.752,
+          "rerank_score": 0.6522,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q007",
+      "query": "失眠焦虑睡不着",
+      "category": "精神",
+      "primary": [
+        "精神卫生科"
+      ],
+      "acceptable": [
+        "精神卫生科",
+        "神经内科"
+      ],
+      "predicted": [
+        "精神卫生科",
+        "神经外科",
+        "全科医学科"
+      ],
+      "top1": "精神卫生科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "精神卫生科",
+          "fused_score": 1.0538,
+          "rerank_score": 0.6158,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "神经外科",
+          "fused_score": 0.7254,
+          "rerank_score": 0.5632,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "全科医学科",
+          "fused_score": 0.6092,
+          "rerank_score": 0.5603,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q008",
+      "query": "体检发现肺结节",
+      "category": "呼吸/胸外",
+      "primary": [
+        "普胸外科",
+        "呼吸内科"
+      ],
+      "acceptable": [
+        "普胸外科",
+        "肺移植及普胸外科",
+        "呼吸内科",
+        "肿瘤外科"
+      ],
+      "predicted": [
+        "肺移植及普胸外科",
+        "呼吸内科",
+        "普胸外科"
+      ],
+      "top1": "肺移植及普胸外科",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "肺移植及普胸外科",
+          "fused_score": 0.95,
+          "rerank_score": 0.8476,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "呼吸内科",
+          "fused_score": 0.855,
+          "rerank_score": 0.8181,
+          "sources": [
+            "mapping_keyword",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "普胸外科",
+          "fused_score": 0.79,
+          "rerank_score": 0.7252,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q009",
+      "query": "乳腺癌术后复查",
+      "category": "乳腺",
+      "primary": [
+        "乳腺外科"
+      ],
+      "acceptable": [
+        "乳腺外科",
+        "肿瘤内科",
+        "肿瘤内科（一）",
+        "肿瘤内科（二）",
+        "肿瘤内科（三）",
+        "肿瘤内科（四）",
+        "肿瘤内科（五）"
+      ],
+      "predicted": [
+        "康复医学科",
+        "乳腺外科",
+        "甲状腺外科"
+      ],
+      "top1": "康复医学科",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": false,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "康复医学科",
+          "fused_score": 0.81,
+          "rerank_score": 0.672,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "乳腺外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6451,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "甲状腺外科",
+          "fused_score": 0.7613,
+          "rerank_score": 0.5819,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q010",
+      "query": "痔疮便血",
+      "category": "结直肠",
+      "primary": [
+        "结直肠外科"
+      ],
+      "acceptable": [
+        "结直肠外科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "predicted": [
+        "结直肠外科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "top1": "结直肠外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "结直肠外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6962,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.7523,
+          "rerank_score": 0.5673,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "消化内科（二）",
+          "fused_score": 0.7498,
+          "rerank_score": 0.5622,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q011",
+      "query": "尿频尿急尿痛",
+      "category": "泌尿",
+      "primary": [
+        "泌尿外科"
+      ],
+      "acceptable": [
+        "泌尿外科",
+        "余杭院区泌尿外科",
+        "肾脏病中心"
+      ],
+      "predicted": [
+        "泌尿外科",
+        "放疗科",
+        "康复医学科"
+      ],
+      "top1": "泌尿外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "泌尿外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7309,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "放疗科",
+          "fused_score": 0.7494,
+          "rerank_score": 0.669,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "康复医学科",
+          "fused_score": 0.765,
+          "rerank_score": 0.5995,
+          "sources": [
+            "mapping_keyword"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q012",
+      "query": "血糖高怀疑糖尿病",
+      "category": "内分泌",
+      "primary": [
+        "内分泌科"
+      ],
+      "acceptable": [
+        "内分泌科"
+      ],
+      "predicted": [
+        "内分泌科",
+        "中医科",
+        "儿科"
+      ],
+      "top1": "内分泌科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "内分泌科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7775,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "中医科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7709,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "儿科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6939,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q013",
+      "query": "头痛头晕经常发作",
+      "category": "神经",
+      "primary": [
+        "神经内科"
+      ],
+      "acceptable": [
+        "神经内科",
+        "神经外科"
+      ],
+      "predicted": [
+        "余杭院区急诊科（急诊创伤中心）",
+        "耳鼻喉科",
+        "骨科"
+      ],
+      "top1": "余杭院区急诊科（急诊创伤中心）",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": false,
+      "top3_hit_acceptable": false,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "余杭院区急诊科（急诊创伤中心）",
+          "fused_score": 0.7457,
+          "rerank_score": 0.6371,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "耳鼻喉科",
+          "fused_score": 0.7735,
+          "rerank_score": 0.6354,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "骨科",
+          "fused_score": 0.7596,
+          "rerank_score": 0.6265,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q014",
+      "query": "眼睛干涩视力模糊",
+      "category": "眼科",
+      "primary": [
+        "眼科"
+      ],
+      "acceptable": [
+        "眼科"
+      ],
+      "predicted": [
+        "眼科",
+        "感染病科",
+        "中医科"
+      ],
+      "top1": "眼科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "眼科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6712,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "感染病科",
+          "fused_score": 0.7532,
+          "rerank_score": 0.629,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "中医科",
+          "fused_score": 0.7147,
+          "rerank_score": 0.6242,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q015",
+      "query": "牙痛牙龈肿",
+      "category": "口腔",
+      "primary": [
+        "口腔科"
+      ],
+      "acceptable": [
+        "口腔科"
+      ],
+      "predicted": [
+        "口腔科",
+        "疼痛科",
+        "变态反应（过敏）科"
+      ],
+      "top1": "口腔科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "口腔科",
+          "fused_score": 0.855,
+          "rerank_score": 0.8231,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "疼痛科",
+          "fused_score": 0.6429,
+          "rerank_score": 0.5235,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "变态反应（过敏）科",
+          "fused_score": 0.7399,
+          "rerank_score": 0.5011,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q016",
+      "query": "鼻子不通气流鼻涕过敏",
+      "category": "耳鼻喉",
+      "primary": [
+        "耳鼻喉科"
+      ],
+      "acceptable": [
+        "耳鼻喉科",
+        "变态反应（过敏）科"
+      ],
+      "predicted": [
+        "中医科",
+        "放疗科",
+        "儿科"
+      ],
+      "top1": "中医科",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": false,
+      "top3_hit_acceptable": false,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "中医科",
+          "fused_score": 0.7427,
+          "rerank_score": 0.6044,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "放疗科",
+          "fused_score": 0.7385,
+          "rerank_score": 0.5961,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "儿科",
+          "fused_score": 0.7432,
+          "rerank_score": 0.583,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q017",
+      "query": "月经不调痛经",
+      "category": "妇科",
+      "primary": [
+        "妇科"
+      ],
+      "acceptable": [
+        "妇科",
+        "生殖医学中心"
+      ],
+      "predicted": [
+        "中医科",
+        "生殖医学中心",
+        "血管外科"
+      ],
+      "top1": "中医科",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": false,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "中医科",
+          "fused_score": 0.855,
+          "rerank_score": 0.8149,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "生殖医学中心",
+          "fused_score": 0.81,
+          "rerank_score": 0.6444,
+          "sources": [
+            "mapping_keyword",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "血管外科",
+          "fused_score": 0.7243,
+          "rerank_score": 0.5426,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q018",
+      "query": "腰痛腿麻可能腰椎间盘突出",
+      "category": "骨科",
+      "primary": [
+        "骨科"
+      ],
+      "acceptable": [
+        "骨科",
+        "疼痛科",
+        "康复医学科",
+        "神经外科"
+      ],
+      "predicted": [
+        "骨科",
+        "疼痛科",
+        "神经外科"
+      ],
+      "top1": "骨科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "骨科",
+          "fused_score": 0.81,
+          "rerank_score": 0.8258,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "疼痛科",
+          "fused_score": 0.8029,
+          "rerank_score": 0.7936,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "神经外科",
+          "fused_score": 0.6018,
+          "rerank_score": 0.512,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q019",
+      "query": "肝区疼痛怀疑肝病",
+      "category": "肝胆",
+      "primary": [
+        "肝胆胰外科",
+        "感染病科"
+      ],
+      "acceptable": [
+        "肝胆胰外科",
+        "感染病科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "predicted": [
+        "消化内科（一）",
+        "中医科",
+        "肝胆胰外科"
+      ],
+      "top1": "消化内科（一）",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.7835,
+          "rerank_score": 0.7489,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "中医科",
+          "fused_score": 0.7703,
+          "rerank_score": 0.7332,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "肝胆胰外科",
+          "fused_score": 0.7787,
+          "rerank_score": 0.7177,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q020",
+      "query": "肾炎尿蛋白高",
+      "category": "肾脏",
+      "primary": [
+        "肾脏病中心"
+      ],
+      "acceptable": [
+        "肾脏病中心",
+        "泌尿外科"
+      ],
+      "predicted": [
+        "肾脏病中心",
+        "泌尿外科",
+        "感染病科"
+      ],
+      "top1": "肾脏病中心",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "肾脏病中心",
+          "fused_score": 0.7621,
+          "rerank_score": 0.7026,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "泌尿外科",
+          "fused_score": 0.7551,
+          "rerank_score": 0.4917,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "感染病科",
+          "fused_score": 0.7532,
+          "rerank_score": 0.4894,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q021",
+      "query": "贫血白细胞低",
+      "category": "血液",
+      "primary": [
+        "血液科",
+        "血液科骨髓移植中心"
+      ],
+      "acceptable": [
+        "血液科",
+        "血液科骨髓移植中心"
+      ],
+      "predicted": [
+        "血液科骨髓移植中心",
+        "血液科",
+        "肾脏病中心"
+      ],
+      "top1": "血液科骨髓移植中心",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "血液科骨髓移植中心",
+          "fused_score": 0.7802,
+          "rerank_score": 0.6179,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "血液科",
+          "fused_score": 0.7576,
+          "rerank_score": 0.6087,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "肾脏病中心",
+          "fused_score": 0.7164,
+          "rerank_score": 0.5689,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q022",
+      "query": "哮喘反复发作喘不上气",
+      "category": "呼吸",
+      "primary": [
+        "呼吸内科"
+      ],
+      "acceptable": [
+        "呼吸内科",
+        "变态反应（过敏）科"
+      ],
+      "predicted": [
+        "呼吸内科",
+        "变态反应（过敏）科",
+        "儿科"
+      ],
+      "top1": "呼吸内科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "呼吸内科",
+          "fused_score": 0.855,
+          "rerank_score": 0.8943,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "变态反应（过敏）科",
+          "fused_score": 0.855,
+          "rerank_score": 0.8248,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "儿科",
+          "fused_score": 0.855,
+          "rerank_score": 0.8011,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q023",
+      "query": "胃癌化疗复查",
+      "category": "肿瘤",
+      "primary": [
+        "肿瘤内科",
+        "肿瘤内科（一）",
+        "胃肠外科"
+      ],
+      "acceptable": [
+        "肿瘤内科",
+        "肿瘤内科（一）",
+        "肿瘤内科（二）",
+        "肿瘤内科（三）",
+        "肿瘤内科（四）",
+        "肿瘤内科（五）",
+        "胃肠外科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "predicted": [
+        "肿瘤内科（二）",
+        "肿瘤内科（一）",
+        "肿瘤内科（四）"
+      ],
+      "top1": "肿瘤内科（二）",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "肿瘤内科（二）",
+          "fused_score": 0.7536,
+          "rerank_score": 0.6296,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "肿瘤内科（一）",
+          "fused_score": 0.855,
+          "rerank_score": 0.6202,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "肿瘤内科（四）",
+          "fused_score": 0.81,
+          "rerank_score": 0.6175,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q024",
+      "query": "中风后肢体活动不便想做康复",
+      "category": "康复",
+      "primary": [
+        "康复医学科"
+      ],
+      "acceptable": [
+        "康复医学科",
+        "神经内科"
+      ],
+      "predicted": [
+        "康复医学科",
+        "神经内科",
+        "余杭院区急诊科（急诊创伤中心）"
+      ],
+      "top1": "康复医学科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "康复医学科",
+          "fused_score": 0.7546,
+          "rerank_score": 0.7304,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "神经内科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6749,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "余杭院区急诊科（急诊创伤中心）",
+          "fused_score": 0.7346,
+          "rerank_score": 0.6252,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q025",
+      "query": "腰腿痛想打封闭止痛",
+      "category": "疼痛",
+      "primary": [
+        "疼痛科"
+      ],
+      "acceptable": [
+        "疼痛科",
+        "骨科",
+        "麻醉科"
+      ],
+      "predicted": [
+        "疼痛科",
+        "泌尿外科",
+        "神经外科"
+      ],
+      "top1": "疼痛科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "疼痛科",
+          "fused_score": 0.749,
+          "rerank_score": 0.6953,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "泌尿外科",
+          "fused_score": 0.7306,
+          "rerank_score": 0.5677,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "神经外科",
+          "fused_score": 0.5922,
+          "rerank_score": 0.5444,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q026",
+      "query": "脸上长斑想做医美",
+      "category": "整形",
+      "primary": [
+        "整形美容中心",
+        "整形外科"
+      ],
+      "acceptable": [
+        "整形美容中心",
+        "整形外科",
+        "皮肤科"
+      ],
+      "predicted": [
+        "整形外科",
+        "整形美容中心",
+        "皮肤科"
+      ],
+      "top1": "整形外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "整形外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.874,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "整形美容中心",
+          "fused_score": 0.855,
+          "rerank_score": 0.8687,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "皮肤科",
+          "fused_score": 0.6613,
+          "rerank_score": 0.6542,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q027",
+      "query": "备孕检查不孕",
+      "category": "生殖",
+      "primary": [
+        "生殖医学中心"
+      ],
+      "acceptable": [
+        "生殖医学中心",
+        "妇科"
+      ],
+      "predicted": [
+        "生殖医学中心",
+        "余杭院区泌尿外科",
+        "全科医学科"
+      ],
+      "top1": "生殖医学中心",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "生殖医学中心",
+          "fused_score": 0.6582,
+          "rerank_score": 0.6998,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "余杭院区泌尿外科",
+          "fused_score": 0.6172,
+          "rerank_score": 0.5627,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "全科医学科",
+          "fused_score": 0.6173,
+          "rerank_score": 0.5547,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q028",
+      "query": "怀孕产检",
+      "category": "产科",
+      "primary": [
+        "产科"
+      ],
+      "acceptable": [
+        "产科"
+      ],
+      "predicted": [
+        "产科",
+        "全科医学科",
+        "生殖医学中心"
+      ],
+      "top1": "产科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "产科",
+          "fused_score": 0.755,
+          "rerank_score": 0.6203,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "全科医学科",
+          "fused_score": 0.7412,
+          "rerank_score": 0.5742,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "生殖医学中心",
+          "fused_score": 0.6615,
+          "rerank_score": 0.554,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q029",
+      "query": "甲亢手抖心跳快",
+      "category": "内分泌",
+      "primary": [
+        "内分泌科"
+      ],
+      "acceptable": [
+        "内分泌科",
+        "甲状腺外科"
+      ],
+      "predicted": [
+        "甲状腺外科",
+        "内分泌科",
+        "神经外科"
+      ],
+      "top1": "甲状腺外科",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "甲状腺外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.796,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "内分泌科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7374,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "神经外科",
+          "fused_score": 0.713,
+          "rerank_score": 0.6032,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q030",
+      "query": "胆结石右上腹痛",
+      "category": "肝胆",
+      "primary": [
+        "肝胆胰外科"
+      ],
+      "acceptable": [
+        "肝胆胰外科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "predicted": [
+        "肝胆胰外科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "top1": "肝胆胰外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "肝胆胰外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7334,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.7659,
+          "rerank_score": 0.6406,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "消化内科（二）",
+          "fused_score": 0.6435,
+          "rerank_score": 0.611,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q031",
+      "query": "前列腺增生夜尿多",
+      "category": "泌尿",
+      "primary": [
+        "泌尿外科"
+      ],
+      "acceptable": [
+        "泌尿外科",
+        "余杭院区泌尿外科"
+      ],
+      "predicted": [
+        "泌尿外科",
+        "余杭院区泌尿外科",
+        "肿瘤内科（五）"
+      ],
+      "top1": "泌尿外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "泌尿外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7725,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "余杭院区泌尿外科",
+          "fused_score": 0.7882,
+          "rerank_score": 0.7317,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "肿瘤内科（五）",
+          "fused_score": 0.3364,
+          "rerank_score": 0.5704,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q032",
+      "query": "高血压长期随访",
+      "category": "心血管",
+      "primary": [
+        "心血管内科"
+      ],
+      "acceptable": [
+        "心血管内科",
+        "全科医学科",
+        "老年医学科"
+      ],
+      "predicted": [
+        "消化内科（一）",
+        "心脏大血管外科",
+        "老年医学科"
+      ],
+      "top1": "消化内科（一）",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": false,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.5934,
+          "rerank_score": 0.6486,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "心脏大血管外科",
+          "fused_score": 0.6204,
+          "rerank_score": 0.5839,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "老年医学科",
+          "fused_score": 0.7355,
+          "rerank_score": 0.5822,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q033",
+      "query": "老人记忆力下降怀疑痴呆",
+      "category": "老年",
+      "primary": [
+        "老年医学科",
+        "神经内科"
+      ],
+      "acceptable": [
+        "老年医学科",
+        "神经内科",
+        "精神卫生科"
+      ],
+      "predicted": [
+        "神经内科",
+        "神经外科",
+        "老年医学科"
+      ],
+      "top1": "神经内科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "神经内科",
+          "fused_score": 0.7745,
+          "rerank_score": 0.7796,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "神经外科",
+          "fused_score": 0.5745,
+          "rerank_score": 0.5616,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "老年医学科",
+          "fused_score": 0.719,
+          "rerank_score": 0.5519,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q034",
+      "query": "过敏性鼻炎反复打喷嚏",
+      "category": "过敏",
+      "primary": [
+        "变态反应（过敏）科",
+        "耳鼻喉科"
+      ],
+      "acceptable": [
+        "变态反应（过敏）科",
+        "耳鼻喉科"
+      ],
+      "predicted": [
+        "耳鼻喉科",
+        "中医科",
+        "儿科"
+      ],
+      "top1": "耳鼻喉科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "耳鼻喉科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7992,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "中医科",
+          "fused_score": 0.7395,
+          "rerank_score": 0.6239,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "儿科",
+          "fused_score": 0.7325,
+          "rerank_score": 0.584,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q035",
+      "query": "中医调理脾胃虚弱",
+      "category": "中医",
+      "primary": [
+        "中医科"
+      ],
+      "acceptable": [
+        "中医科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "predicted": [
+        "中医科",
+        "消化内科（一）",
+        "老年医学科"
+      ],
+      "top1": "中医科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "中医科",
+          "fused_score": 0.6716,
+          "rerank_score": 0.641,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.7686,
+          "rerank_score": 0.5163,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "老年医学科",
+          "fused_score": 0.655,
+          "rerank_score": 0.5013,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q036",
+      "query": "脑瘤术后复查",
+      "category": "神外",
+      "primary": [
+        "神经外科"
+      ],
+      "acceptable": [
+        "神经外科",
+        "神经内科",
+        "放疗科"
+      ],
+      "predicted": [
+        "神经外科",
+        "放疗科",
+        "普胸外科"
+      ],
+      "top1": "神经外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "神经外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6619,
+          "sources": [
+            "mapping_keyword",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "放疗科",
+          "fused_score": 0.7281,
+          "rerank_score": 0.5818,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "普胸外科",
+          "fused_score": 0.6401,
+          "rerank_score": 0.4829,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q037",
+      "query": "下肢静脉曲张",
+      "category": "血管",
+      "primary": [
+        "血管外科"
+      ],
+      "acceptable": [
+        "血管外科"
+      ],
+      "predicted": [
+        "血管外科",
+        "泌尿外科",
+        "消化内科（二）"
+      ],
+      "top1": "血管外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "血管外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7711,
+          "sources": [
+            "mapping_keyword",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "泌尿外科",
+          "fused_score": 0.7391,
+          "rerank_score": 0.5509,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "消化内科（二）",
+          "fused_score": 0.7537,
+          "rerank_score": 0.5482,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q038",
+      "query": "胃癌手术后复诊",
+      "category": "胃肠外",
+      "primary": [
+        "胃肠外科"
+      ],
+      "acceptable": [
+        "胃肠外科",
+        "肿瘤外科",
+        "肿瘤内科",
+        "肿瘤内科（一）"
+      ],
+      "predicted": [
+        "肿瘤外科",
+        "中医科",
+        "消化内科（一）"
+      ],
+      "top1": "肿瘤外科",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "肿瘤外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6439,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "中医科",
+          "fused_score": 0.7626,
+          "rerank_score": 0.6111,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.736,
+          "rerank_score": 0.5817,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q039",
+      "query": "嗓子痛扁桃体发炎",
+      "category": "耳鼻喉",
+      "primary": [
+        "耳鼻喉科"
+      ],
+      "acceptable": [
+        "耳鼻喉科",
+        "感染病科"
+      ],
+      "predicted": [
+        "耳鼻喉科",
+        "甲状腺外科",
+        "呼吸内科"
+      ],
+      "top1": "耳鼻喉科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "耳鼻喉科",
+          "fused_score": 0.7625,
+          "rerank_score": 0.5973,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "甲状腺外科",
+          "fused_score": 0.7583,
+          "rerank_score": 0.5783,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "呼吸内科",
+          "fused_score": 0.6401,
+          "rerank_score": 0.5531,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q040",
+      "query": "乳房摸到肿块",
+      "category": "乳腺",
+      "primary": [
+        "乳腺外科"
+      ],
+      "acceptable": [
+        "乳腺外科",
+        "肿瘤外科"
+      ],
+      "predicted": [
+        "乳腺外科",
+        "中医科",
+        "整形美容中心"
+      ],
+      "top1": "乳腺外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "乳腺外科",
+          "fused_score": 0.7759,
+          "rerank_score": 0.8029,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "中医科",
+          "fused_score": 0.855,
+          "rerank_score": 0.6373,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "整形美容中心",
+          "fused_score": 0.7516,
+          "rerank_score": 0.5688,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q041",
+      "query": "慢性肝炎随访",
+      "category": "感染",
+      "primary": [
+        "感染病科"
+      ],
+      "acceptable": [
+        "感染病科",
+        "肝胆胰外科"
+      ],
+      "predicted": [
+        "消化内科（一）",
+        "全科医学科",
+        "感染病科"
+      ],
+      "top1": "消化内科（一）",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": false,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.7732,
+          "rerank_score": 0.6931,
+          "sources": [
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "全科医学科",
+          "fused_score": 0.7625,
+          "rerank_score": 0.5668,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "感染病科",
+          "fused_score": 0.6693,
+          "rerank_score": 0.566,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q042",
+      "query": "肺癌放疗咨询",
+      "category": "放疗",
+      "primary": [
+        "放疗科"
+      ],
+      "acceptable": [
+        "放疗科",
+        "普胸外科",
+        "肿瘤内科",
+        "肿瘤内科（一）"
+      ],
+      "predicted": [
+        "放疗科",
+        "呼吸内科",
+        "肿瘤内科（一）"
+      ],
+      "top1": "放疗科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "放疗科",
+          "fused_score": 0.7737,
+          "rerank_score": 0.7724,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "呼吸内科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7417,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "肿瘤内科（一）",
+          "fused_score": 0.855,
+          "rerank_score": 0.7342,
+          "sources": [
+            "mapping_keyword"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q043",
+      "query": "全身乏力想先看全科",
+      "category": "全科",
+      "primary": [
+        "全科医学科"
+      ],
+      "acceptable": [
+        "全科医学科",
+        "老年医学科"
+      ],
+      "predicted": [
+        "全科医学科",
+        "精神卫生科",
+        "泌尿外科"
+      ],
+      "top1": "全科医学科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "全科医学科",
+          "fused_score": 0.6765,
+          "rerank_score": 0.8498,
+          "sources": [
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "精神卫生科",
+          "fused_score": 0.7565,
+          "rerank_score": 0.6598,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "泌尿外科",
+          "fused_score": 0.7429,
+          "rerank_score": 0.6407,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q044",
+      "query": "手指关节变形晨僵",
+      "category": "风湿",
+      "primary": [
+        "风湿免疫科"
+      ],
+      "acceptable": [
+        "风湿免疫科",
+        "骨科"
+      ],
+      "predicted": [
+        "风湿免疫科",
+        "疼痛科",
+        "普胸外科"
+      ],
+      "top1": "风湿免疫科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "风湿免疫科",
+          "fused_score": 0.855,
+          "rerank_score": 0.632,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "疼痛科",
+          "fused_score": 0.7311,
+          "rerank_score": 0.5571,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "普胸外科",
+          "fused_score": 0.5985,
+          "rerank_score": 0.4817,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q045",
+      "query": "小孩反复喘息咳嗽像哮喘",
+      "category": "儿科",
+      "primary": [
+        "儿科"
+      ],
+      "acceptable": [
+        "儿科",
+        "呼吸内科",
+        "变态反应（过敏）科"
+      ],
+      "predicted": [
+        "儿科",
+        "呼吸内科",
+        "中医科"
+      ],
+      "top1": "儿科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "儿科",
+          "fused_score": 1.197,
+          "rerank_score": 0.7531,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "呼吸内科",
+          "fused_score": 0.855,
+          "rerank_score": 0.8236,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "中医科",
+          "fused_score": 0.7508,
+          "rerank_score": 0.6916,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q046",
+      "query": "反酸烧心胃溃疡",
+      "category": "消化",
+      "primary": [
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "acceptable": [
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "predicted": [
+        "消化内科（一）",
+        "肿瘤外科",
+        "耳鼻喉科"
+      ],
+      "top1": "消化内科（一）",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "mapping_vector",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.855,
+          "rerank_score": 0.7919,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "肿瘤外科",
+          "fused_score": 0.81,
+          "rerank_score": 0.7703,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "耳鼻喉科",
+          "fused_score": 0.855,
+          "rerank_score": 0.724,
+          "sources": [
+            "mapping_keyword"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q047",
+      "query": "突发胸痛大汗淋漓",
+      "category": "急诊/心",
+      "primary": [
+        "庆春院区急诊科",
+        "之江院区急诊科",
+        "余杭院区急诊科",
+        "心血管内科"
+      ],
+      "acceptable": [
+        "庆春院区急诊科",
+        "之江院区急诊科",
+        "余杭院区急诊科",
+        "心血管内科",
+        "余杭院区急诊科（急诊创伤中心）"
+      ],
+      "predicted": [
+        "心血管内科",
+        "之江院区急诊科",
+        "余杭院区急诊科（急诊创伤中心）"
+      ],
+      "top1": "心血管内科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "心血管内科",
+          "fused_score": 0.81,
+          "rerank_score": 0.8483,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "之江院区急诊科",
+          "fused_score": 0.7664,
+          "rerank_score": 0.7826,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "余杭院区急诊科（急诊创伤中心）",
+          "fused_score": 0.7727,
+          "rerank_score": 0.78,
+          "sources": [
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q048",
+      "query": "体检发现甲状腺癌",
+      "category": "甲状腺",
+      "primary": [
+        "甲状腺外科"
+      ],
+      "acceptable": [
+        "甲状腺外科",
+        "肿瘤外科",
+        "内分泌科"
+      ],
+      "predicted": [
+        "甲状腺外科",
+        "肿瘤外科",
+        "内分泌科"
+      ],
+      "top1": "甲状腺外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword",
+        "dept_child"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "甲状腺外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7466,
+          "sources": [
+            "mapping_keyword",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "肿瘤外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7273,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "内分泌科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7265,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q049",
+      "query": "便秘大便带血",
+      "category": "结直肠",
+      "primary": [
+        "结直肠外科"
+      ],
+      "acceptable": [
+        "结直肠外科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "predicted": [
+        "结直肠外科",
+        "消化内科（一）",
+        "消化内科（二）"
+      ],
+      "top1": "结直肠外科",
+      "top1_hit_primary": true,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_keyword"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "结直肠外科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7973,
+          "sources": [
+            "mapping_keyword"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "消化内科（一）",
+          "fused_score": 0.855,
+          "rerank_score": 0.7201,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector",
+            "dept_child"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "消化内科（二）",
+          "fused_score": 0.855,
+          "rerank_score": 0.6967,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q050",
+      "query": "颈椎病脖子肩膀痛",
+      "category": "骨科",
+      "primary": [
+        "骨科"
+      ],
+      "acceptable": [
+        "骨科",
+        "疼痛科",
+        "康复医学科"
+      ],
+      "predicted": [
+        "疼痛科",
+        "中医科",
+        "神经外科"
+      ],
+      "top1": "疼痛科",
+      "top1_hit_primary": false,
+      "top1_hit_acceptable": true,
+      "top3_hit_acceptable": true,
+      "illegal_top1": false,
+      "sources_top1": [
+        "mapping_vector"
+      ],
+      "scores": [
+        {
+          "rank": 1,
+          "dept_name": "疼痛科",
+          "fused_score": 0.8153,
+          "rerank_score": 0.8256,
+          "sources": [
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 2,
+          "dept_name": "中医科",
+          "fused_score": 0.855,
+          "rerank_score": 0.7822,
+          "sources": [
+            "mapping_keyword",
+            "mapping_vector"
+          ]
+        },
+        {
+          "rank": 3,
+          "dept_name": "神经外科",
+          "fused_score": 0.6165,
+          "rerank_score": 0.5256,
+          "sources": [
+            "dept_child"
+          ]
+        }
+      ]
+    }
+  ]
+}

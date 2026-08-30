@@ -1,0 +1,732 @@
+{
+  "generated_at": "2026-08-29T15:52:40.168801+00:00",
+  "golden": "data/eval/golden_emergency.jsonl",
+  "summary": {
+    "n_positive": 40,
+    "n_negative": 10,
+    "trigger_rate": 1.0,
+    "false_alarm_rate": 0.0,
+    "threshold_trigger_rate": 0.95,
+    "pass": true,
+    "miss_positive_ids": [],
+    "false_positive_ids": []
+  },
+  "cases": [
+    {
+      "id": "e001",
+      "text": "剧烈胸痛大汗淋漓",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "chest_pain"
+      ],
+      "matched_terms": [
+        "剧烈胸痛"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e002",
+      "text": "突发胸痛",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "chest_pain"
+      ],
+      "matched_terms": [
+        "突发胸痛"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e003",
+      "text": "胸痛",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "chest_pain"
+      ],
+      "matched_terms": [
+        "胸痛"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e004",
+      "text": "胸口剧痛伴冷汗",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "chest_pain"
+      ],
+      "matched_terms": [
+        "胸口剧痛"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e005",
+      "text": "压榨样胸闷痛放射到左肩",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "chest_pain"
+      ],
+      "matched_terms": [
+        "压榨样胸"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e006",
+      "text": "突然昏迷呼之不应",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "consciousness"
+      ],
+      "matched_terms": [
+        "昏迷"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e007",
+      "text": "意识不清抽搐",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "consciousness"
+      ],
+      "matched_terms": [
+        "意识不清"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e008",
+      "text": "晕倒后醒来还迷糊",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "consciousness"
+      ],
+      "matched_terms": [
+        "晕倒"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e009",
+      "text": "癫痫大发作全身抽搐",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "consciousness"
+      ],
+      "matched_terms": [
+        "抽搐"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e010",
+      "text": "喘不上气嘴唇发紫",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "respiratory"
+      ],
+      "matched_terms": [
+        "喘不上气"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e011",
+      "text": "严重呼吸困难窒息感",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "respiratory"
+      ],
+      "matched_terms": [
+        "呼吸困难"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e012",
+      "text": "呼吸急促憋得慌",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "respiratory"
+      ],
+      "matched_terms": [
+        "呼吸急促"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e013",
+      "text": "大量呕血",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "bleeding"
+      ],
+      "matched_terms": [
+        "大量呕血"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e014",
+      "text": "柏油样便还在呕血",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "bleeding"
+      ],
+      "matched_terms": [
+        "呕血"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e015",
+      "text": "伤口大出血止血不止",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "bleeding"
+      ],
+      "matched_terms": [
+        "大出血"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e016",
+      "text": "突然说不出话一侧肢体无力",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "stroke"
+      ],
+      "matched_terms": [
+        "一侧肢体无力"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e017",
+      "text": "突发口角歪斜说话不清",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "stroke"
+      ],
+      "matched_terms": [
+        "突发口角歪斜说话不清"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e018",
+      "text": "突然偏瘫走不了路",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "stroke"
+      ],
+      "matched_terms": [
+        "突然偏瘫"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e019",
+      "text": "剧烈腹痛板状腹",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "acute_abdomen"
+      ],
+      "matched_terms": [
+        "板状腹"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e020",
+      "text": "疑似胃穿孔急腹症",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "acute_abdomen"
+      ],
+      "matched_terms": [
+        "急腹症"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e021",
+      "text": "高热伴颈强直",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "fever_meningeal"
+      ],
+      "matched_terms": [
+        "高热伴颈强直"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e022",
+      "text": "发烧脖子硬还有皮疹出血点",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "fever_meningeal"
+      ],
+      "matched_terms": [
+        "发烧脖子硬还有皮疹出血点"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e023",
+      "text": "高热惊厥",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "fever_meningeal"
+      ],
+      "matched_terms": [
+        "高热惊厥"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e024",
+      "text": "车祸多发伤昏迷",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "consciousness",
+        "trauma"
+      ],
+      "matched_terms": [
+        "昏迷",
+        "多发伤"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e025",
+      "text": "严重烧伤大面积",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "trauma"
+      ],
+      "matched_terms": [
+        "严重烧伤"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e026",
+      "text": "高空坠落严重外伤",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "trauma"
+      ],
+      "matched_terms": [
+        "严重外伤"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e027",
+      "text": "过敏性休克全身风团呼吸困难",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "respiratory",
+        "anaphylaxis_poisoning"
+      ],
+      "matched_terms": [
+        "呼吸困难",
+        "过敏性休克"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e028",
+      "text": "疑似药物中毒过量服药",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "anaphylaxis_poisoning"
+      ],
+      "matched_terms": [
+        "药物中毒"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e029",
+      "text": "煤气中毒头晕恶心",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "anaphylaxis_poisoning"
+      ],
+      "matched_terms": [
+        "煤气中毒"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e030",
+      "text": "喉头水肿喘不上气",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "respiratory",
+        "anaphylaxis_poisoning"
+      ],
+      "matched_terms": [
+        "喘不上气",
+        "喉头水肿"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e031",
+      "text": "持续胸痛伴濒死感",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "chest_pain"
+      ],
+      "matched_terms": [
+        "持续胸痛"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e032",
+      "text": "不省人事抽搐不止",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "consciousness"
+      ],
+      "matched_terms": [
+        "抽搐"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e033",
+      "text": "急性呼吸窘迫不能平卧",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "respiratory"
+      ],
+      "matched_terms": [
+        "急性呼吸窘迫"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e034",
+      "text": "喷射状出血鲜血喷出",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "bleeding"
+      ],
+      "matched_terms": [
+        "喷射状出血"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e035",
+      "text": "面瘫一侧肢体麻木",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "stroke"
+      ],
+      "matched_terms": [
+        "一侧肢体麻木"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e036",
+      "text": "腹痛拒按腹膜刺激",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "acute_abdomen"
+      ],
+      "matched_terms": [
+        "腹痛拒按腹膜刺激"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e037",
+      "text": "刀刺伤开放性颅脑",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "trauma"
+      ],
+      "matched_terms": [
+        "刀刺伤"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e038",
+      "text": "农药中毒服毒",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "anaphylaxis_poisoning"
+      ],
+      "matched_terms": [
+        "农药中毒"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e039",
+      "text": "心前区剧痛放射左臂",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "chest_pain"
+      ],
+      "matched_terms": [
+        "心前区剧痛"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "e040",
+      "text": "口唇紫绀呼吸困难",
+      "expect_trigger": true,
+      "triggered": true,
+      "ok": true,
+      "categories": [
+        "respiratory"
+      ],
+      "matched_terms": [
+        "呼吸困难"
+      ],
+      "block_routine": true,
+      "high_risk": true
+    },
+    {
+      "id": "n001",
+      "text": "偶尔胃轻微不适反酸",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n002",
+      "text": "皮肤有点痒起小疹子",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n003",
+      "text": "想预约体检套餐",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n004",
+      "text": "孩子轻度鼻塞流清涕",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n005",
+      "text": "膝关节运动后有点酸",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n006",
+      "text": "甲状腺结节随访复查",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n007",
+      "text": "月经不调想看妇科",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n008",
+      "text": "近视想做激光咨询",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n009",
+      "text": "失眠几天想看心理",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    },
+    {
+      "id": "n010",
+      "text": "血糖偏高调药随访",
+      "expect_trigger": false,
+      "triggered": false,
+      "ok": true,
+      "categories": [],
+      "matched_terms": [],
+      "block_routine": false,
+      "high_risk": false
+    }
+  ]
+}

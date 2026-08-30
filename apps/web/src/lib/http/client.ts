@@ -78,6 +78,7 @@ export class ApiClient {
       const response = await fetch(normalizedConfig.url, {
         ...normalizedConfig,
         body: this.serializeBody(normalizedConfig),
+        credentials: normalizedConfig.credentials ?? "include",
         headers: normalizedConfig.headers,
       });
 

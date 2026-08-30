@@ -1,0 +1,26 @@
+[
+  {
+    "mapping_id": "870b0fff794989fb1d0f65ba",
+    "dept_id": "27",
+    "dept_name": "日间手术中心",
+    "entity_type": "condition",
+    "keywords": [
+      "需短期住院的手术疾病",
+      "日间手术适应症",
+      "择期手术",
+      "微创术后观察",
+      "门诊手术后留观"
+    ],
+    "category_label": "日间手术综合管理",
+    "source_chunk_id": "fdec7c1bbe98b9f770540359",
+    "source_section": "科室简介",
+    "source_md": "data/clean/departments/27_日间手术中心.md",
+    "evidence": "全院共20余个临床科室开展日间手术，涉及150多种病种、270种日间术式，日间手术占全院择期手术比例20%左右。",
+    "confidence": 0.6,
+    "recommendable": false,
+    "validated": true,
+    "validation_notes": null,
+    "extracted_at": "2026-08-28T15:49:43.358458+00:00",
+    "llm_model": "qwen3.7-flash"
+  }
+]
