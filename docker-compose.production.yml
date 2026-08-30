@@ -114,6 +114,8 @@ services:
       context: ./apps/web
       args:
         NEXT_PUBLIC_API_BASE_URL: https://ainew.gz.cn
+        NEXT_PUBLIC_ALIYUN_CAPTCHA_PREFIX: ${ALIYUN_CAPTCHA_PREFIX:?ALIYUN_CAPTCHA_PREFIX is required}
+        NEXT_PUBLIC_ALIYUN_CAPTCHA_SCENE_ID: ${ALIYUN_CAPTCHA_SCENE_ID:?ALIYUN_CAPTCHA_SCENE_ID is required}
     restart: unless-stopped
     environment:
       API_INTERNAL_URL: http://api:8000
