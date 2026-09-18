@@ -29,6 +29,27 @@ _NODULE_LIKE_HINTS = ("结节", "包块", "肿块", "肿物", "甲状腺", "乳�
 
 _MAX_QUESTIONS = 4
 
+# 用户已经给出疾病/诊断名称时，导诊目标通常已足够明确，不应继续机械追问
+# 病程、疼痛性质、年龄等信息。急诊红旗仍会在本节点之前单独判断。
+_DISEASE_NAME_SUFFIXES = (
+    "炎", "癌", "瘤", "病", "综合征", "结石", "结节", "息肉", "囊肿",
+    "溃疡", "哮喘", "癫痫", "骨折", "疝", "梗阻", "痔疮", "静脉曲张",
+    "白内障", "青光眼", "近视", "湿疹", "银屑病", "荨麻疹",
+)
+
+_DIAGNOSIS_CUES = (
+    "确诊", "诊断为", "查出", "检查出", "医生说", "患有", "得了", "有",
+)
+
+_UNCERTAIN_DIAGNOSIS_CUES = (
+    "怀疑", "可能", "是不是", "是否", "担心", "疑似", "会不会", "像不像",
+)
+
+_DIRECT_SITE_SYMPTOMS = (
+    "胃疼", "胃痛", "牙疼", "牙痛", "耳疼", "耳痛", "眼睛疼", "眼睛痛",
+    "咽痛", "喉咙痛", "膝盖痛", "肩膀痛", "腰痛", "腰疼",
+)
+
 
 @dataclass
 class SufficiencyResult:
@@ -145,6 +166,40 @@ def looks_serious(text: str) -> bool:
     return any(h in (text or "") for h in _SERIOUS_SYMPTOM_HINTS)
 
 
+def has_explicit_disease(text: str) -> bool:
+    """是否明确表达了疾病/诊断，而不是仅仅猜测某种疾病。"""
+    t = re.sub(r"\s+", "", text or "")
+    if len(t) < 2 or any(cue in t for cue in _UNCERTAIN_DIAGNOSIS_CUES):
+        return False
+
+    # 常见慢病名称不一定以“病”结尾，单独列出以避免漏判。
+    if any(
+        name in t
+        for name in (
+            "高血压", "高血糖", "低血糖", "痛风", "贫血", "脑梗", "心梗",
+            "冠心病", "糖尿病", "脂肪肝", "甲亢", "甲减", "肺气肿",
+        )
+    ):
+        return True
+
+    disease_pattern = rf"[\u4e00-\u9fff]{{1,12}}(?:{'|'.join(map(re.escape, _DISEASE_NAME_SUFFIXES))})"
+    match = re.search(disease_pattern, t)
+    if not match:
+        return False
+
+    disease = match.group(0)
+    # “发炎/有病/生病”仍然过于宽泛，不能当成明确疾病名称。
+    if disease.endswith(("发炎", "有病", "生病")) or disease in {"肿瘤", "疾病"}:
+        return False
+    return len(disease) >= 2 or any(cue in t for cue in _DIAGNOSIS_CUES)
+
+
+def has_direct_triage_target(text: str) -> bool:
+    """用户描述已足以直接检索科室，无需为通用问诊字段继续追问。"""
+    t = text or ""
+    return has_explicit_disease(t) or any(symptom in t for symptom in _DIRECT_SITE_SYMPTOMS)
+
+
 def is_high_stakes_dept(dept_name: str) -> bool:
     n = dept_name or ""
     return any(k in n for k in _HIGH_STAKES_DEPT_KEYS)
@@ -154,7 +209,9 @@ def is_practically_enough(summary: str) -> bool:
     """常规症状「部位较具体 + 病程」即可推荐，不因缺年龄直接卡死。"""
     s = (summary or "").strip()
     if len(s) < 6:
-        return False
+        return has_direct_triage_target(s)
+    if has_direct_triage_target(s):
+        return True
     if looks_serious(s):
         return has_age_info(s) and (has_duration_info(s) or len(s) >= 24)
     # 疼痛类
@@ -272,6 +329,11 @@ def assess_sufficiency(
             question=block,
         )
 
+    # 明确疾病或高指向性的部位症状可直接进入知识库检索。这里放在 LLM
+    # 调用之前，既避免模型过度追问，也减少一次不必要的网络请求。
+    if has_direct_triage_target(summary):
+        return SufficiencyResult(enough=True, risk_tier="medium" if looks_serious(summary) else "low")
+
     heuristic = _collect_missing(summary)
     try:
         # 信息充分性位于每轮对话主链上，需要快速失败后交给规则兜底，
@@ -385,6 +447,8 @@ def assess_sufficiency(
 def needs_clarify_for_candidates(summary: str, candidates: list[dict[str, Any]]) -> str | None:
     """检索后重大专科缺关键信息时，返回编号问题列表。"""
     if not candidates:
+        return None
+    if has_direct_triage_target(summary):
         return None
     top = candidates[0].get("dept_name") or ""
     if not is_high_stakes_dept(top):

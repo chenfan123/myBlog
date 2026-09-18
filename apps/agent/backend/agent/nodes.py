@@ -24,6 +24,7 @@ from backend.agent.safety import (
 from backend.agent.state import TriageState
 from backend.agent.sufficiency import (
     assess_sufficiency,
+    has_direct_triage_target,
     is_abdominal_pain_case,
     is_enough_after_clarify,
     is_high_stakes_dept,
@@ -264,11 +265,14 @@ def node_check_info(state: TriageState) -> dict[str, Any]:
         user_text=user_text,
     )
     enough = result.enough or is_practically_enough(summary)
+    direct_target = has_direct_triage_target(summary)
+    if direct_target:
+        enough = True
     if is_abdominal_pain_case(summary):
         enough = enough or is_enough_after_clarify(summary, clarify_count)
-    if is_partial_clarify_reply(user_text, clarify_count=clarify_count) and result.missing:
+    if not direct_target and is_partial_clarify_reply(user_text, clarify_count=clarify_count) and result.missing:
         enough = False
-    elif is_nodule_like(summary) and result.missing:
+    elif not direct_target and is_nodule_like(summary) and result.missing:
         enough = False
 
     if enough:
