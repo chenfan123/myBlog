@@ -1,16 +1,29 @@
 import { ArrowLeft, ArrowRight, Database, GitBranch, ShieldCheck, Stethoscope } from "lucide-react";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { SiteHeader } from "@/components/site/site-header";
 import { Button } from "@/components/ui/button";
 import { TriageDemo } from "@/components/agent/triage-demo";
+import { getUserVerificationStatus } from "@/lib/server/user-auth";
 
 export const metadata = {
   title: "智能导诊 Agent｜CHEN.DEV",
   description: "一个面向医院科室分诊的多轮对话 Agent 项目。",
 };
 
-export default function MedicalTriagePage() {
+export default async function MedicalTriagePage() {
+  const cookieStore = await cookies();
+  const authStatus = await getUserVerificationStatus(cookieStore.toString());
+
+  if (authStatus === 401) {
+    redirect("/login?next=/agent-demo/medical-triage");
+  }
+  if (authStatus !== 200) {
+    redirect("/");
+  }
+
   return (
     <>
       <SiteHeader activePath="home" />

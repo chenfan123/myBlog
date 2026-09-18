@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
 
+import { getUserVerificationStatus } from "@/lib/server/user-auth";
+
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const authStatus = await getUserVerificationStatus(request.headers.get("cookie"));
+  if (authStatus !== 200) {
+    return NextResponse.json({ detail: "请先登录" }, { status: authStatus === 401 ? 401 : 503 });
+  }
+
   const agentUrl = process.env.TRIAGE_AGENT_URL ?? "http://localhost:8002";
   const body = await request.text();
 

@@ -262,7 +262,7 @@ def assess_sufficiency(
     """判断是否足以推荐；不足则一次给出少量核心问题列表。"""
     summary = (summary or "").strip()
     last_questions = list(last_questions or [])
-    if len(summary) < 4:
+    if not summary:
         qs = ["哪里不舒服、什么感觉", "大概持续多久了", "年龄（宝宝请说几岁/几个月）"]
         block = format_clarify_block(qs)
         return SufficiencyResult(
@@ -280,6 +280,7 @@ def assess_sufficiency(
             "你是医院导诊助手。判断患者描述是否足够推荐挂号科室（非确诊）。\n"
             "若不够，请列出最关键的 2～4 个核心问题（不要超过 4 个），让用户一次性回答；\n"
             "不要一问一答式只出一题。勿诊断、勿推荐科室。只输出 JSON。\n\n"
+            "患者已经明确提到的症状不能再次作为追问；例如患者说‘咳嗽’，不要再问‘哪里不舒服’。\n"
             f"已澄清轮次：{clarify_count}\n"
             f"患者描述：{summary}\n"
             f"规则侧已缺项参考：{heuristic}\n"
