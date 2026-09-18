@@ -274,7 +274,9 @@ def assess_sufficiency(
 
     heuristic = _collect_missing(summary)
     try:
-        llm = build_chat_model(temperature=0)
+        # 信息充分性位于每轮对话主链上，需要快速失败后交给规则兜底，
+        # 避免上游模型波动时让用户等待完整的全局 120 秒超时。
+        llm = build_chat_model(temperature=0, timeout=20, max_retries=0)
         prompt = (
             "你是医院导诊助手。判断患者描述是否足够推荐挂号科室（非确诊）。\n"
             "若不够，请列出最关键的 2～4 个核心问题（不要超过 4 个），让用户一次性回答；\n"
