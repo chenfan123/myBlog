@@ -1,5 +1,7 @@
 import { api } from "@/lib/http";
 
+export const currentUserQueryKey = ["auth", "current-user"] as const;
+
 export type AuthUser = {
   id: string;
   email: string;

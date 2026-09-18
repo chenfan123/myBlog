@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,7 +9,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { runAliyunCaptcha } from "@/lib/aliyun-captcha";
-import { login, register, sendRegistrationEmailCode } from "@/lib/auth";
+import { currentUserQueryKey, login, register, sendRegistrationEmailCode, type AuthUser } from "@/lib/auth";
 
 type AuthMode = "login" | "register";
 
@@ -26,6 +27,7 @@ export function AuthForm({
   redirectTo?: string;
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const isRegister = mode === "register";
   const [showPassword, setShowPassword] = useState(false);
   const [pending, setPending] = useState(false);
@@ -82,29 +84,33 @@ export function AuthForm({
     const password = String(formData.get("password") ?? "");
 
     try {
+      let authenticatedUser: AuthUser;
       if (isRegister) {
         const confirmPassword = String(formData.get("confirmPassword") ?? "");
         if (password !== confirmPassword) {
           throw new Error("两次输入的密码不一致");
         }
-        await register({
+        const response = await register({
           display_name: String(formData.get("displayName") ?? "").trim(),
           email,
           password,
           email_code: String(formData.get("emailCode") ?? "").trim(),
         });
+        authenticatedUser = response.user;
       } else {
         const captchaVerifyParam = await runAliyunCaptcha({
           prefix: captchaPrefix,
           sceneId: captchaSceneId,
           region: captchaRegion,
         });
-        await login({
+        const response = await login({
           email,
           password,
           captcha_verify_param: captchaVerifyParam,
         });
+        authenticatedUser = response.user;
       }
+      queryClient.setQueryData<AuthUser>(currentUserQueryKey, authenticatedUser);
       router.replace(redirectTo);
       router.refresh();
     } catch (caughtError) {

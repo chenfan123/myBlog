@@ -232,7 +232,7 @@ def format_clarify_block(
     *,
     intro: str = "为更准确帮您分诊，请补充以下几项（可一次性回复）：",
 ) -> str:
-    """把问题收成 1. 2. 3. 列表，最多 4 条。"""
+    """把仍缺失的信息收成编号列表，不附加可能误导用户的固定示例。"""
     qs = [q.strip().rstrip("？?。") for q in questions if q and str(q).strip()]
     # 去重保序
     seen: set[str] = set()
@@ -248,7 +248,6 @@ def format_clarify_block(
     lines = [intro]
     for i, q in enumerate(uniq, 1):
         lines.append(f"{i}. {q}？")
-    lines.append("例如：右下腹痛两天，男，30 岁。")
     return "\n".join(lines)
 
 

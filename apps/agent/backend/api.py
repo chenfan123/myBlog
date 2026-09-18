@@ -95,7 +95,12 @@ async def chat(req: ChatRequest) -> StreamingResponse:
 
         result: dict[str, Any] | None = None
         while True:
-            item = await queue.get()
+            try:
+                item = await asyncio.wait_for(queue.get(), timeout=15)
+            except asyncio.TimeoutError:
+                # SSE 注释帧不会进入前端消息，但可以让 Nginx 和浏览器知道连接仍然存活。
+                yield ": heartbeat\n\n"
+                continue
             if item is None:
                 break
             if item.get("type") == "status":

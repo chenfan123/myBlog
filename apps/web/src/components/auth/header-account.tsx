@@ -3,14 +3,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, LayoutDashboard, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { DropdownMenu } from "radix-ui";
 
 import { Button } from "@/components/ui/button";
-import { getCurrentUser, logout, type AuthUser } from "@/lib/auth";
+import { currentUserQueryKey, getCurrentUser, logout, type AuthUser } from "@/lib/auth";
 import { ApiError } from "@/lib/http";
-
-const currentUserQueryKey = ["auth", "current-user"] as const;
 
 async function queryCurrentUser() {
   try {
@@ -23,6 +22,8 @@ async function queryCurrentUser() {
 }
 
 export function HeaderAccount() {
+  const pathname = usePathname();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const { data: user, isPending } = useQuery({
@@ -36,6 +37,10 @@ export function HeaderAccount() {
     try {
       await logout();
       queryClient.setQueryData<AuthUser | null>(currentUserQueryKey, null);
+      if (pathname.startsWith("/agent-demo") || pathname.startsWith("/admin")) {
+        router.replace("/");
+      }
+      router.refresh();
     } finally {
       setIsLoggingOut(false);
     }
