@@ -95,7 +95,11 @@ class ForgotPasswordCodeRequest(BaseModel):
     @classmethod
     def normalize_email(cls, value: str) -> str:
         normalized = value.strip().lower()
-        if "@" not in normalized or normalized.startswith("@") or normalized.endswith("@"):
+        if (
+            "@" not in normalized
+            or normalized.startswith("@")
+            or normalized.endswith("@")
+        ):
             raise ValueError("请输入有效的邮箱地址")
         return normalized
 
@@ -115,7 +119,9 @@ class ResetPasswordRequest(BaseModel):
     @field_validator("password")
     @classmethod
     def validate_password(cls, value: str) -> str:
-        if not any(character.isalpha() for character in value) or not any(character.isdigit() for character in value):
+        if not any(character.isalpha() for character in value) or not any(
+            character.isdigit() for character in value
+        ):
             raise ValueError("密码必须包含字母和数字")
         return value
 

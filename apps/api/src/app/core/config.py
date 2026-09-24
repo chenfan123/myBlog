@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     bootstrap_admin_email: str | None = None
     bootstrap_admin_password: str | None = None
     bootstrap_admin_name: str = "管理员"
+    auth_notify_email: str | None = None
     # 阿里云验证码 2.0：客户端使用 prefix/SceneId，服务端使用 RAM AccessKey。
     aliyun_captcha_prefix: str | None = None
     # ekey 仅供服务端生成 EncryptedSceneId，禁止传给浏览器。

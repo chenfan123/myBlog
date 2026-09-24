@@ -6,7 +6,15 @@ APIRouter 类似其他后端框架中的 Controller：把一组相关接口组�
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    HTTPException,
+    Request,
+    Response,
+    status,
+)
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -19,9 +27,9 @@ from app.schemas.auth import (
     ForgotPasswordCodeRequest,
     LoginRequest,
     RegisterRequest,
+    ResetPasswordRequest,
     SendEmailCodeRequest,
     SendEmailCodeResponse,
-    ResetPasswordRequest,
     UserResponse,
 )
 from app.services.auth import (
@@ -31,6 +39,7 @@ from app.services.auth import (
     get_user_by_email,
     reset_user_password,
 )
+from app.services.auth_notification import send_auth_notification
 from app.services.captcha import (
     get_captcha_error_message,
     get_client_ip,
@@ -70,7 +79,9 @@ def set_auth_cookie(response: Response, token: str) -> None:
 )
 def register(
     data: RegisterRequest,
+    request: Request,
     response: Response,
+    background_tasks: BackgroundTasks,
     # Depends(get_db) 是 FastAPI 依赖注入：框架会自动传入数据库 Session。
     db: Annotated[Session, Depends(get_db)],
 ) -> AuthResponse:
@@ -98,6 +109,16 @@ def register(
         raise HTTPException(status_code=409, detail="该邮箱已注册") from error
     # 注册成功后直接签发 JWT，实现“注册后自动登录”。
     set_auth_cookie(response, create_access_token(user.id))
+    background_tasks.add_task(
+        send_auth_notification,
+        event="register",
+        user_id=str(user.id),
+        email=user.email,
+        display_name=user.display_name,
+        is_admin=user.is_admin,
+        client_ip=get_client_ip(request),
+        user_agent=request.headers.get("user-agent"),
+    )
     return AuthResponse(user=UserResponse.model_validate(user))
 
 
@@ -166,6 +187,7 @@ def login(
     data: LoginRequest,
     request: Request,
     response: Response,
+    background_tasks: BackgroundTasks,
     db: Annotated[Session, Depends(get_db)],
 ) -> AuthResponse:
     """先完成阿里云验证码验签，再校验账号密码并建立登录状态。"""
@@ -187,6 +209,16 @@ def login(
     if user is None:
         raise HTTPException(status_code=401, detail="邮箱或密码错误")
     set_auth_cookie(response, create_access_token(user.id))
+    background_tasks.add_task(
+        send_auth_notification,
+        event="login",
+        user_id=str(user.id),
+        email=user.email,
+        display_name=user.display_name,
+        is_admin=user.is_admin,
+        client_ip=get_client_ip(request),
+        user_agent=request.headers.get("user-agent"),
+    )
     return AuthResponse(user=UserResponse.model_validate(user))
 
 
@@ -202,17 +234,37 @@ def send_forgot_password_code(
     try:
         retry_after = get_email_code_retry_after(data.email)
         if retry_after:
-            raise HTTPException(status_code=429, detail=f"发送过于频繁，请在 {retry_after} 秒后重试", headers={"Retry-After": str(retry_after)})
+            raise HTTPException(
+                status_code=429,
+                detail=f"发送过于频繁，请在 {retry_after} 秒后重试",
+                headers={"Retry-After": str(retry_after)},
+            )
         captcha_result = verify_captcha(data.captcha_verify_param)
-        record_captcha_verification(db, action="forgot_password", email=data.email, user_ip=get_client_ip(request), result=captcha_result)
+        record_captcha_verification(
+            db,
+            action="forgot_password",
+            email=data.email,
+            user_ip=get_client_ip(request),
+            result=captcha_result,
+        )
         if not captcha_result.success:
-            raise HTTPException(status_code=400, detail=get_captcha_error_message(captcha_result))
+            raise HTTPException(
+                status_code=400, detail=get_captcha_error_message(captcha_result)
+            )
         cooldown, expires_in = send_registration_code(data.email)
     except EmailServiceUnavailableError as error:
         raise HTTPException(status_code=503, detail="验证码服务暂时不可用") from error
     except EmailCodeRateLimitedError as error:
-        raise HTTPException(status_code=429, detail=f"发送过于频繁，请在 {error.retry_after} 秒后重试", headers={"Retry-After": str(error.retry_after)}) from error
-    return SendEmailCodeResponse(message="验证码已发送，请检查邮箱", retry_after_seconds=max(cooldown, 60), expires_in_seconds=expires_in)
+        raise HTTPException(
+            status_code=429,
+            detail=f"发送过于频繁，请在 {error.retry_after} 秒后重试",
+            headers={"Retry-After": str(error.retry_after)},
+        ) from error
+    return SendEmailCodeResponse(
+        message="验证码已发送，请检查邮箱",
+        retry_after_seconds=max(cooldown, 60),
+        expires_in_seconds=expires_in,
+    )
 
 
 @router.post("/forgot-password/reset", response_model=AuthResponse)
