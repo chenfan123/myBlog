@@ -1,0 +1,395 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "standard-catalog",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "standard-catalog",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Column": {
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "media",
+                    "line",
+                    "info-card",
+                    "email",
+                    "agree",
+                    "volume",
+                    "when",
+                    "choices",
+                    "items",
+                    "tabs",
+                    "dialog",
+                    "clip",
+                    "tune"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "stretch"
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Standard catalog"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "media",
+            "component": {
+              "Row": {
+                "children": {
+                  "explicitList": [
+                    "photo",
+                    "star-icon",
+                    "home-icon"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "center"
+              }
+            }
+          },
+          {
+            "id": "photo",
+            "component": {
+              "Image": {
+                "url": {
+                  "literalString": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='96'%3E%3Crect fill='%233b82f6' width='160' height='96'/%3E%3Ctext x='80' y='55' fill='white' text-anchor='middle' font-size='18'%3EA2UI%3C/text%3E%3C/svg%3E"
+                },
+                "fit": "cover",
+                "usageHint": "mediumFeature"
+              }
+            }
+          },
+          {
+            "id": "star-icon",
+            "component": {
+              "Icon": {
+                "name": {
+                  "literalString": "star"
+                }
+              }
+            }
+          },
+          {
+            "id": "home-icon",
+            "component": {
+              "Icon": {
+                "name": {
+                  "literalString": "home"
+                }
+              }
+            }
+          },
+          {
+            "id": "line",
+            "component": {
+              "Divider": {
+                "axis": "horizontal"
+              }
+            }
+          },
+          {
+            "id": "info-card",
+            "component": {
+              "Card": {
+                "child": "card-body"
+              }
+            }
+          },
+          {
+            "id": "card-body",
+            "component": {
+              "Column": {
+                "children": {
+                  "explicitList": [
+                    "card-title",
+                    "card-btn"
+                  ]
+                },
+                "alignment": "start"
+              }
+            }
+          },
+          {
+            "id": "card-title",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Card + Button"
+                },
+                "usageHint": "h3"
+              }
+            }
+          },
+          {
+            "id": "card-btn",
+            "component": {
+              "Button": {
+                "child": "card-btn-label",
+                "primary": true,
+                "action": {
+                  "name": "catalog_click"
+                }
+              }
+            }
+          },
+          {
+            "id": "card-btn-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Primary action"
+                }
+              }
+            }
+          },
+          {
+            "id": "email",
+            "component": {
+              "TextField": {
+                "label": {
+                  "literalString": "Email"
+                },
+                "text": {
+                  "literalString": ""
+                },
+                "textFieldType": "shortText"
+              }
+            }
+          },
+          {
+            "id": "agree",
+            "component": {
+              "CheckBox": {
+                "label": {
+                  "literalString": "I agree"
+                },
+                "value": {
+                  "literalBoolean": false
+                }
+              }
+            }
+          },
+          {
+            "id": "volume",
+            "component": {
+              "Slider": {
+                "value": {
+                  "literalNumber": 40
+                },
+                "minValue": 0,
+                "maxValue": 100
+              }
+            }
+          },
+          {
+            "id": "when",
+            "component": {
+              "DateTimeInput": {
+                "value": {
+                  "literalString": "2026-09-17T10:00"
+                },
+                "enableDate": true,
+                "enableTime": true
+              }
+            }
+          },
+          {
+            "id": "choices",
+            "component": {
+              "MultipleChoice": {
+                "selections": {
+                  "literalArray": [
+                    "walk"
+                  ]
+                },
+                "options": [
+                  {
+                    "label": {
+                      "literalString": "Walk"
+                    },
+                    "value": "walk"
+                  },
+                  {
+                    "label": {
+                      "literalString": "Bike"
+                    },
+                    "value": "bike"
+                  },
+                  {
+                    "label": {
+                      "literalString": "Bus"
+                    },
+                    "value": "bus"
+                  }
+                ],
+                "variant": "chips",
+                "maxAllowedSelections": 2
+              }
+            }
+          },
+          {
+            "id": "items",
+            "component": {
+              "List": {
+                "children": {
+                  "explicitList": [
+                    "item-a",
+                    "item-b"
+                  ]
+                },
+                "direction": "vertical",
+                "alignment": "stretch"
+              }
+            }
+          },
+          {
+            "id": "item-a",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "List item A"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "item-b",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "List item B"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "tabs",
+            "component": {
+              "Tabs": {
+                "tabItems": [
+                  {
+                    "title": {
+                      "literalString": "One"
+                    },
+                    "child": "tab-a"
+                  },
+                  {
+                    "title": {
+                      "literalString": "Two"
+                    },
+                    "child": "tab-b"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "tab-a",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "First tab"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "tab-b",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Second tab"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "dialog",
+            "component": {
+              "Modal": {
+                "entryPointChild": "dialog-open",
+                "contentChild": "dialog-body"
+              }
+            }
+          },
+          {
+            "id": "dialog-open",
+            "component": {
+              "Button": {
+                "child": "dialog-open-label",
+                "action": {
+                  "name": "open_modal"
+                }
+              }
+            }
+          },
+          {
+            "id": "dialog-open-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Open modal"
+                }
+              }
+            }
+          },
+          {
+            "id": "dialog-body",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Modal content"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "clip",
+            "component": {
+              "Video": {
+                "url": {
+                  "literalString": ""
+                }
+              }
+            }
+          },
+          {
+            "id": "tune",
+            "component": {
+              "AudioPlayer": {
+                "url": {
+                  "literalString": ""
+                },
+                "description": {
+                  "literalString": "Audio player"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

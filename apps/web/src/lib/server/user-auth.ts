@@ -1,3 +1,6 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 const apiBaseUrl =
   process.env.API_INTERNAL_URL ??
   process.env.NEXT_PUBLIC_API_BASE_URL ??
@@ -13,4 +16,17 @@ export async function getUserVerificationStatus(cookieHeader: string | null) {
   }).catch(() => null);
 
   return response?.status ?? 503;
+}
+
+/** 服务端页面鉴权，并保留登录后应返回的准确地址。 */
+export async function requireAuthenticatedPage(nextPath: string): Promise<void> {
+  const cookieStore = await cookies();
+  const authStatus = await getUserVerificationStatus(cookieStore.toString());
+
+  if (authStatus === 401) {
+    redirect(`/login?next=${encodeURIComponent(nextPath)}`);
+  }
+  if (authStatus !== 200) {
+    redirect("/");
+  }
 }

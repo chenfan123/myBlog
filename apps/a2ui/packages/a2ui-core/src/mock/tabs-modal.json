@@ -1,0 +1,197 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "tabs-modal",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "tabs-modal",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "tabs",
+                    "line",
+                    "dialog"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/headline",
+                  "literalString": "Tabs and modal"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "tabs",
+            "component": {
+              "Tabs": {
+                "tabItems": [
+                  {
+                    "title": {
+                      "literalString": "Overview"
+                    },
+                    "child": "tab-overview"
+                  },
+                  {
+                    "title": {
+                      "literalString": "Details"
+                    },
+                    "child": "tab-details"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "tab-overview",
+            "component": {
+              "Card": {
+                "child": "overview-body"
+              }
+            }
+          },
+          {
+            "id": "overview-body",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/overview"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "tab-details",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/details"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "line",
+            "component": {
+              "Divider": {
+                "axis": "horizontal"
+              }
+            }
+          },
+          {
+            "id": "dialog",
+            "component": {
+              "Modal": {
+                "entryPointChild": "dialog-open",
+                "contentChild": "dialog-body"
+              }
+            }
+          },
+          {
+            "id": "dialog-open-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Open details"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "dialog-open",
+            "component": {
+              "Button": {
+                "child": "dialog-open-label",
+                "primary": true,
+                "action": {
+                  "name": "open_modal"
+                }
+              }
+            }
+          },
+          {
+            "id": "dialog-body",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "dialog-title",
+                    "dialog-copy"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "dialog-title",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Modal"
+                },
+                "usageHint": "h3"
+              }
+            }
+          },
+          {
+            "id": "dialog-copy",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/modalBody"
+                },
+                "usageHint": "body"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "tabs-modal",
+        "contents": [
+          {
+            "key": "headline",
+            "valueString": "Tabs and modal"
+          },
+          {
+            "key": "overview",
+            "valueString": "First tab: a card with the trip summary."
+          },
+          {
+            "key": "details",
+            "valueString": "Second tab: extra notes and constraints."
+          },
+          {
+            "key": "modalBody",
+            "valueString": "This modal is opened from the entry-point button."
+          }
+        ]
+      }
+    }
+  ]
+}

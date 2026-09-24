@@ -1,0 +1,12 @@
+.a2ui-mounting {
+  animation: a2ui-mount-fade 0.3s ease both;
+}
+
+@keyframes a2ui-mount-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

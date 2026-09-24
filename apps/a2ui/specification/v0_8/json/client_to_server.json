@@ -1,0 +1,79 @@
+{
+  "title": "A2UI (Agent to UI) Client-to-Server Event Schema",
+  "description": "Describes a JSON payload for a client-to-server event message. A message MUST contain exactly one of: userAction or error.\n\nA2UI v0.8 has no client→server message that mutates the data model. Optimistic / local writes are a renderer extension, not a fourth on-wire type. When a component's action.context (from surfaceUpdate) contains reserved __localUpdate* keys, the renderer MUST simulate a dataModelUpdate by calling SDK updateModel in its action trigger, then emit a normal userAction. Those reserved keys MUST be stripped from the emitted context so this schema stays unchanged on the wire.",
+  "type": "object",
+  "minProperties": 1,
+  "maxProperties": 1,
+  "properties": {
+    "userAction": {
+      "type": "object",
+      "description": "Reports a user-initiated action from a component. Emitted after any renderer-local updateModel simulation.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the action, taken from the component's action.name property."
+        },
+        "surfaceId": {
+          "type": "string",
+          "description": "The id of the surface where the event originated."
+        },
+        "sourceComponentId": {
+          "type": "string",
+          "description": "The id of the component that triggered the event."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "An ISO 8601 timestamp of when the event occurred."
+        },
+        "context": {
+          "type": "object",
+          "description": "Resolved key-value pairs from the component's action.context. Renderer-reserved keys (__localUpdatePath, __localUpdateString, __localUpdateNumber, __localUpdateBoolean, __openLinkUrl, __openLinkTarget) are applied locally and MUST NOT appear here.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "name",
+        "surfaceId",
+        "sourceComponentId",
+        "timestamp",
+        "context"
+      ]
+    },
+    "error": {
+      "type": "object",
+      "description": "Reports a client-side error. The content is flexible.",
+      "additionalProperties": true
+    }
+  },
+  "oneOf": [
+    { "required": ["userAction"] },
+    { "required": ["error"] }
+  ],
+  "$defs": {
+    "rendererLocalUpdateContext": {
+      "title": "Renderer-local updateModel simulation (non-normative)",
+      "description": "These keys may appear on a component action.context in surfaceUpdate. They are not part of the on-wire userAction. The a2ui-react action trigger reads them, calls updateModel(surfaceId, path, value), then dispatches userAction with the keys stripped.\n\n- __localUpdatePath (string): dataModel path to write, e.g. /message.\n- __localUpdateString | __localUpdateNumber | __localUpdateBoolean: exactly one typed value to write.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "__localUpdatePath": { "type": "string" },
+        "__localUpdateString": { "type": "string" },
+        "__localUpdateNumber": { "type": "number" },
+        "__localUpdateBoolean": { "type": "boolean" }
+      },
+      "required": ["__localUpdatePath"]
+    },
+    "rendererLocalOpenLinkContext": {
+      "title": "Renderer-local openLink (non-normative)",
+      "description": "These keys may appear on a component action.context in surfaceUpdate. They are not part of the on-wire userAction. The a2ui-react action trigger opens http(s) URLs with window.open (noopener,noreferrer). Action names openLink and open_link also accept a `url` / `href` context entry. javascript: and other non-http(s) URLs MUST be ignored.\n\n- __openLinkUrl (string): absolute http or https URL.\n- __openLinkTarget (string, optional): window name, default _blank.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "__openLinkUrl": { "type": "string", "format": "uri" },
+        "__openLinkTarget": { "type": "string" }
+      },
+      "required": ["__openLinkUrl"]
+    }
+  }
+}

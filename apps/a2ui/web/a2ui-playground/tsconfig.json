@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "a2ui-core": ["../../packages/a2ui-core/src/index.ts"],
+      "a2ui-core/*": ["../../packages/a2ui-core/src/*"],
+      "a2ui-react": ["../../packages/a2ui-react/src/index.ts"],
+      "a2ui-react/*": ["../../packages/a2ui-react/src/*"]
+    }
+  },
+  "include": ["src", "../../docs/a2ui_generation_eval_scenarios.json"]
+}

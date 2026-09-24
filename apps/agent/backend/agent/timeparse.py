@@ -149,13 +149,28 @@ def is_schedule_followup(text: str) -> bool:
     t = (text or "").strip()
     if not t:
         return False
-    cues = (
+    schedule_cues = (
         "出诊", "排班", "有号", "号源", "挂号", "挂谁", "谁的号", "能挂",
         "门诊时间", "哪个院区", "什么时候看", "有谁", "哪位医生出诊",
         "哪些医生", "什么医生", "哪个医生", "哪些大夫",
+    )
+    if any(c in t for c in schedule_cues):
+        return True
+
+    time_cues = (
         "明天", "后天", "大后天", "今天", "今日", "明日",
         "下周", "周一", "周二", "周三", "周四", "周五", "周六", "周日", "周天",
         "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日",
         "上午", "下午",
     )
-    return any(c in t for c in cues)
+    if not any(c in t for c in time_cues):
+        return False
+
+    # “今天头疼 / 昨天开始发烧”里的时间描述的是病程，不是查询排班。
+    # 只有没有疾病或症状语义时，裸时间词才视作上一轮排班追问（如“明天呢”）。
+    medical_cues = (
+        "疼", "痛", "烧", "发热", "咳", "泻", "吐", "晕", "麻", "痒", "肿",
+        "血糖", "血压", "心慌", "胸闷", "气短", "恶心", "不舒服", "症状",
+        "炎", "癌", "瘤", "结节", "结石", "息肉", "囊肿", "骨折", "哮喘",
+    )
+    return not any(c in t for c in medical_cues)

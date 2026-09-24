@@ -1,0 +1,24 @@
+{
+  "name": "my-a2ui",
+  "private": true,
+  "description": "A2UI playground monorepo",
+  "packageManager": "pnpm@11.14.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev:web": "pnpm --filter a2ui-playground dev",
+    "dev:server": "pnpm --filter a2ui-playground-server dev",
+    "build": "pnpm -r --if-present build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "test:parser": "pnpm --filter a2ui-core test:parser",
+    "test:vnode": "pnpm --filter a2ui-core test:vnode",
+    "test:treebuilder": "pnpm --filter a2ui-core test:treebuilder",
+    "test:buffer": "pnpm --filter a2ui-core test:buffer",
+    "test:datamodel": "pnpm --filter a2ui-core test:datamodel"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "empty-state",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "empty-state",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Card": {
+                "child": "main"
+              }
+            }
+          },
+          {
+            "id": "main",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "inbox"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/headline",
+                  "literalString": "Inbox"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "inbox",
+            "component": {
+              "Empty": {
+                "description": {
+                  "path": "/reason",
+                  "literalString": "暂无内容"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "empty-state",
+        "contents": [
+          {
+            "key": "headline",
+            "valueString": "Inbox"
+          },
+          {
+            "key": "reason",
+            "valueString": "No messages yet"
+          }
+        ]
+      }
+    }
+  ]
+}

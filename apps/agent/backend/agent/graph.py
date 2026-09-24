@@ -15,7 +15,10 @@
     ├─ expert ──► expert ────► END
     └─ triage ──► emergency ── 急诊红旗（导诊主链必跑）
                     ├─ 命中 ──► emergency_exit ──► END
-                    └─ 未命中 ► check_info
+                    └─ 未命中 ► clinical_context ── 主诉/病史/否定症状结构化
+                                  │
+                                  ▼
+                                check_info
                                   ├─ 信息不足且未超澄清上限 ► clarify ──► END
                                   ├─ 信息足够 ► retrieve
                                   └─ 澄清已达上限 ► fallback ──► END
@@ -67,6 +70,7 @@ def build_triage_graph():
     g.add_node("refuse", nodes.node_refuse)  # 安全拒答：闲聊 / 提示词探测 / 超范围
     g.add_node("end", nodes.node_end)  # 结束问诊：收尾并清空导诊上下文
     g.add_node("emergency", nodes.node_emergency)  # 急诊红旗检测（导诊主链必经）
+    g.add_node("clinical_context", nodes.node_clinical_context)  # 主诉与背景病史分层
     g.add_node("check_info", nodes.node_check_info)  # 判断症状信息是否够用分诊
     g.add_node("clarify", nodes.node_clarify)  # 生成澄清追问，本轮结束等用户补充
     g.add_node("retrieve", nodes.node_retrieve)  # 调混合检索拿科室候选
@@ -98,9 +102,11 @@ def build_triage_graph():
         _after_emergency,
         {
             "emergency_exit": "emergency_exit",
-            "check_info": "check_info",
+            "clinical_context": "clinical_context",
         },
     )
+
+    g.add_edge("clinical_context", "check_info")
 
     g.add_conditional_edges(
         "check_info",

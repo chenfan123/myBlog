@@ -1,0 +1,113 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "open-link",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "open-link",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "url-text",
+                    "open-btn"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/title"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "url-text",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/url"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "open-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "打开外部网页"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "open-btn",
+            "component": {
+              "Button": {
+                "child": "open-label",
+                "primary": true,
+                "action": {
+                  "name": "openLink",
+                  "context": [
+                    {
+                      "key": "__openLinkUrl",
+                      "value": {
+                        "path": "/url"
+                      }
+                    },
+                    {
+                      "key": "__openLinkTarget",
+                      "value": {
+                        "literalString": "_blank"
+                      }
+                    },
+                    {
+                      "key": "url",
+                      "value": {
+                        "path": "/url"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "open-link",
+        "contents": [
+          {
+            "key": "title",
+            "valueString": "打开外部网页"
+          },
+          {
+            "key": "url",
+            "valueString": "https://github.com/google/A2UI"
+          }
+        ]
+      }
+    }
+  ]
+}

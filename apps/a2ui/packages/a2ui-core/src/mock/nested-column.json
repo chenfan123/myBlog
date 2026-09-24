@@ -1,0 +1,196 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "nested-column",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "nested-column",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Column": {
+                "children": {
+                  "explicitList": [
+                    "page-title",
+                    "header",
+                    "body"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "stretch"
+              }
+            }
+          },
+          {
+            "id": "page-title",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "A2UI nested layout"
+                },
+                "usageHint": "h1"
+              }
+            }
+          },
+          {
+            "id": "header",
+            "component": {
+              "Row": {
+                "children": {
+                  "explicitList": [
+                    "intro-title",
+                    "intro-tag"
+                  ]
+                },
+                "distribution": "spaceBetween",
+                "alignment": "center"
+              }
+            }
+          },
+          {
+            "id": "intro-title",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Overview"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "intro-tag",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Row + Column"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "body",
+            "component": {
+              "Row": {
+                "children": {
+                  "explicitList": [
+                    "intro",
+                    "details"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "stretch"
+              }
+            }
+          },
+          {
+            "id": "intro",
+            "component": {
+              "Column": {
+                "children": {
+                  "explicitList": [
+                    "intro-body"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "start"
+              }
+            }
+          },
+          {
+            "id": "intro-body",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Left column inside a row."
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "details",
+            "component": {
+              "Column": {
+                "children": {
+                  "explicitList": [
+                    "details-title",
+                    "item",
+                    "details-footer"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "start"
+              }
+            }
+          },
+          {
+            "id": "details-title",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Details"
+                },
+                "usageHint": "h3"
+              }
+            }
+          },
+          {
+            "id": "item",
+            "component": {
+              "Row": {
+                "children": {
+                  "explicitList": [
+                    "item-name",
+                    "item-desc"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "center"
+              }
+            }
+          },
+          {
+            "id": "item-name",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Nested item"
+                },
+                "usageHint": "h4"
+              }
+            }
+          },
+          {
+            "id": "item-desc",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "This text sits in a row under details."
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "details-footer",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "End of details"
+                },
+                "usageHint": "caption"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

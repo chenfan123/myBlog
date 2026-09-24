@@ -1,0 +1,290 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "playlist",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "playlist",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Card": {
+                "child": "main"
+              }
+            }
+          },
+          {
+            "id": "main",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "heading",
+                    "subtitle",
+                    "tracks"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "heading",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/playlistName",
+                  "literalString": "Weekly Mix"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "subtitle",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/description"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "tracks",
+            "component": {
+              "List": {
+                "direction": "vertical",
+                "alignment": "stretch",
+                "children": {
+                  "template": {
+                    "componentId": "track-card",
+                    "dataBinding": "/tracks"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "track-card",
+            "component": {
+              "Card": {
+                "child": "track-row"
+              }
+            }
+          },
+          {
+            "id": "track-row",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "spaceBetween",
+                "children": {
+                  "explicitList": [
+                    "track-info",
+                    "play-btn"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "track-info",
+            "component": {
+              "Column": {
+                "alignment": "start",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "track-title",
+                    "track-meta"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "track-title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "title"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "track-meta",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "track-artist",
+                    "track-duration"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "track-artist",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "artist"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "track-duration",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "duration"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "play-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Play"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "play-btn",
+            "component": {
+              "Button": {
+                "child": "play-label",
+                "primary": true,
+                "action": {
+                  "name": "playTrack",
+                  "context": [
+                    {
+                      "key": "title",
+                      "value": {
+                        "path": "title"
+                      }
+                    },
+                    {
+                      "key": "artist",
+                      "value": {
+                        "path": "artist"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "playlist",
+        "contents": [
+          {
+            "key": "playlistName",
+            "valueString": "Weekly Mix"
+          },
+          {
+            "key": "description",
+            "valueString": "Four tracks, each cloned with a unique component id"
+          },
+          {
+            "key": "tracks",
+            "valueMap": [
+              {
+                "key": "0",
+                "valueMap": [
+                  {
+                    "key": "title",
+                    "valueString": "Sunrise"
+                  },
+                  {
+                    "key": "artist",
+                    "valueString": "Ada"
+                  },
+                  {
+                    "key": "duration",
+                    "valueString": "3:21"
+                  }
+                ]
+              },
+              {
+                "key": "1",
+                "valueMap": [
+                  {
+                    "key": "title",
+                    "valueString": "Night Drive"
+                  },
+                  {
+                    "key": "artist",
+                    "valueString": "Grace"
+                  },
+                  {
+                    "key": "duration",
+                    "valueString": "4:05"
+                  }
+                ]
+              },
+              {
+                "key": "2",
+                "valueMap": [
+                  {
+                    "key": "title",
+                    "valueString": "After Hours"
+                  },
+                  {
+                    "key": "artist",
+                    "valueString": "Lin"
+                  },
+                  {
+                    "key": "duration",
+                    "valueString": "2:48"
+                  }
+                ]
+              },
+              {
+                "key": "3",
+                "valueMap": [
+                  {
+                    "key": "title",
+                    "valueString": "Dawn Chorus"
+                  },
+                  {
+                    "key": "artist",
+                    "valueString": "Kai"
+                  },
+                  {
+                    "key": "duration",
+                    "valueString": "3:56"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

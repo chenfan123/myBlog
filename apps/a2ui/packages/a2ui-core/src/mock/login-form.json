@@ -1,0 +1,149 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "login-form",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "login-form",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Card": {
+                "child": "main-column"
+              }
+            }
+          },
+          {
+            "id": "main-column",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "subtitle",
+                    "email-field",
+                    "password-field",
+                    "login-btn"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/headline",
+                  "literalString": "Welcome back"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "subtitle",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/status"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "email-field",
+            "component": {
+              "TextField": {
+                "label": {
+                  "literalString": "Email"
+                },
+                "text": {
+                  "path": "/email"
+                }
+              }
+            }
+          },
+          {
+            "id": "password-field",
+            "component": {
+              "TextField": {
+                "label": {
+                  "literalString": "Password"
+                },
+                "text": {
+                  "path": "/password"
+                },
+                "textFieldType": "obscured"
+              }
+            }
+          },
+          {
+            "id": "login-btn-text",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Sign in"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "login-btn",
+            "component": {
+              "Button": {
+                "child": "login-btn-text",
+                "primary": true,
+                "action": {
+                  "name": "login",
+                  "context": [
+                    {
+                      "key": "email",
+                      "value": {
+                        "path": "/email"
+                      }
+                    },
+                    {
+                      "key": "password",
+                      "value": {
+                        "path": "/password"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "login-form",
+        "contents": [
+          {
+            "key": "status",
+            "valueString": "Sign in to continue"
+          },
+          {
+            "key": "email",
+            "valueString": "demo@a2ui.dev"
+          },
+          {
+            "key": "password",
+            "valueString": "secret"
+          }
+        ]
+      }
+    }
+  ]
+}

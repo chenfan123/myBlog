@@ -1,0 +1,37 @@
+{
+  "name": "a2ui-core",
+  "version": "0.0.1",
+  "description": "A2UI protocol parser, vnode, and tree builder",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "mocha",
+    "test:parser": "mocha --config .mocharc.parser.json",
+    "test:vnode": "mocha --config .mocharc.vnode.json",
+    "test:treebuilder": "mocha --config .mocharc.treebuilder.json",
+    "test:buffer": "mocha --config .mocharc.buffer.json",
+    "test:datamodel": "mocha --config .mocharc.datamodel.json"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.20.2",
+    "mocha": "^10.8.2",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.0"
+  },
+  "dependencies": {
+    "zustand": "^5.0.15"
+  }
+}

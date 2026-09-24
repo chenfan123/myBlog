@@ -11,6 +11,7 @@ from backend.agent.clinical_priors import (
     reorder_candidates,
     try_deterministic_selection,
 )
+from backend.agent.clinical_context import build_retrieval_query, parse_clinical_context
 from backend.agent.dept_focus import resolve_focus_dept, is_dept_challenge, extract_dept_mentions
 from backend.agent.intent import classify_intent, is_end_consultation, llm_classify_intent
 from backend.agent.review import review_department_candidates
@@ -23,6 +24,7 @@ from backend.agent.safety import (
 )
 from backend.agent.state import TriageState
 from backend.agent.sufficiency import (
+    SufficiencyResult,
     assess_sufficiency,
     has_direct_triage_target,
     is_abdominal_pain_case,
@@ -205,6 +207,8 @@ def node_end(state: TriageState) -> dict[str, Any]:
         "intent": "end",
         "last_intent": "end",
         "symptom_summary": "",
+        "clinical_context": None,
+        "retrieval_query": "",
         "clarify_count": 0,
         "enough_info": False,
         "pending_clarify_question": "",
@@ -231,7 +235,7 @@ def node_refuse(state: TriageState) -> dict[str, Any]:
 
 
 def node_emergency(state: TriageState) -> dict[str, Any]:
-    """急诊红旗：命中则 route→emergency_exit，否则→check_info。"""
+    """急诊红旗：命中则退出，否则进入临床上下文解析。"""
     blob = state.get("symptom_summary") or state.get("user_text") or ""
     result = assess_emergency(blob)
     if result.triggered:
@@ -246,7 +250,20 @@ def node_emergency(state: TriageState) -> dict[str, Any]:
     return {
         "emergency_triggered": False,
         "high_risk": False,
-        "route_after_emergency": "check_info",
+        "route_after_emergency": "clinical_context",
+    }
+
+
+def node_clinical_context(state: TriageState) -> dict[str, Any]:
+    """将本次主诉、背景病史和否定症状结构化，供充分性与检索复用。"""
+    summary = (state.get("symptom_summary") or "").strip()
+    user_text = (state.get("user_text") or "").strip()
+    context = parse_clinical_context(user_text=user_text, symptom_summary=summary)
+    if not context:
+        return {"clinical_context": None, "retrieval_query": ""}
+    return {
+        "clinical_context": context,
+        "retrieval_query": build_retrieval_query(context, summary or user_text),
     }
 
 
@@ -257,14 +274,24 @@ def node_check_info(state: TriageState) -> dict[str, Any]:
     clarify_count = int(state.get("clarify_count") or 0)
     max_clarify = int(state.get("max_clarify") or 4)
     last_questions = list(state.get("last_clarify_questions") or [])
+    clinical_context = state.get("clinical_context") or {}
 
-    result = assess_sufficiency(
-        summary,
-        clarify_count=clarify_count,
-        last_questions=last_questions,
-        user_text=user_text,
+    context_enough = bool(
+        clinical_context.get("chief_complaints")
+        and not clinical_context.get("needs_clarification", False)
+        and float(clinical_context.get("confidence") or 0) >= 0.55
     )
-    enough = result.enough or is_practically_enough(summary)
+    if context_enough:
+        # 结构化解析已经给出明确主诉时，不再重复调用一次充分性模型。
+        result = SufficiencyResult(enough=True)
+    else:
+        result = assess_sufficiency(
+            summary,
+            clarify_count=clarify_count,
+            last_questions=last_questions,
+            user_text=user_text,
+        )
+    enough = context_enough or result.enough or is_practically_enough(summary)
     direct_target = has_direct_triage_target(summary)
     if direct_target:
         enough = True
@@ -385,7 +412,12 @@ def _build_clarify_question(summary: str, missing: list[str] | None = None) -> s
 
 def node_retrieve(state: TriageState) -> dict[str, Any]:
     """混合检索科室；置信达标→recommend，否则→fallback。"""
-    query = state.get("symptom_summary") or state.get("user_text") or ""
+    query = (
+        state.get("retrieval_query")
+        or state.get("symptom_summary")
+        or state.get("user_text")
+        or ""
+    )
     focus = (state.get("focus_dept") or "").strip()
     # 用户点名/质疑某科时，把焦点并入检索 query
     if focus and focus not in query:

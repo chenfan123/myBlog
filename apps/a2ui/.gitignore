@@ -1,0 +1,35 @@
+# Dependencies
+node_modules
+
+# Build
+dist
+build
+*.tsbuildinfo
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Vite
+web/a2ui-playground/dist
+web/a2ui-playground/node_modules/.vite
+
+# Test / coverage
+coverage
+.nyc_output

@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { DownloadResumeButton } from '@/components/resume/download-resume-button';
+import { A2UIProfileEnhancement } from '@/components/profile/a2ui-profile-enhancement';
 import { SiteHeader } from '@/components/site/site-header';
 import { fetchResume, type ResumeData } from '@/lib/resume';
 import Link from 'next/link';
@@ -170,9 +171,11 @@ export default async function Home() {
   } = resume;
   const hasManyStrengths = strengths.length > 4;
   const hasTriageDemo = agentDemos.some((demo) => /导诊|智能客服/.test(demo.title));
-  const visibleAgentDemos = hasTriageDemo
-    ? agentDemos
-    : [
+  const hasA2UIDemo = agentDemos.some((demo) => /A2UI/i.test(demo.title));
+  const visibleAgentDemos = [
+    ...(hasTriageDemo
+      ? []
+      : [
         {
           title: '智能导诊 Agent',
           description: '用户描述症状后，通过多轮追问和知识库检索，给出适合挂号的科室建议。',
@@ -180,8 +183,20 @@ export default async function Home() {
           status: '本地 Demo',
           demo_url: '/agent-demo/medical-triage',
         },
-        ...agentDemos,
-      ];
+      ]),
+    ...agentDemos,
+    ...(hasA2UIDemo
+      ? []
+      : [
+          {
+            title: 'A2UI 生成式界面 Agent',
+            description: '通过自然语言动态生成 A2UI 协议，并在 Playground 中实时渲染、调试和继续对话。',
+            tags: ['A2UI', 'AG-UI', 'React', 'DashScope'],
+            status: '可体验',
+            demo_url: '/agent-demo/a2ui',
+          },
+        ]),
+  ];
   return (
     <main className="print-resume min-h-screen overflow-hidden">
       <SiteHeader />
@@ -218,7 +233,8 @@ export default async function Home() {
             </div>
           </aside>
 
-          <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-14 xl:p-16">
+          <A2UIProfileEnhancement profile={profile} skillGroups={skillGroups}>
+          <div className="flex h-full flex-col justify-center p-7 sm:p-10 lg:p-14 xl:p-16">
             <div className="mb-7 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
               <span className="size-2 rounded-full bg-emerald-500" /> 正在寻找新的工作机会
             </div>
@@ -294,6 +310,7 @@ export default async function Home() {
               </div>
             </div>
           </div>
+          </A2UIProfileEnhancement>
         </div>
       </section>
 
@@ -493,7 +510,9 @@ export default async function Home() {
                   </div>
                   {demo.demo_url ? (
                     <Button asChild className="mt-6" variant="outline">
-                      <Link href={demo.demo_url}>查看 Demo <ArrowRight /></Link>
+                      <Link href={demo.demo_url}>
+                        查看 Demo <ArrowRight />
+                      </Link>
                     </Button>
                   ) : null}
                 </div>

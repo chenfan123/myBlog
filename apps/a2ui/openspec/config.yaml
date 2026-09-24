@@ -1,0 +1,34 @@
+schema: spec-driven
+
+context: |
+  Tech stack: pnpm workspaces, TypeScript 5, Vite 7, React 19, zustand/vanilla, Mocha 10 + tsx, antd 6.
+  Monorepo layout:
+    - packages/a2ui-core: React-free A2UI v0.8 client runtime (parser, vnode, treebuilder, store, stream buffer, mocks).
+    - packages/a2ui-react: React catalog renderers (Text, Column, Row) and renderMap.
+    - web/a2ui-playground: Vite playground for mock parse, stream simulation, and store inspection.
+    - server/a2ui-playground-server: not implemented yet.
+  Protocol: A2UI v0.8 JSONL. Each line is exactly one server→client action: beginRendering, surfaceUpdate, dataModelUpdate, or deleteSurface.
+  Conventions:
+    - Replies and UI copy in the playground are Chinese; code comments in a2ui-core are Chinese.
+    - a2ui-core MUST NOT import React. v_node is framework-agnostic (unknown / VNode).
+    - Surface.root is the root component id string; Surface.rootNode is the HydrateNode object, never a string.
+    - beginRendering is first in mock streams; Text.usageHint is required in mocks.
+    - Parser tests, treebuilder tests, and buffer tests run in isolated Mocha configs (not mixed with store init tests).
+    - Playground CSS (e.g. Row gray background) is host styling, not protocol behavior.
+    - Do not commit unless the user asks.
+
+rules:
+  proposal:
+    - Keep Why / What / Impact concrete; record brownfield work as already shipped, not as a future plan.
+    - Always include Non-goals either in proposal Impact or in design.md.
+  spec:
+    - Requirements use SHALL or MUST.
+    - Every requirement has at least one #### Scenario with WHEN / THEN.
+  tasks:
+    - Historical bootstrap change tasks stay checked; they document completed work.
+
+operations:
+  archive:
+    guidance:
+      - Summarize which capabilities landed in openspec/specs/ and the archive folder path.
+      - Do not invent new requirements while merging; keep wording from the change deltas.

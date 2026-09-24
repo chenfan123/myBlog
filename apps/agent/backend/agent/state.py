@@ -26,6 +26,8 @@ class TriageState(TypedDict, total=False):
     messages: list[dict[str, str]]  # {role, content}
     intent: Intent
     symptom_summary: str
+    clinical_context: dict[str, Any] | None
+    retrieval_query: str
     clarify_count: int
     max_clarify: int
     enough_info: bool

@@ -1,0 +1,66 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "column-text",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "column-text",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Column": {
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "subtitle",
+                    "body"
+                  ]
+                },
+                "distribution": "start",
+                "alignment": "start"
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Hello, A2UI"
+                },
+                "usageHint": "h1"
+              }
+            }
+          },
+          {
+            "id": "subtitle",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Column layout"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "body",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Three text children in a column."
+                },
+                "usageHint": "body"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

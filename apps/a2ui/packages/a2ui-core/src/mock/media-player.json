@@ -1,0 +1,244 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "media-player",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "media-player",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Card": {
+                "child": "main"
+              }
+            }
+          },
+          {
+            "id": "main",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "hero",
+                    "line-1",
+                    "player",
+                    "volume",
+                    "line-2",
+                    "clip"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/headline",
+                  "literalString": "Now playing"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "hero",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "cover",
+                    "meta"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "cover",
+            "component": {
+              "Image": {
+                "url": {
+                  "path": "/cover"
+                },
+                "fit": "cover",
+                "usageHint": "mediumFeature"
+              }
+            }
+          },
+          {
+            "id": "meta",
+            "component": {
+              "Column": {
+                "alignment": "start",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "track",
+                    "artist",
+                    "actions"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "track",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/track"
+                },
+                "usageHint": "h3"
+              }
+            }
+          },
+          {
+            "id": "artist",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/artist"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "actions",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "fav-icon",
+                    "share-icon"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "fav-icon",
+            "component": {
+              "Icon": {
+                "name": {
+                  "literalString": "favorite"
+                }
+              }
+            }
+          },
+          {
+            "id": "share-icon",
+            "component": {
+              "Icon": {
+                "name": {
+                  "literalString": "share"
+                }
+              }
+            }
+          },
+          {
+            "id": "line-1",
+            "component": {
+              "Divider": {
+                "axis": "horizontal"
+              }
+            }
+          },
+          {
+            "id": "player",
+            "component": {
+              "AudioPlayer": {
+                "url": {
+                  "path": "/audio"
+                },
+                "description": {
+                  "path": "/track"
+                }
+              }
+            }
+          },
+          {
+            "id": "volume",
+            "component": {
+              "Slider": {
+                "value": {
+                  "path": "/volume",
+                  "literalNumber": 70
+                },
+                "minValue": 0,
+                "maxValue": 100
+              }
+            }
+          },
+          {
+            "id": "line-2",
+            "component": {
+              "Divider": {
+                "axis": "horizontal"
+              }
+            }
+          },
+          {
+            "id": "clip",
+            "component": {
+              "Video": {
+                "url": {
+                  "path": "/video"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "media-player",
+        "contents": [
+          {
+            "key": "headline",
+            "valueString": "Now playing"
+          },
+          {
+            "key": "track",
+            "valueString": "Moon Speech"
+          },
+          {
+            "key": "artist",
+            "valueString": "A2UI Ensemble"
+          },
+          {
+            "key": "cover",
+            "valueString": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='120'%3E%3Crect fill='%231e293b' width='160' height='120' rx='12'/%3E%3Ccircle cx='80' cy='56' r='28' fill='%233b82f6'/%3E%3Ctext x='80' y='102' text-anchor='middle' font-size='12' fill='%23e2e8f0'%3EAlbum%3C/text%3E%3C/svg%3E"
+          },
+          {
+            "key": "audio",
+            "valueString": "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"
+          },
+          {
+            "key": "video",
+            "valueString": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+          },
+          {
+            "key": "volume",
+            "valueNumber": 70
+          }
+        ]
+      }
+    }
+  ]
+}

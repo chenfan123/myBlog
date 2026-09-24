@@ -1,0 +1,538 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "cart",
+        "root": "root",
+        "styles": {
+          "theme": "apple",
+          "primaryColor": "#1d1d1f",
+          "background": "#f5f5f7",
+          "surfaceColor": "#ffffff",
+          "textColor": "#1d1d1f",
+          "mutedTextColor": "#86868b",
+          "radius": 18
+        }
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "cart",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Card": {
+                "child": "main"
+              }
+            }
+          },
+          {
+            "id": "main",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "header",
+                    "summary",
+                    "divider-top",
+                    "items",
+                    "divider-bottom",
+                    "footer"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "header",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "cart-icon",
+                    "title"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "cart-icon",
+            "component": {
+              "Icon": {
+                "name": {
+                  "literalString": "shoppingCart"
+                }
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/title",
+                  "literalString": "购物车"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "summary",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/summary"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "divider-top",
+            "component": {
+              "Divider": {
+                "axis": "horizontal"
+              }
+            }
+          },
+          {
+            "id": "items",
+            "component": {
+              "List": {
+                "direction": "vertical",
+                "alignment": "stretch",
+                "children": {
+                  "template": {
+                    "componentId": "item-card",
+                    "dataBinding": "/items"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "item-card",
+            "component": {
+              "Card": {
+                "child": "item-body"
+              }
+            }
+          },
+          {
+            "id": "item-body",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "item-row",
+                    "item-qty-row"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "item-row",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "item-check",
+                    "item-thumb",
+                    "item-info",
+                    "item-remove"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "item-check",
+            "component": {
+              "CheckBox": {
+                "label": {
+                  "literalString": "结算"
+                },
+                "value": {
+                  "path": "selected"
+                }
+              }
+            }
+          },
+          {
+            "id": "item-thumb",
+            "component": {
+              "Image": {
+                "url": {
+                  "path": "image"
+                },
+                "fit": "cover",
+                "usageHint": "smallFeature"
+              }
+            }
+          },
+          {
+            "id": "item-info",
+            "component": {
+              "Column": {
+                "alignment": "start",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "item-name",
+                    "item-price",
+                    "item-sku"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "item-name",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "name"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "item-price",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "price"
+                },
+                "usageHint": "h4"
+              }
+            }
+          },
+          {
+            "id": "item-sku",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "sku"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "remove-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "移除"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "item-remove",
+            "component": {
+              "Button": {
+                "child": "remove-label",
+                "action": {
+                  "name": "removeItem",
+                  "context": [
+                    {
+                      "key": "sku",
+                      "value": {
+                        "path": "sku"
+                      }
+                    },
+                    {
+                      "key": "name",
+                      "value": {
+                        "path": "name"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "item-qty-row",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "qty-label",
+                    "item-qty"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "qty-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "数量"
+                },
+                "usageHint": "caption"
+              }
+            }
+          },
+          {
+            "id": "item-qty",
+            "component": {
+              "Slider": {
+                "value": {
+                  "path": "quantity"
+                },
+                "minValue": 1,
+                "maxValue": 5
+              }
+            }
+          },
+          {
+            "id": "divider-bottom",
+            "component": {
+              "Divider": {
+                "axis": "horizontal"
+              }
+            }
+          },
+          {
+            "id": "footer",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "gift-wrap",
+                    "total-row",
+                    "checkout"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "gift-wrap",
+            "component": {
+              "CheckBox": {
+                "label": {
+                  "literalString": "礼品包装"
+                },
+                "value": {
+                  "path": "/giftWrap"
+                }
+              }
+            }
+          },
+          {
+            "id": "total-row",
+            "component": {
+              "Row": {
+                "alignment": "center",
+                "distribution": "spaceBetween",
+                "children": {
+                  "explicitList": [
+                    "total-label",
+                    "total-value"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "total-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "合计"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "total-value",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/total"
+                },
+                "usageHint": "h3"
+              }
+            }
+          },
+          {
+            "id": "checkout-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "去结算"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "checkout",
+            "component": {
+              "Button": {
+                "child": "checkout-label",
+                "primary": true,
+                "action": {
+                  "name": "checkout",
+                  "context": [
+                    {
+                      "key": "total",
+                      "value": {
+                        "path": "/total"
+                      }
+                    },
+                    {
+                      "key": "giftWrap",
+                      "value": {
+                        "path": "/giftWrap"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "cart",
+        "contents": [
+          {
+            "key": "title",
+            "valueString": "购物车"
+          },
+          {
+            "key": "summary",
+            "valueString": "已选 2 件，可勾选商品、调整数量或移除"
+          },
+          {
+            "key": "total",
+            "valueString": "¥137.00"
+          },
+          {
+            "key": "giftWrap",
+            "valueBoolean": false
+          },
+          {
+            "key": "items",
+            "valueMap": [
+              {
+                "key": "0",
+                "valueMap": [
+                  {
+                    "key": "name",
+                    "valueString": "手工陶瓷杯"
+                  },
+                  {
+                    "key": "sku",
+                    "valueString": "SKU-1001"
+                  },
+                  {
+                    "key": "price",
+                    "valueString": "¥39.00"
+                  },
+                  {
+                    "key": "quantity",
+                    "valueNumber": 1
+                  },
+                  {
+                    "key": "selected",
+                    "valueBoolean": true
+                  },
+                  {
+                    "key": "image",
+                    "valueString": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23fde68a' width='80' height='80' rx='12'/%3E%3Ctext x='40' y='46' text-anchor='middle' font-size='13' fill='%23783650'%3EMug%3C/text%3E%3C/svg%3E"
+                  }
+                ]
+              },
+              {
+                "key": "1",
+                "valueMap": [
+                  {
+                    "key": "name",
+                    "valueString": "亚麻托特包"
+                  },
+                  {
+                    "key": "sku",
+                    "valueString": "SKU-2048"
+                  },
+                  {
+                    "key": "price",
+                    "valueString": "¥49.00"
+                  },
+                  {
+                    "key": "quantity",
+                    "valueNumber": 2
+                  },
+                  {
+                    "key": "selected",
+                    "valueBoolean": true
+                  },
+                  {
+                    "key": "image",
+                    "valueString": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23bbf7d0' width='80' height='80' rx='12'/%3E%3Ctext x='40' y='46' text-anchor='middle' font-size='13' fill='%23166534'%3ETote%3C/text%3E%3C/svg%3E"
+                  }
+                ]
+              },
+              {
+                "key": "2",
+                "valueMap": [
+                  {
+                    "key": "name",
+                    "valueString": "笔记本套装"
+                  },
+                  {
+                    "key": "sku",
+                    "valueString": "SKU-3300"
+                  },
+                  {
+                    "key": "price",
+                    "valueString": "¥40.00"
+                  },
+                  {
+                    "key": "quantity",
+                    "valueNumber": 1
+                  },
+                  {
+                    "key": "selected",
+                    "valueBoolean": false
+                  },
+                  {
+                    "key": "image",
+                    "valueString": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23bfdbfe' width='80' height='80' rx='12'/%3E%3Ctext x='40' y='46' text-anchor='middle' font-size='12' fill='%231e3a8a'%3ENotes%3C/text%3E%3C/svg%3E"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

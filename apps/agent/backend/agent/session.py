@@ -17,6 +17,7 @@ _NODE_STATUS: dict[str, str] = {
     "refuse": "正在整理回复…",
     "end": "正在结束问诊…",
     "emergency": "正在进行急诊筛查…",
+    "clinical_context": "正在区分本次主诉与既往病史…",
     "check_info": "正在评估是否还需补充信息…",
     "clarify": "正在生成追问…",
     "retrieve": "正在检索科室知识库…",
@@ -39,6 +40,8 @@ def get_or_create_state(session_id: str | None) -> tuple[str, TriageState]:
             "session_id": sid,
             "messages": [],
             "symptom_summary": "",
+            "clinical_context": None,
+            "retrieval_query": "",
             "clarify_count": 0,
             "max_clarify": 4,
             "last_clarify_questions": [],
@@ -68,6 +71,8 @@ def _result_from_state(sid: str, out: TriageState) -> dict[str, Any]:
         "intent": out.get("intent"),
         "clarify_count": out.get("clarify_count", 0),
         "symptom_summary": out.get("symptom_summary") or "",
+        "clinical_context": out.get("clinical_context"),
+        "retrieval_query": out.get("retrieval_query") or "",
     }
 
 

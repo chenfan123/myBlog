@@ -1,0 +1,58 @@
+/** 标准目录 Icon.name 的简易字形，未知名称回退为名称本身。 */
+export const ICON_GLYPHS: Record<string, string> = {
+  accountCircle: "👤",
+  add: "+",
+  arrowBack: "←",
+  arrowForward: "→",
+  attachFile: "📎",
+  calendarToday: "📅",
+  call: "📞",
+  camera: "📷",
+  check: "✓",
+  close: "×",
+  delete: "🗑",
+  download: "⬇",
+  edit: "✎",
+  event: "📌",
+  error: "⛔",
+  favorite: "♥",
+  favoriteOff: "♡",
+  folder: "📁",
+  help: "?",
+  home: "⌂",
+  info: "ℹ",
+  locationOn: "📍",
+  lock: "🔒",
+  lockOpen: "🔓",
+  mail: "✉",
+  menu: "☰",
+  moreVert: "⋮",
+  moreHoriz: "…",
+  notificationsOff: "🔕",
+  notifications: "🔔",
+  payment: "💳",
+  person: "👤",
+  phone: "☎",
+  photo: "🖼",
+  print: "🖨",
+  refresh: "↻",
+  search: "🔍",
+  send: "➤",
+  settings: "⚙",
+  share: "↗",
+  shoppingCart: "🛒",
+  star: "★",
+  starHalf: "☆",
+  starOff: "☆",
+  upload: "⬆",
+  visibility: "👁",
+  visibilityOff: "🙈",
+  warning: "⚠",
+};
+
+export function iconGlyph(name: string | undefined): string {
+  if (!name) {
+    return "";
+  }
+  return ICON_GLYPHS[name] ?? name;
+}

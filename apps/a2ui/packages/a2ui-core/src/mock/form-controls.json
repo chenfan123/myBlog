@@ -1,0 +1,217 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "form-controls",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "form-controls",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Card": {
+                "child": "main"
+              }
+            }
+          },
+          {
+            "id": "main",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "title",
+                    "when",
+                    "transport",
+                    "volume",
+                    "notes",
+                    "agree",
+                    "submit"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "title",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/headline",
+                  "literalString": "Book a trip"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "when",
+            "component": {
+              "DateTimeInput": {
+                "value": {
+                  "path": "/when",
+                  "literalString": "2026-09-19T10:00"
+                },
+                "enableDate": true,
+                "enableTime": true
+              }
+            }
+          },
+          {
+            "id": "transport",
+            "component": {
+              "MultipleChoice": {
+                "selections": {
+                  "path": "/transport",
+                  "literalArray": [
+                    "walk"
+                  ]
+                },
+                "options": [
+                  {
+                    "label": {
+                      "literalString": "Walk"
+                    },
+                    "value": "walk"
+                  },
+                  {
+                    "label": {
+                      "literalString": "Bike"
+                    },
+                    "value": "bike"
+                  },
+                  {
+                    "label": {
+                      "literalString": "Bus"
+                    },
+                    "value": "bus"
+                  }
+                ],
+                "variant": "chips",
+                "filterable": true,
+                "maxAllowedSelections": 2
+              }
+            }
+          },
+          {
+            "id": "volume",
+            "component": {
+              "Slider": {
+                "value": {
+                  "path": "/notifyLevel",
+                  "literalNumber": 40
+                },
+                "minValue": 0,
+                "maxValue": 100
+              }
+            }
+          },
+          {
+            "id": "notes",
+            "component": {
+              "TextField": {
+                "label": {
+                  "literalString": "Notes"
+                },
+                "text": {
+                  "path": "/notes"
+                },
+                "textFieldType": "longText"
+              }
+            }
+          },
+          {
+            "id": "agree",
+            "component": {
+              "CheckBox": {
+                "label": {
+                  "literalString": "Notify me"
+                },
+                "value": {
+                  "path": "/notify",
+                  "literalBoolean": true
+                }
+              }
+            }
+          },
+          {
+            "id": "submit-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Save preferences"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "submit",
+            "component": {
+              "Button": {
+                "child": "submit-label",
+                "primary": true,
+                "action": {
+                  "name": "savePreferences",
+                  "context": [
+                    {
+                      "key": "when",
+                      "value": {
+                        "path": "/when"
+                      }
+                    },
+                    {
+                      "key": "notify",
+                      "value": {
+                        "path": "/notify"
+                      }
+                    },
+                    {
+                      "key": "notes",
+                      "value": {
+                        "path": "/notes"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "form-controls",
+        "contents": [
+          {
+            "key": "headline",
+            "valueString": "Book a trip"
+          },
+          {
+            "key": "when",
+            "valueString": "2026-09-19T10:00"
+          },
+          {
+            "key": "notifyLevel",
+            "valueNumber": 40
+          },
+          {
+            "key": "notes",
+            "valueString": "Window seat if possible"
+          },
+          {
+            "key": "notify",
+            "valueBoolean": true
+          }
+        ]
+      }
+    }
+  ]
+}

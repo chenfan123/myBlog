@@ -1,0 +1,131 @@
+{
+  "version": "1.0",
+  "description": "A2UI 生成场景评测集（用户输入侧）。用于 Playground /api/agent 或 LLM 回归：检查 beginRendering（surfaceId、root）、surfaceUpdate 组件表、嵌套 Card/Column/Row、explicitList 顺序、Text/Image/Icon/Button 绑定、path/dataModel、Button.child 等。eval-11～eval-20 为带具体业务域的复杂场景。宿主未实现 Slider/TextField 等时，模型应改用 Text+布局替代。",
+  "scenarios": [
+    {
+      "id": "eval-01",
+      "name": "天气信息卡",
+      "tags": ["card", "text", "icon", "root=Card"],
+      "userPrompt": "请生成一个天气信息卡，包含天气信息、温度、湿度、风力等。"
+    },
+    {
+      "id": "eval-02",
+      "name": "商品详情卡",
+      "tags": ["card", "image", "text", "button"],
+      "userPrompt": "做一个商品展示卡片：顶部商品图，中间标题与简短描述，下方显示价格，底部有主按钮「加入购物车」，按钮文案用子 Text 组件。"
+    },
+    {
+      "id": "eval-03",
+      "name": "用户资料行",
+      "tags": ["row", "column", "text", "avatar"],
+      "userPrompt": "布局为左侧圆形头像（用 Image usageHint avatar）、右侧 Column：昵称大号、邮箱小号、底部一行操作按钮「编辑资料」。"
+    },
+    {
+      "id": "eval-04",
+      "name": "设置列表",
+      "tags": ["column", "row", "text", "navigation"]
+    },
+    {
+      "id": "eval-05",
+      "name": "空状态",
+      "tags": ["text", "button", "center"],
+      "userPrompt": "空列表状态：居中显示「暂无数据」说明文字，下面一个次要按钮「刷新」。"
+    },
+    {
+      "id": "eval-06",
+      "name": "确认操作条",
+      "tags": ["row", "button", "spaceBetween"],
+      "userPrompt": "底部固定操作区：左侧提示文字「确定要删除吗？」，右侧 Row 里放「取消」和「删除」两个按钮，删除为主按钮。"
+    },
+    {
+      "id": "eval-07",
+      "name": "订单摘要卡",
+      "tags": ["card", "text", "column"],
+      "userPrompt": "订单摘要 Card：显示订单号、下单时间、应付金额三行 Text，最外层 root 必须是 Card。"
+    },
+    {
+      "id": "eval-08",
+      "name": "新闻摘要",
+      "tags": ["image", "text", "card"],
+      "userPrompt": "新闻卡片：头图、标题 h2、摘要 body、底部「阅读全文」按钮（child 指向 Text）。"
+    },
+    {
+      "id": "eval-09",
+      "name": "双列指标",
+      "tags": ["row", "column", "text"],
+      "userPrompt": "一行内两列：左列「今日步数」+ 数字，右列「目标」+ 数字，用 Row 包两个 Column。"
+    },
+    {
+      "id": "eval-10",
+      "name": "评分与标签",
+      "tags": ["text", "icon", "row"],
+      "userPrompt": "展示商品评分：五星用 Icon 或 Text 表示，旁边一行小字「128 条评价」。"
+    },
+    {
+      "id": "eval-11",
+      "name": "连锁门店店长日览",
+      "tags": ["retail", "beginRendering", "surfaceId", "root", "KPI"],
+      "userPrompt": "业务：连锁便利店店长打开「今日门店」一页，只看一块汇总卡。技术：仅一个 surface，surfaceId 固定为 store-dash-main；beginRendering 与 surfaceUpdate 的 surfaceId 相同，root 为单个 Card（id 如 store-dash-root）。Card 内 Column 分两区：上区 Row 展示「今日销售额」标题与金额（金额 Text 用 path /store/todaySales 与 literal 占位）；下区为「快捷操作」——三个次要 Button「补货」「排班」「对账」，每个 Button 的 child 指向独立 Text。禁止第二个 surface；组件 id 唯一且带门店语义。"
+    },
+    {
+      "id": "eval-12",
+      "name": "互联网医院挂号单",
+      "tags": ["healthcare", "Column", "Row", "explicitList", "alignment"],
+      "userPrompt": "业务：患者 App 里展示一次门诊预约的确认卡：科室、时段、医生、费用一目了然，底部可取消或改约。技术：根为 Card；内层 Column alignment start，explicitList 顺序固定为：header Row（左问诊 Icon + 标题「门诊预约」Text，右 caption 显示就诊日期）；body Column 内含三条 Row，每行左标签（科室/时段/挂号费）右值；footer Row 放两个 Button，次按钮「取消预约」在左，主按钮「改约」在右。所有 children 必须用 explicitList，不得省略中间 Column/Row。"
+    },
+    {
+      "id": "eval-13",
+      "name": "电商平台订单详情条",
+      "tags": ["ecommerce", "path", "literalString", "dataModelUpdate"],
+      "userPrompt": "业务：订单详情页顶部一条摘要：订单号、物流状态、实付金额。技术：单 Card 内 Column，三行 Text 分别 path 绑定 /order/id、/order/status、/order/totalAmount；每行同时给 literalString 作无数据占位（如「—」「待同步」「¥--」）。另输出一条 dataModelUpdate，一次性写入上述三路径的示例值（订单号字符串、状态「运输中」、金额字符串）。"
+    },
+    {
+      "id": "eval-14",
+      "name": "Sprint 看板任务卡",
+      "tags": ["project-mgmt", "Card", "Column", "Row", "list"],
+      "userPrompt": "业务：研发看板上一张 Sprint 故事卡：标题、当前状态，下面列出本故事拆出的 4 个子任务（待办/进行中样式用文案区分即可）。技术：主 Card 顶 Row：故事标题 h3 + 状态 caption（如「进行中」）；下方 Column 内 4 条同质子 Row，每行 explicitList 为 [左侧圆点 Icon 或 Text、任务标题 body、右侧 chevron Icon]，四行 id 带序号且互不重复。"
+    },
+    {
+      "id": "eval-15",
+      "name": "员工假期申请审批条",
+      "tags": ["HR", "Button", "child", "Text", "usageHint"],
+      "userPrompt": "业务：OA 里员工提交年假申请后的底部操作区：正式提交、暂存草稿、更多选项。技术：底部 Column 内三个 Button——primary「提交申请」、secondary「存草稿」、custom「更多…」；每个 Button 的 child 指向独立 Text，Text 的 usageHint 依次为 body、caption、body；若协议规定文案仅能通过 child Text 表达，则遵守。"
+    },
+    {
+      "id": "eval-16",
+      "name": "B2B 工业备件询价卡",
+      "tags": ["B2B", "Image", "Row", "Column", "spaceBetween"],
+      "userPrompt": "业务：采购员在备件目录中打开某一物料卡片：产品图、型号名称、单价与交期提示，并可询价或收藏。技术：Card 内先 Image（mediumFeature、cover、url literal 占位）；其下 Row spaceBetween：左 Column 两行（物料型号 path /sku/name + literal，规格说明 literal）；右 Column 两行（单价 h4 literal、交期 caption literal）；再一行 Row 两个次要 Button，child Text 为「询价」「收藏」。"
+    },
+    {
+      "id": "eval-17",
+      "name": "小微企业开户资质向导",
+      "tags": ["fintech", "wizard", "Row", "Text", "Icon", "path"],
+      "userPrompt": "业务：网银或支付机构线上开户，用户处在四步流程中的某一步：顶部展示步骤条，中间是当前步标题与说明，底部上一步/下一步。技术：顶 Row 四步，每步 mini Column（序号/Icon + 步骤名 caption）；当前步序号 Text 绑定 path /onboarding/stepIndex（literal 占位 1）；说明区两行 Text 分别 path /onboarding/stepTitle 与 /onboarding/stepDesc。底 Row：「上一步」「下一步」Button 均 child 指向 Text，下一步为 primary。"
+    },
+    {
+      "id": "eval-18",
+      "name": "车险理赔常见问题",
+      "tags": ["insurance", "Column", "Row", "Icon", "sections"],
+      "userPrompt": "业务：车险 App 里「理赔帮助」页，分「现场拍照」「材料清单」两块，每块标题可点开（每个区块标题用 Button，action 带 localDataModelUpdate，点击切换 expanded；内容区用 path 绑定，展开时显示子 Row 列表）。技术：两个并列区块，结构相同：首行 Row 为区块标题 Text + 右侧 chevron Icon；其下 Column 含多条子 Row（左为问题或条目名 Text，右为补充说明 caption）。区块 id 前缀分别为 claim-photo-、claim-docs-，子节点 id 不冲突。"
+    },
+    {
+      "id": "eval-19",
+      "name": "协作 SaaS 定价对比",
+      "tags": ["SaaS", "pricing", "Column", "Row", "text-grid"],
+      "userPrompt": "业务：团队协作软件定价页，对比免费版与专业版在五项能力上的差异（如成员上限、云盘、审计日志等）。技术：Column 首行为表头 Row，三列 Text「能力」「免费版」「专业版」；随后 5 行数据 Row，每行 explicitList 为 [能力名 body, 免费版说明 Text, 专业版说明 Text]，行 id 带序号；列对齐用 Row 内三子节点，caption/body 区分层级。"
+    },
+    {
+      "id": "eval-20",
+      "name": "外卖店铺首页首屏",
+      "tags": [
+        "food-delivery",
+        "beginRendering",
+        "surfaceUpdate",
+        "path",
+        "root"
+      ],
+      "userPrompt": "业务：用户进入某外卖商家页的首屏：店招图、店名、起送价与配送时间提示，以及一个「进店逛逛」入口。技术：单 surface，surfaceId 为 waimai-shop-home，root 组件 id 为 shop-home-root 且为 Card；须同时包含 beginRendering 与 surfaceUpdate；components 至少 8 个节点，覆盖 Card/Column/Row/Text/Image/Icon/Button；至少两处 Text 使用 path 与 literalString 占位（如店名、起送价）；至少一个 Image（店招）与一个 Button（child 指向「进店逛逛」的 Text）。id 语义化且唯一。"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "simple-text",
+        "root": "text",
+        "styles": {
+          "theme": "apple",
+          "primaryColor": "#1d1d1f"
+        }
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "simple-text",
+        "components": [
+          {
+            "id": "text",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "Hello, A2UI"
+                },
+                "usageHint": "h1"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

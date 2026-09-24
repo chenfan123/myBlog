@@ -1,0 +1,91 @@
+{
+  "messages": [
+    {
+      "beginRendering": {
+        "surfaceId": "local-update",
+        "root": "root"
+      }
+    },
+    {
+      "surfaceUpdate": {
+        "surfaceId": "local-update",
+        "components": [
+          {
+            "id": "root",
+            "component": {
+              "Column": {
+                "alignment": "stretch",
+                "distribution": "start",
+                "children": {
+                  "explicitList": [
+                    "message",
+                    "update-btn"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": "message",
+            "component": {
+              "Text": {
+                "text": {
+                  "path": "/message"
+                },
+                "usageHint": "h2"
+              }
+            }
+          },
+          {
+            "id": "update-label",
+            "component": {
+              "Text": {
+                "text": {
+                  "literalString": "更新文案"
+                },
+                "usageHint": "body"
+              }
+            }
+          },
+          {
+            "id": "update-btn",
+            "component": {
+              "Button": {
+                "child": "update-label",
+                "primary": true,
+                "action": {
+                  "name": "updateMessage",
+                  "context": [
+                    {
+                      "key": "__localUpdatePath",
+                      "value": {
+                        "literalString": "/message"
+                      }
+                    },
+                    {
+                      "key": "__localUpdateString",
+                      "value": {
+                        "literalString": "你好，文案已更新"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataModelUpdate": {
+        "surfaceId": "local-update",
+        "contents": [
+          {
+            "key": "message",
+            "valueString": "点按钮更新这行文案"
+          }
+        ]
+      }
+    }
+  ]
+}

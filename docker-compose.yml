@@ -48,6 +48,31 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  a2ui-server:
+    build:
+      context: ./apps/a2ui
+      dockerfile: Dockerfile.server
+    env_file:
+      - ./apps/agent/.env.local
+    environment:
+      PORT: 3000
+      DASHSCOPE_MODEL2: ${DASHSCOPE_MODEL2:-qwen3.8-flash}
+      A2UI_SSE_INTERVAL_MS: ${A2UI_SSE_INTERVAL_MS:-160}
+      A2UI_MAX_TOKENS: ${A2UI_MAX_TOKENS:-8192}
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+
+  a2ui-web:
+    build:
+      context: ./apps/a2ui
+      dockerfile: Dockerfile.web
+    ports:
+      - "5173:80"
+    depends_on:
+      - a2ui-server
+    restart: unless-stopped
+
 volumes:
   myblog_postgres_data:
   myblog_redis_data:
