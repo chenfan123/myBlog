@@ -21,7 +21,7 @@ export function A2UIProfileEnhancement({
 
   useEffect(() => {
     if (status !== "loading") return;
-    const timeout = window.setTimeout(() => setStatus("error"), 190_000);
+    const timeout = window.setTimeout(() => setStatus("error"), 35_000);
     return () => window.clearTimeout(timeout);
   }, [status]);
 

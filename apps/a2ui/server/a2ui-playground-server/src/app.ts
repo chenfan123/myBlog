@@ -128,7 +128,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         server.generate({
           message: buildProfilePrompt(input),
           surfaceId: "profile-home",
-          maxOutputTokens: 3_000,
+          maxOutputTokens: 2_200,
           systemPrompt: buildCompactEmbedSystemPrompt({ surfaceId: "profile-home", catalogId: DEFAULT_CATALOG_ID }),
         }),
         Number(process.env.A2UI_PROFILE_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
@@ -213,7 +213,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         server.generate({
           message: buildPortfolioSectionPrompt(input),
           surfaceId: `portfolio-${input.kind}`,
-          maxOutputTokens: input.kind === "strengths" ? 3_000 : 4_500,
+          maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
           systemPrompt: buildCompactEmbedSystemPrompt({
             surfaceId: `portfolio-${input.kind}`,
             catalogId: DEFAULT_CATALOG_ID,
