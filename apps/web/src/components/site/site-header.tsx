@@ -9,11 +9,11 @@ const navigation: ReadonlyArray<{
   label: string;
   key?: "blog";
 }> = [
-  { href: "/#about", label: "优势" },
-  { href: "/#skills", label: "技术栈" },
-  { href: "/#experience", label: "工作经历" },
-  { href: "/#projects", label: "项目经历" },
-  { href: "/#agent-demo", label: "Agent 实现" },
+  { href: "/about", label: "优势" },
+  { href: "/skills", label: "技术栈" },
+  { href: "/experience", label: "工作经历" },
+  { href: "/projects", label: "项目经历" },
+  { href: "/agents", label: "Agent 实现" },
   { href: "/blog", label: "博客", key: "blog" },
 ];
 
@@ -27,7 +27,7 @@ export function SiteHeader({
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-10">
         <Link
           className="flex items-center gap-2 font-mono text-sm font-semibold"
-          href="/#profile"
+          href="/"
         >
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             C
@@ -39,6 +39,7 @@ export function SiteHeader({
             <Link
               key={item.href}
               href={item.href}
+              scroll={false}
               aria-current={item.key === activePath ? "page" : undefined}
               className="transition-colors hover:text-foreground aria-[current=page]:font-medium aria-[current=page]:text-primary"
             >
@@ -49,7 +50,7 @@ export function SiteHeader({
         <div className="flex items-center gap-1.5">
           <HeaderAccount />
           <Button asChild size="sm" variant="outline">
-            <Link href="/#contact">
+            <Link href="/contact" scroll={false}>
               <Mail />
               <span className="hidden sm:inline">联系我</span>
             </Link>

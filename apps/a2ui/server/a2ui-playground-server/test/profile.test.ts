@@ -28,7 +28,7 @@ test("normalizes profile data and removes unsupported values", () => {
   });
 });
 
-test("profile prompt fixes the layout contract and preserves provided facts", () => {
+test("profile prompt permits controlled creativity while preserving provided facts", () => {
   const profile = normalizeProfileInput({
     name: "陈健华",
     role: "前端开发工程师 / Agent 开发工程师",
@@ -41,7 +41,9 @@ test("profile prompt fixes the layout contract and preserves provided facts", ()
   const prompt = buildProfilePrompt(profile);
 
   assert.match(prompt, /A2UI v0\.8/);
-  assert.match(prompt, /不得修改姓名、电话、邮箱、履历或自行补充事实/);
+  assert.match(prompt, /不得杜撰、夸大或新增经历/);
+  assert.match(prompt, /可以把 introduction 改写为 1 至 2 句/);
+  assert.match(prompt, /编辑式个人主页、现代产品仪表盘、科技品牌名片/);
   assert.match(prompt, /不要生成头像、导航栏、表单、弹窗、图片或整页背景/);
   assert.match(prompt, /最多生成 20 个组件/);
   assert.match(prompt, /禁止把每项技术拆成独立组件/);

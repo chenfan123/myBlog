@@ -10,6 +10,11 @@ function maxOutputTokens() {
   return Number.isFinite(raw) && raw > 0 ? raw : 8192;
 }
 
+function outputTokensFor(input: GenerateA2UIInput) {
+  const requested = Number(input.maxOutputTokens);
+  return Number.isFinite(requested) && requested > 0 ? requested : maxOutputTokens();
+}
+
 /** 百炼 Qwen3.8-Max / DeepSeek 默认会先长思考，A2UI 协议半天出不来。默认关掉。 */
 function thinkingOff(kind: string): { extra_body?: { enable_thinking: boolean } } {
   if (kind !== "dashscope" || process.env.A2UI_ENABLE_THINKING === "1") {
@@ -24,7 +29,7 @@ function buildChatMessages(input: GenerateA2UIInput) {
     | { role: "system"; content: string }
     | { role: "user"; content: ReturnType<typeof buildUserContent> }
     | { role: "assistant"; content: string }
-  > = [{ role: "system", content: buildAgentSystemPrompt(input) }];
+  > = [{ role: "system", content: input.systemPrompt?.trim() || buildAgentSystemPrompt(input) }];
 
   const prior = buildPriorAssistantContent(input);
   if (prior) {
@@ -99,7 +104,7 @@ export function createOpenAIAgent(options?: OpenAIAgentOptions): A2UIAgent {
         const completion = await client.chat.completions.create({
           model: selectedModel,
           temperature: 0.2,
-          max_tokens: maxOutputTokens(),
+          max_tokens: outputTokensFor(input),
           messages: buildChatMessages(input),
           ...thinkingOff(kind),
         });
@@ -122,7 +127,7 @@ export function createOpenAIAgent(options?: OpenAIAgentOptions): A2UIAgent {
         completion = await client.chat.completions.create({
           model: selectedModel,
           temperature: 0.2,
-          max_tokens: maxOutputTokens(),
+          max_tokens: outputTokensFor(input),
           stream: true,
           messages: buildChatMessages(input),
           ...thinkingOff(kind),

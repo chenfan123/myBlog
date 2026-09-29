@@ -17,6 +17,8 @@ import { DEFAULT_CATALOG_ID, type A2UIMessage } from "./protocol";
 export interface GenerateInput {
   message: string;
   surfaceId?: string;
+  systemPrompt?: string;
+  maxOutputTokens?: number;
   mockId?: string;
   images?: AgentImage[];
   history?: string[];
@@ -89,6 +91,8 @@ export function createA2UIServer(options: { agent: A2UIAgent; catalogId?: string
         message: prompt,
         surfaceId,
         catalogId,
+        systemPrompt: input.systemPrompt,
+        maxOutputTokens: input.maxOutputTokens,
         images,
         history,
         currentMessages,
@@ -105,6 +109,8 @@ export function createA2UIServer(options: { agent: A2UIAgent; catalogId?: string
         message: prompt,
         surfaceId,
         catalogId,
+        systemPrompt: input.systemPrompt,
+        maxOutputTokens: input.maxOutputTokens,
         images,
         history,
         currentMessages: merged,
@@ -129,6 +135,8 @@ export function createA2UIServer(options: { agent: A2UIAgent; catalogId?: string
       message: string;
       surfaceId: string;
       catalogId: string;
+      systemPrompt?: string;
+      maxOutputTokens?: number;
       images: AgentImage[];
       history?: string[];
       currentMessages?: A2UIMessage[];
@@ -193,6 +201,8 @@ export function createA2UIServer(options: { agent: A2UIAgent; catalogId?: string
           message: prompt,
           surfaceId,
           catalogId,
+          systemPrompt: input.systemPrompt,
+          maxOutputTokens: input.maxOutputTokens,
           images,
           history,
           currentMessages: extra ? flattenMerged(currentMessages, patches, surfaceId, catalogId) : currentMessages,

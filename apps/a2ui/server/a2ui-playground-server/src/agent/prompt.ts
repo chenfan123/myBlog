@@ -49,6 +49,27 @@ export function buildAgentSystemPrompt(input: BuildAgentSystemPromptInput): stri
   ].join("\n\n");
 }
 
+/**
+ * 首页个人资料区块的数据和组件类型均受控，不需要每次发送完整的 5 万余字符规范。
+ * 这里保留可闭环渲染所需的全部格式约束，显著降低首 token 与整体生成耗时。
+ */
+export function buildCompactEmbedSystemPrompt(input: BuildAgentSystemPromptInput): string {
+  const catalogId = input.catalogId ?? DEFAULT_CATALOG_ID;
+  return [
+    "你是 A2UI v0.8 协议生成器。只输出 JSONL，每行一个 JSON 对象；禁止 Markdown、代码围栏和解释。",
+    `所有消息 surfaceId 固定为 ${JSON.stringify(input.surfaceId)}，catalogId 固定为 ${JSON.stringify(catalogId)}。`,
+    "第一行必须是 beginRendering，包含 surfaceId、root、catalogId、styles。其余每行必须是 surfaceUpdate，且 components 数组恰好包含一个组件。",
+    "每个被 child 或 explicitList 引用的 id 都必须有对应 surfaceUpdate；id 不得重复；输出必须形成从 root 可达的完整树。",
+    "仅允许 Text、Column、Row、Card、Button、Icon、Divider。不要输出未知属性。",
+    'Text 格式：{\"Text\":{\"text\":{\"literalString\":\"文字\"},\"usageHint\":\"h1|h2|h3|h4|body|caption\"}}。',
+    'Column/Row 格式：{\"Column\":{\"alignment\":\"stretch\",\"distribution\":\"start\",\"children\":{\"explicitList\":[\"id\"]}}}；Row 同理。',
+    'Card 格式：{\"Card\":{\"child\":\"id\"}}。Divider 格式：{\"Divider\":{}}。',
+    'Button 格式：{\"Button\":{\"child\":\"label-id\",\"primary\":true,\"action\":{\"name\":\"openAgent\",\"context\":[{\"key\":\"url\",\"value\":{\"literalString\":\"/path\"}}]}}}。',
+    "styles 使用 theme=apple、primaryColor=#5f9400、background=#ffffff、surfaceColor=#ffffff、textColor=#17212b、mutedTextColor=#667085、radius=16、formFactor=desktop。",
+    "必须忠实使用用户消息中的数据，不得补写公司、项目、数字、技能或经历事实。",
+  ].join("\n");
+}
+
 export function promptTemplatePaths() {
   return {
     templates: Object.values(TEMPLATE_FILES).map((name) => join(PROMPTS_DIR, name)),

@@ -1,0 +1,219 @@
+html:has(.section-embed), body:has(.section-embed), #root:has(.section-embed) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  background: transparent;
+}
+
+.section-embed {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  padding: 22px 4px 10px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  color: #17212b;
+  background: transparent;
+}
+
+.section-embed > [data-a2ui-surface] {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden;
+}
+.section-embed [data-a2ui-id="root"] {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 16px !important;
+}
+.section-embed [data-a2ui-surface] [data-a2ui] {
+  box-sizing: border-box;
+  max-width: 100%;
+  animation: section-print-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.section-embed [data-a2ui="Card"] {
+  border: 1px solid rgb(95 148 0 / 18%);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgb(255 255 255 / 98%), rgb(246 250 238 / 92%));
+  box-shadow: 0 14px 36px rgb(44 74 23 / 6%);
+}
+.section-embed [data-a2ui-id="eyebrow"] {
+  color: #71992a !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  letter-spacing: .16em !important;
+}
+.section-embed [data-a2ui-id="title"] {
+  margin-bottom: 8px !important;
+  font-size: clamp(26px, 3vw, 38px) !important;
+}
+.section-embed [data-a2ui-id^="row-"] {
+  gap: 16px !important;
+  align-items: stretch !important;
+}
+.section-embed [data-a2ui-id^="item-"] {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+}
+.section-embed [data-a2ui="Text"][data-usage-hint="h1"],
+.section-embed [data-a2ui="Text"][data-usage-hint="h2"] {
+  color: #17212b;
+  letter-spacing: -0.035em;
+}
+.section-embed [data-a2ui="Text"][data-usage-hint="h3"],
+.section-embed [data-a2ui="Text"][data-usage-hint="h4"] { color: #4f7d08; }
+.section-embed [data-a2ui="Text"][data-usage-hint="body"] { line-height: 1.75; }
+.section-embed [data-a2ui="Text"][data-usage-hint="caption"] { color: #697165; }
+.section-embed [data-a2ui="Button"] { border-radius: 12px; }
+
+/* 个人优势：紧凑双列能力矩阵，编号与正文分层。 */
+.section-embed--strengths [data-a2ui-id^="item-"] {
+  min-height: 138px;
+  background:
+    radial-gradient(circle at 92% 8%, rgb(150 204 52 / 16%), transparent 35%),
+    linear-gradient(145deg, #fff, #f7faef 92%);
+}
+.section-embed--strengths [data-a2ui-id^="strength-"][data-a2ui-id$="-column"] {
+  height: 100%;
+  gap: 18px !important;
+  padding: 4px;
+}
+.section-embed--strengths [data-a2ui-id$="-number"] {
+  width: fit-content;
+  border-bottom: 2px solid #83b412;
+  color: #5f9400 !important;
+  font: 750 13px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  letter-spacing: .12em;
+}
+.section-embed--strengths [data-a2ui-id$="-body"] {
+  max-width: 48ch;
+  color: #273226 !important;
+  font-size: 15px !important;
+  line-height: 1.75 !important;
+}
+
+/* 工作经历：时间线式卡片，确保长内容完整展开。 */
+.section-embed--experiences [data-a2ui-id^="row-"] {
+  display: block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin-right: 10px;
+}
+.section-embed--experiences [data-a2ui-id^="item-"] {
+  position: relative;
+  width: auto !important;
+  max-width: calc(100% - 2px) !important;
+  margin-right: 2px;
+  margin-bottom: 18px;
+  border-left: 4px solid #76a809;
+  background: linear-gradient(105deg, #fff 0%, #fafcf5 68%, #f0f7df 100%);
+}
+.section-embed--experiences [data-a2ui-id^="experience-"][data-a2ui-id$="-column"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 13px !important;
+}
+.section-embed--experiences [data-a2ui-id$="-top"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 7px !important;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(95 148 0 / 16%);
+}
+.section-embed--experiences [data-a2ui-id$="-time"] {
+  flex: 0 0 auto;
+  width: fit-content !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #eff7dc;
+  color: #5f7f20 !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+.section-embed--experiences [data-a2ui-id$="-content"],
+.section-embed--experiences [data-a2ui-id$="-achievement"] {
+  white-space: pre-line;
+}
+.section-embed--experiences [data-a2ui-id$="-achievement-label"] {
+  margin-top: 4px;
+  color: #5f9400 !important;
+  font-weight: 750 !important;
+  letter-spacing: .08em;
+}
+
+/* Agent：作品集网格，而不是普通信息列表。 */
+.section-embed--agents [data-a2ui-id^="item-"] {
+  min-height: 260px;
+  border-color: rgb(95 148 0 / 24%);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 100%), rgb(245 250 234 / 96%)),
+    #fff;
+  box-shadow: 0 18px 45px rgb(49 78 25 / 8%);
+}
+.section-embed--agents [data-a2ui-id^="agent-"][data-a2ui-id$="-column"] {
+  height: 100%;
+  gap: 15px !important;
+}
+.section-embed--agents [data-a2ui-id$="-top"] {
+  gap: 14px !important;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgb(95 148 0 / 16%);
+}
+.section-embed--agents [data-a2ui-id$="-status"] {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  border: 1px solid rgb(95 148 0 / 22%);
+  border-radius: 999px;
+  background: #f1f8df;
+  color: #5f7d21 !important;
+  font-weight: 700 !important;
+}
+.section-embed--agents [data-a2ui-id$="-description"] {
+  min-height: 56px;
+  color: #3e493d !important;
+}
+.section-embed--agents [data-a2ui-id$="-stack-label"] {
+  margin-top: auto;
+  color: #81a83d !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: .14em;
+}
+.section-embed--agents [data-a2ui-id$="-tags"] {
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: rgb(235 242 221 / 72%);
+  color: #53634e !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+}
+.section-embed--agents [data-a2ui="Button"] {
+  width: fit-content;
+  margin-top: 4px;
+  background: #17212b !important;
+  box-shadow: 0 8px 18px rgb(23 33 43 / 14%);
+}
+
+@keyframes section-print-in {
+  from { opacity: 0; transform: translateY(8px); filter: blur(2px); clip-path: inset(0 100% 0 0); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); clip-path: inset(0 0 0 0); }
+}
+
+@media (max-width: 720px) {
+  .section-embed { padding-top: 14px; }
+  .section-embed [data-a2ui-id^="row-"] { display: block !important; }
+  .section-embed [data-a2ui-id^="item-"] { margin-bottom: 14px; }
+  .section-embed--experiences [data-a2ui-id$="-top"] { display: block !important; }
+  .section-embed--experiences [data-a2ui-id$="-time"] { width: fit-content; margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .section-embed [data-a2ui-surface] [data-a2ui] { animation: none; } }

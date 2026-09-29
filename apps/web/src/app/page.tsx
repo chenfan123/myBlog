@@ -16,7 +16,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { DownloadResumeButton } from '@/components/resume/download-resume-button';
 import { A2UIProfileEnhancement } from '@/components/profile/a2ui-profile-enhancement';
+import { A2UISectionEnhancement } from '@/components/profile/a2ui-section-enhancement';
 import { SiteHeader } from '@/components/site/site-header';
+import { PortfolioRouteScroll } from '@/components/site/portfolio-route-scroll';
 import { fetchResume, type ResumeData } from '@/lib/resume';
 import Link from 'next/link';
 
@@ -199,6 +201,7 @@ export default async function Home() {
   ];
   return (
     <main className="print-resume min-h-screen overflow-hidden">
+      <PortfolioRouteScroll />
       <SiteHeader />
 
       <section
@@ -266,9 +269,9 @@ export default async function Home() {
             </div>
             <div className="print-hidden mt-10 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <a href="#experience">
+                <Link href="/experience" scroll={false}>
                   查看工作经历 <ArrowRight />
-                </a>
+                </Link>
               </Button>
               <DownloadResumeButton fileName={profile.name} />
             </div>
@@ -340,6 +343,7 @@ export default async function Home() {
       </section>
 
       <section id="about" className="border-y bg-white/70">
+        <A2UISectionEnhancement kind="strengths" title="个人优势" items={strengths}>
         <div
           className={
             hasManyStrengths
@@ -373,12 +377,15 @@ export default async function Home() {
             ))}
           </div>
         </div>
+        </A2UISectionEnhancement>
       </section>
 
       <section
         id="experience"
-        className="mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[0.35fr_1fr] lg:px-10"
+        className="mx-auto max-w-7xl px-6 py-20 lg:px-10"
       >
+        <A2UISectionEnhancement kind="experiences" title="工作经历" items={experiences}>
+        <div className="grid gap-14 lg:grid-cols-[0.35fr_1fr]">
         <SectionHeading
           eyebrow="经历"
           title="工作经历"
@@ -410,6 +417,8 @@ export default async function Home() {
             </article>
           ))}
         </div>
+        </div>
+        </A2UISectionEnhancement>
       </section>
 
       <section id="projects" className="border-y bg-white/70">
@@ -461,6 +470,7 @@ export default async function Home() {
         id="agent-demo"
         className="mx-auto max-w-7xl px-6 py-20 lg:px-10"
       >
+        <A2UISectionEnhancement kind="agents" title="Agent 实现" items={visibleAgentDemos}>
         <div className="mb-10 grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-end">
           <SectionHeading
             eyebrow="开发中的功能"
@@ -520,6 +530,7 @@ export default async function Home() {
             </Card>
           ))}
         </div>
+        </A2UISectionEnhancement>
       </section>
 
       <footer id="contact" className="border-t bg-white/75">

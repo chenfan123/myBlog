@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { createAgentFromEnv } from "../src/agent";
 import { createChatFromEnv } from "../src/chat/openai-chat";
-import { dashscopeImageModel, dashscopeTextModel } from "../src/env";
+import { dashscopeImageModel, dashscopeTextModel, dashscopeVisionModel } from "../src/env";
 
 const KEYS = [
   "DASHSCOPE_API_KEY",
@@ -42,12 +42,13 @@ describe("createAgentFromEnv", () => {
     }
     process.env.DASHSCOPE_API_KEY = "sk-test";
     process.env.DASHSCOPE_API_BASE = "https://example.invalid/v1";
-    process.env.DASHSCOPE_MODEL = "qwen3.8-omni-flash";
-    process.env.DASHSCOPE_MODEL2 = "qwen3.8-flash";
+    process.env.DASHSCOPE_MODEL = "deepseek-v4-pro-0813";
+    process.env.DASHSCOPE_MODEL2 = "qwen3.8-omni-flash-realtime";
     assert.equal(createAgentFromEnv().kind, "dashscope");
-    assert.equal(dashscopeTextModel(), "qwen3.8-flash");
+    assert.equal(dashscopeTextModel(), "deepseek-v4-pro-0813");
+    assert.equal(dashscopeVisionModel(), "qwen3.8-omni-flash-realtime");
     assert.equal(dashscopeImageModel(), "qwen-image-plus");
-    assert.equal(createChatFromEnv()?.model, "qwen3.8-flash");
+    assert.equal(createChatFromEnv()?.model, "deepseek-v4-pro-0813");
   });
 
   it("uses DASHSCOPE_MODEL for images when it is an image model", () => {

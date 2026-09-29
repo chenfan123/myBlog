@@ -20,39 +20,18 @@ function notifyHost(type: "a2ui:profile-ready" | "a2ui:profile-error", detail?: 
   window.parent.postMessage({ type, detail }, window.location.origin);
 }
 
-function wait(ms: number, signal: AbortSignal) {
-  return new Promise<void>((resolve, reject) => {
-    const onAbort = () => {
-      window.clearTimeout(timer);
-      reject(new DOMException("Aborted", "AbortError"));
-    };
-    const timer = window.setTimeout(() => {
-      signal.removeEventListener("abort", onAbort);
-      resolve();
-    }, ms);
-    signal.addEventListener("abort", onAbort, { once: true });
-  });
-}
-
 async function requestProfile(payload: ProfilePayload, signal: AbortSignal): Promise<unknown> {
-  while (!signal.aborted) {
-    const response = await fetch(apiUrl("/v1/profile"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(payload),
-      signal,
-    });
-    const result: unknown = await response.json();
-    if (response.status === 202) {
-      const retryAfterMs = Number((result as { retryAfterMs?: unknown })?.retryAfterMs);
-      await wait(Number.isFinite(retryAfterMs) ? Math.max(500, retryAfterMs) : 1_500, signal);
-      continue;
-    }
-    const error = payloadErrorMessage(result, `HTTP ${response.status}`);
-    if (!response.ok || error) throw new Error(error ?? `HTTP ${response.status}`);
-    return result;
-  }
-  throw new DOMException("Aborted", "AbortError");
+  const response = await fetch(apiUrl("/v1/profile"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
+    signal,
+    cache: "no-store",
+  });
+  const result: unknown = await response.json();
+  const error = payloadErrorMessage(result, `HTTP ${response.status}`);
+  if (!response.ok || error) throw new Error(error ?? `HTTP ${response.status}`);
+  return result;
 }
 
 export function ProfileEmbed() {
@@ -74,7 +53,7 @@ export function ProfileEmbed() {
       requestRef.current?.abort();
       const controller = new AbortController();
       requestRef.current = controller;
-      const timeout = window.setTimeout(() => controller.abort(), 120_000);
+      const timeout = window.setTimeout(() => controller.abort(), 180_000);
       setTree(null);
       storeRef.current = resetA2UIStore({
         renderMap,

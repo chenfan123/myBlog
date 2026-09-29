@@ -20,6 +20,12 @@ export function A2UIProfileEnhancement({
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
+    if (status !== "loading") return;
+    const timeout = window.setTimeout(() => setStatus("error"), 190_000);
+    return () => window.clearTimeout(timeout);
+  }, [status]);
+
+  useEffect(() => {
     const sendProfile = () => {
       iframeRef.current?.contentWindow?.postMessage(
         {
@@ -59,9 +65,9 @@ export function A2UIProfileEnhancement({
         }`}
       >
           <Sparkles className="size-4" />
-          {status === "loading" ? "A2UI 生成中" : status === "ready" ? "A2UI 动态生成" : "A2UI 生成失败"}
+          {status === "loading" ? "A2UI 生成中" : status === "ready" ? "A2UI 动态生成" : "已切换原始内容"}
       </span>
-      <div className="hidden print:block">
+      <div className={status === "error" ? "block" : "hidden print:block"}>
         {children}
       </div>
       <iframe
@@ -71,7 +77,8 @@ export function A2UIProfileEnhancement({
         onLoad={() => {
           setStatus("loading");
         }}
-        className="print-hidden absolute inset-0 size-full border-0 bg-white"
+        onError={() => setStatus("error")}
+        className={`print-hidden absolute inset-0 size-full border-0 bg-white ${status === "error" ? "invisible pointer-events-none" : "visible"}`}
       />
     </div>
   );

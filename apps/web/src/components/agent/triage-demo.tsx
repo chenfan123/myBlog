@@ -239,7 +239,7 @@ export function TriageDemo() {
             <div className="flex items-center gap-2 font-medium text-[#31583e]"><ShieldCheck className="size-4" />安全提示</div>
             <p className="mt-1.5">本服务仅提供就诊科室参考，不能替代医生诊断。</p>
           </div>
-          <Link href="/#agent-demo" className="mt-3 flex items-center gap-2 px-2 py-2 text-xs text-muted-foreground hover:text-foreground"><ArrowLeft className="size-3.5" />返回项目介绍</Link>
+          <Link href="/agents" scroll={false} className="mt-3 flex items-center gap-2 px-2 py-2 text-xs text-muted-foreground hover:text-foreground"><ArrowLeft className="size-3.5" />返回项目介绍</Link>
         </div>
       </aside>
 

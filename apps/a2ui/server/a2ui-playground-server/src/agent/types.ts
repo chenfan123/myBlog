@@ -8,6 +8,10 @@ export interface GenerateA2UIInput {
   message: string;
   surfaceId: string;
   catalogId?: string;
+  /** 已知、受控的小型嵌入区块可使用精简协议约束，避免重复发送完整规范。 */
+  systemPrompt?: string;
+  /** 为小型嵌入区块限制输出规模，避免模型按通用上限持续生成。 */
+  maxOutputTokens?: number;
   images?: AgentImage[];
   /** 此前用户说过的话（不含本轮）。 */
   history?: string[];

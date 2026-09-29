@@ -30,14 +30,14 @@ export function loadDotEnv(file = resolve(__dirname, "../.env")): void {
   }
 }
 
-/** 多语言出界面 / 对话：优先 DASHSCOPE_MODEL2。 */
+/** 纯文本 A2UI 协议和界面对话使用主文本模型。 */
 export function dashscopeTextModel(): string {
-  return process.env.DASHSCOPE_MODEL2?.trim() || process.env.DASHSCOPE_MODEL?.trim() || "qwen-plus";
+  return process.env.DASHSCOPE_MODEL?.trim() || "qwen-plus";
 }
 
-/** 多模态看图：优先 VL，否则 DASHSCOPE_MODEL。 */
+/** 带图理解并生成 A2UI 协议使用 MODEL2；VL 仅兼容旧配置。 */
 export function dashscopeVisionModel(): string {
-  return process.env.DASHSCOPE_VL_MODEL?.trim() || process.env.DASHSCOPE_MODEL?.trim() || dashscopeTextModel();
+  return process.env.DASHSCOPE_MODEL2?.trim() || process.env.DASHSCOPE_VL_MODEL?.trim() || dashscopeTextModel();
 }
 
 /** DashScope 文生图模型（兼容 /images/generations），不是 Omni / 对话模型。 */
