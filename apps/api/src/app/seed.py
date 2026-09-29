@@ -109,7 +109,7 @@ INITIAL_RESUME = {
         {
             "title": "个人知识库 Agent",
             "description": (
-                "支持文档检索、多轮追问、引用溯源和记忆管理的知识问答 Demo。"
+                "支持文档检索、多轮追问、引用溯源和记忆管理的知识问答 Agent。"
             ),
             "tags": ["LangGraph", "RAG", "Milvus"],
             "status": "规划中",

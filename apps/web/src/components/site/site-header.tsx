@@ -13,7 +13,7 @@ const navigation: ReadonlyArray<{
   { href: "/#skills", label: "技术栈" },
   { href: "/#experience", label: "工作经历" },
   { href: "/#projects", label: "项目经历" },
-  { href: "/#agent-demo", label: "Agent Demo" },
+  { href: "/#agent-demo", label: "Agent 实现" },
   { href: "/blog", label: "博客", key: "blog" },
 ];
 

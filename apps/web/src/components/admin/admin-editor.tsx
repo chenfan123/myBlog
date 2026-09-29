@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, BookOpen, Check, Code2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUp,
+  BookOpen,
+  Check,
+  Code2,
+  GripVertical,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +49,10 @@ export function AdminEditor() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [draggedProjectIndex, setDraggedProjectIndex] = useState<number | null>(
+    null,
+  );
+  const [projectDropIndex, setProjectDropIndex] = useState<number | null>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<Status>({ tone: "idle", message: "" });
 
@@ -116,6 +128,28 @@ export function AdminEditor() {
       ...current,
       expectation: { ...current.expectation, [key]: value },
     }));
+
+  const moveProject = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex) return;
+    setResume((current) => {
+      if (
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= current.projects.length ||
+        toIndex >= current.projects.length
+      ) {
+        return current;
+      }
+      const projects = [...current.projects];
+      const [movedProject] = projects.splice(fromIndex, 1);
+      projects.splice(toIndex, 0, movedProject);
+      return { ...current, projects };
+    });
+    setStatus({
+      tone: "idle",
+      message: "项目顺序已调整，请点击底部“保存全部修改”完成保存。",
+    });
+  };
 
   const uploadAvatar = async (file: File | undefined) => {
     if (!file) return;
@@ -424,90 +458,173 @@ export function AdminEditor() {
         />
       </EditorSection>
 
-      <EditorSection title="项目经历" description="项目可以动态增删。">
+      <EditorSection
+        title="项目经历"
+        description="拖动左上角手柄调整顺序，完成后保存全部修改。"
+      >
         <div className="space-y-4">
           {resume.projects.map((item, index) => (
-            <RepeaterCard
-              key={`project-${index}`}
-              title={`项目 ${index + 1}`}
-              onRemove={() =>
-                setResume((current) => ({
-                  ...current,
-                  projects: current.projects.filter(
-                    (_, itemIndex) => itemIndex !== index,
-                  ),
-                }))
-              }
+            <div
+              key={`project-${item.index}-${index}`}
+              className={`rounded-xl transition-[opacity,box-shadow] ${
+                draggedProjectIndex === index ? "opacity-50" : "opacity-100"
+              } ${
+                projectDropIndex === index && draggedProjectIndex !== index
+                  ? "ring-2 ring-primary/50 ring-offset-2"
+                  : ""
+              }`}
+              onDragOver={(event) => {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = "move";
+                setProjectDropIndex(index);
+              }}
+              onDragLeave={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+                  setProjectDropIndex(null);
+                }
+              }}
+              onDrop={(event) => {
+                event.preventDefault();
+                const sourceValue = event.dataTransfer.getData(
+                  "text/project-index",
+                );
+                const sourceIndex = Number(sourceValue);
+                if (sourceValue !== "" && Number.isInteger(sourceIndex)) {
+                  moveProject(sourceIndex, index);
+                }
+                setDraggedProjectIndex(null);
+                setProjectDropIndex(null);
+              }}
             >
-              <div className="grid gap-4 sm:grid-cols-2">
-                {(
-                  [
-                    ["name", "项目名称"],
-                    ["role", "项目角色"],
-                    ["time", "项目时间"],
-                  ] as const
-                ).map(([key, label]) => (
-                  <Field key={key} label={label}>
-                    <Input
-                      value={item[key]}
-                      onChange={(event) =>
-                        setResume((current) => ({
-                          ...current,
-                          projects: current.projects.map((entry, itemIndex) =>
-                            itemIndex === index
-                              ? { ...entry, [key]: event.target.value }
-                              : entry,
-                          ),
-                        }))
-                      }
-                    />
-                  </Field>
-                ))}
-              </div>
-              <Field label="项目介绍">
-                <Textarea
-                  value={item.summary}
-                  onChange={(event) =>
-                    setResume((current) => ({
-                      ...current,
-                      projects: current.projects.map((entry, itemIndex) =>
-                        itemIndex === index
-                          ? { ...entry, summary: event.target.value }
-                          : entry,
-                      ),
-                    }))
-                  }
-                />
-              </Field>
-              <Field label="个人贡献">
-                <LinesField
-                  value={item.contribution}
-                  onChange={(contribution) =>
-                    setResume((current) => ({
-                      ...current,
-                      projects: current.projects.map((entry, itemIndex) =>
-                        itemIndex === index
-                          ? { ...entry, contribution }
-                          : entry,
-                      ),
-                    }))
-                  }
-                />
-              </Field>
-              <Field label="技术栈">
-                <LinesField
-                  value={item.stack}
-                  onChange={(stack) =>
-                    setResume((current) => ({
-                      ...current,
-                      projects: current.projects.map((entry, itemIndex) =>
-                        itemIndex === index ? { ...entry, stack } : entry,
-                      ),
-                    }))
-                  }
-                />
-              </Field>
-            </RepeaterCard>
+              <RepeaterCard
+                title={`项目 ${index + 1}`}
+                headerLeading={
+                  <button
+                    type="button"
+                    draggable
+                    aria-label={`拖动项目 ${index + 1} 调整顺序`}
+                    title="按住拖动调整顺序"
+                    className="cursor-grab touch-none rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:cursor-grabbing"
+                    onDragStart={(event) => {
+                      event.dataTransfer.effectAllowed = "move";
+                      event.dataTransfer.setData(
+                        "text/project-index",
+                        String(index),
+                      );
+                      setDraggedProjectIndex(index);
+                    }}
+                    onDragEnd={() => {
+                      setDraggedProjectIndex(null);
+                      setProjectDropIndex(null);
+                    }}
+                  >
+                    <GripVertical className="size-5" />
+                  </button>
+                }
+                headerActions={
+                  <>
+                    <Button
+                      type="button"
+                      size="icon-sm"
+                      variant="ghost"
+                      disabled={index === 0}
+                      aria-label={`上移项目 ${index + 1}`}
+                      onClick={() => moveProject(index, index - 1)}
+                    >
+                      <ArrowUp />
+                    </Button>
+                    <Button
+                      type="button"
+                      size="icon-sm"
+                      variant="ghost"
+                      disabled={index === resume.projects.length - 1}
+                      aria-label={`下移项目 ${index + 1}`}
+                      onClick={() => moveProject(index, index + 1)}
+                    >
+                      <ArrowDown />
+                    </Button>
+                  </>
+                }
+                onRemove={() =>
+                  setResume((current) => ({
+                    ...current,
+                    projects: current.projects.filter(
+                      (_, itemIndex) => itemIndex !== index,
+                    ),
+                  }))
+                }
+              >
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {(
+                    [
+                      ["name", "项目名称"],
+                      ["role", "项目角色"],
+                      ["time", "项目时间"],
+                    ] as const
+                  ).map(([key, label]) => (
+                    <Field key={key} label={label}>
+                      <Input
+                        value={item[key]}
+                        onChange={(event) =>
+                          setResume((current) => ({
+                            ...current,
+                            projects: current.projects.map(
+                              (entry, itemIndex) =>
+                                itemIndex === index
+                                  ? { ...entry, [key]: event.target.value }
+                                  : entry,
+                            ),
+                          }))
+                        }
+                      />
+                    </Field>
+                  ))}
+                </div>
+                <Field label="项目介绍">
+                  <Textarea
+                    value={item.summary}
+                    onChange={(event) =>
+                      setResume((current) => ({
+                        ...current,
+                        projects: current.projects.map((entry, itemIndex) =>
+                          itemIndex === index
+                            ? { ...entry, summary: event.target.value }
+                            : entry,
+                        ),
+                      }))
+                    }
+                  />
+                </Field>
+                <Field label="个人贡献">
+                  <LinesField
+                    value={item.contribution}
+                    onChange={(contribution) =>
+                      setResume((current) => ({
+                        ...current,
+                        projects: current.projects.map((entry, itemIndex) =>
+                          itemIndex === index
+                            ? { ...entry, contribution }
+                            : entry,
+                        ),
+                      }))
+                    }
+                  />
+                </Field>
+                <Field label="技术栈">
+                  <LinesField
+                    value={item.stack}
+                    onChange={(stack) =>
+                      setResume((current) => ({
+                        ...current,
+                        projects: current.projects.map((entry, itemIndex) =>
+                          itemIndex === index ? { ...entry, stack } : entry,
+                        ),
+                      }))
+                    }
+                  />
+                </Field>
+              </RepeaterCard>
+            </div>
           ))}
         </div>
         <AddButton
@@ -533,14 +650,14 @@ export function AdminEditor() {
       </EditorSection>
 
       <EditorSection
-        title="Agent Demo"
-        description="单独管理 Demo 名称、介绍、状态和链接。"
+        title="Agent 实现"
+        description="单独管理 Agent 名称、介绍、状态和访问链接。"
       >
         <div className="space-y-4">
           {resume.agent_demos.map((item, index) => (
             <RepeaterCard
               key={`agent-demo-${index}`}
-              title={`Agent Demo ${index + 1}`}
+              title={`Agent ${index + 1}`}
               onRemove={() =>
                 setResume((current) => ({
                   ...current,
@@ -555,7 +672,7 @@ export function AdminEditor() {
                   [
                     ["title", "名称"],
                     ["status", "状态"],
-                    ["demo_url", "Demo URL"],
+                    ["demo_url", "Agent 访问地址"],
                   ] as const
                 ).map(([key, label]) => (
                   <Field key={key} label={label}>
@@ -610,7 +727,7 @@ export function AdminEditor() {
           ))}
         </div>
         <AddButton
-          label="增加 Agent Demo"
+          label="增加 Agent"
           onClick={() =>
             setResume((current) => ({
               ...current,
@@ -699,24 +816,34 @@ function LinesField({
 }
 function RepeaterCard({
   title,
+  headerLeading,
+  headerActions,
   onRemove,
   children,
 }: {
   title: string;
+  headerLeading?: React.ReactNode;
+  headerActions?: React.ReactNode;
   onRemove: () => void;
   children: React.ReactNode;
 }) {
   return (
     <Card className="bg-background/60 py-0 shadow-none">
       <CardContent className="p-5">
-        <div className="mb-5 flex items-center justify-between">
-          <span className="flex items-center gap-2 font-mono text-xs">
-            <Code2 className="size-4 text-primary" />
-            {title}
-          </span>
-          <Button type="button" size="sm" variant="ghost" onClick={onRemove}>
-            删除
-          </Button>
+        <div className="mb-5 flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-1">
+            {headerLeading}
+            <span className="flex items-center gap-2 font-mono text-xs">
+              <Code2 className="size-4 text-primary" />
+              {title}
+            </span>
+          </div>
+          <div className="flex shrink-0 items-center gap-1">
+            {headerActions}
+            <Button type="button" size="sm" variant="ghost" onClick={onRemove}>
+              删除
+            </Button>
+          </div>
         </div>
         <div className="space-y-4">{children}</div>
       </CardContent>
@@ -750,8 +877,9 @@ function prepareResumeForSave(resume: ResumeData) {
       content: cleanLines(experience.content),
       achievements: cleanLines(experience.achievements),
     })),
-    projects: resume.projects.map((project) => ({
+    projects: resume.projects.map((project, index) => ({
       ...project,
+      index: String(index + 1).padStart(2, "0"),
       contribution: cleanLines(project.contribution),
       stack: cleanLines(project.stack),
     })),

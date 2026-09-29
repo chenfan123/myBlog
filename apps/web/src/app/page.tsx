@@ -134,7 +134,7 @@ const fallbackResume: ResumeData = {
     {
       title: '个人知识库 Agent',
       description:
-        '支持文档检索、多轮追问、引用溯源和记忆管理的知识问答 Demo。',
+        '支持文档检索、多轮追问、引用溯源和记忆管理的知识问答 Agent。',
       tags: ['LangGraph', 'RAG', 'Milvus'],
       status: '规划中',
       demo_url: '',
@@ -180,7 +180,7 @@ export default async function Home() {
           title: '智能导诊 Agent',
           description: '用户描述症状后，通过多轮追问和知识库检索，给出适合挂号的科室建议。',
           tags: ['LangGraph', 'RAG', 'FastAPI', 'Milvus'],
-          status: '本地 Demo',
+          status: '可体验',
           demo_url: '/agent-demo/medical-triage',
         },
       ]),
@@ -464,8 +464,8 @@ export default async function Home() {
         <div className="mb-10 grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-end">
           <SectionHeading
             eyebrow="开发中的功能"
-            title="Agent Demo"
-            description="这里放一些可以实际操作的 Agent 小项目。"
+            title="Agent 实现"
+            description="这里展示可以实际操作的 Agent 项目。"
           />
           <AgentWorkflow />
         </div>
@@ -485,7 +485,7 @@ export default async function Home() {
                       <span className="size-2 rounded-full bg-emerald-500" />
                     </div>
                     <div className="rounded-lg bg-muted p-3 text-xs leading-5 text-muted-foreground">
-                      Demo 完成后，可以在这里直接试用。
+                      Agent 完成后，可以在这里直接体验。
                     </div>
                   </div>
                 </div>
@@ -511,7 +511,7 @@ export default async function Home() {
                   {demo.demo_url ? (
                     <Button asChild className="mt-6" variant="outline">
                       <Link href={demo.demo_url}>
-                        查看 Demo <ArrowRight />
+                        查看 Agent <ArrowRight />
                       </Link>
                     </Button>
                   ) : null}
