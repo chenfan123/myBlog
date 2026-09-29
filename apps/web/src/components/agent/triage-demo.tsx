@@ -2,7 +2,7 @@
 
 import {
   ArrowLeft, ArrowUp, Bot, CirclePlus, Clock3, HeartPulse, History,
-  RotateCcw, ShieldCheck, Stethoscope, Trash2, UserRound,
+  Megaphone, RotateCcw, ShieldCheck, Stethoscope, Trash2, UserRound,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -269,6 +269,22 @@ export function TriageDemo() {
 
         <div ref={messageListRef} className="min-h-0 flex-1 overflow-y-auto scroll-smooth">
           <div className="mx-auto flex min-h-full w-full max-w-4xl flex-col px-4 py-8 sm:px-8 sm:py-10">
+            <aside
+              aria-label="智能导诊数据说明"
+              className="mb-4 rounded-2xl border border-amber-200 bg-amber-50/90 px-4 py-3.5 text-xs leading-6 text-amber-950 shadow-sm"
+            >
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg bg-amber-100 text-amber-700">
+                  <Megaphone className="size-4" />
+                </span>
+                <div>
+                  <p className="font-semibold">数据与能力说明</p>
+                  <p className="mt-1 text-amber-900/80">
+                    当前知识库数据采集自浙江大学医学院附属第一医院官网公开的科室与诊室信息，尚未引入疾病描述与对应科室的结构化关系。因此，本 Agent 现阶段更适合用于交互流程与技术方案展示，科室推荐结果仅供参考，不构成医疗建议。
+                  </p>
+                </div>
+              </div>
+            </aside>
             <div className="mb-8 rounded-2xl border border-[#dfe9dc] bg-[#f3f7f0] px-4 py-3 text-xs leading-6 text-[#5d7162] sm:flex sm:items-center sm:justify-between sm:gap-4">
               <span className="flex items-center gap-2 font-medium text-[#31583e]"><HeartPulse className="size-4" />请尽量描述部位、持续时间和伴随症状</span>
               <span className="mt-1 block sm:mt-0">如有胸痛、呼吸困难等紧急情况，请立即就医</span>
