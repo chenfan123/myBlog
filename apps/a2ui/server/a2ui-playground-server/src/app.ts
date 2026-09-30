@@ -23,7 +23,7 @@ import { parseChatTurns, type ChatClient, type ChatTurn } from "./chat/openai-ch
 import { generateDashscopeImage, readGeneratePrompt, sizeForUsageHint } from "./agent/image-generate";
 import { parseAgentImages } from "./agent/images";
 import { dashscopeImageModel, dashscopeTextModel, dashscopeVisionModel } from "./env";
-import { buildProfilePrompt, buildProfileProtocol, normalizeProfileInput, PROFILE_PROMPT_VERSION } from "./profile";
+import { buildProfilePrompt, buildProfileProtocol, normalizeProfileInput, PROFILE_PROMPT_VERSION, type ProfileInput } from "./profile";
 import { buildCompactEmbedSystemPrompt } from "./agent/prompt";
 import { DEFAULT_CATALOG_ID } from "./a2ui-server/protocol";
 import {
@@ -31,7 +31,9 @@ import {
   buildPortfolioSectionProtocol,
   normalizePortfolioSection,
   PORTFOLIO_SECTION_PROMPT_VERSION,
+  type PortfolioSectionInput,
 } from "./portfolio-section";
+import { PersistentCache } from "./persistent-cache";
 
 export interface CreateAppOptions {
   intervalMs?: number;
@@ -67,6 +69,135 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
   const sectionCache = new Map<string, { expiresAt: number; payload: Record<string, unknown> }>();
   const sectionPending = new Map<string, Promise<void>>();
   const sectionFailures = new Map<string, { expiresAt: number; error: A2UIServerError }>();
+  const persistentCache = new PersistentCache();
+  const refreshAheadMs = Number(process.env.A2UI_CACHE_REFRESH_AHEAD_MS ?? 3_600_000);
+
+  function startProfileGeneration(key: string, input: ProfileInput): Promise<void> {
+    const existing = profilePending.get(key);
+    if (existing) return existing;
+    const pending = withTimeout(
+      server.generate({
+        message: buildProfilePrompt(input),
+        surfaceId: "profile-home",
+        maxOutputTokens: 2_200,
+        systemPrompt: buildCompactEmbedSystemPrompt({ surfaceId: "profile-home", catalogId: DEFAULT_CATALOG_ID }),
+      }),
+      Number(process.env.A2UI_PROFILE_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
+    )
+      .then(async (generated) => {
+        if (generated.incomplete) {
+          throw new A2UIServerError(502, "PROFILE_INCOMPLETE", "generated profile protocol is incomplete");
+        }
+        const record = {
+          key,
+          input,
+          expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_CACHE_MS ?? 86_400_000),
+          payload: {
+            surfaceId: generated.surfaceId,
+            catalogId: generated.catalogId,
+            converted: generated.messages,
+          },
+        };
+        profileCache.set(key, record);
+        await persistentCache.set("profile", record).catch((error) => console.error("profile cache write failed", error));
+      })
+      .catch((error: unknown) => {
+        const failure = error instanceof A2UIServerError
+          ? error
+          : new A2UIServerError(502, "PROFILE_GENERATION_FAILED", error instanceof Error ? error.message : "profile generation failed");
+        // 刷新失败时保留最后一次成功结果；只有首次生成失败才写短期兜底。
+        const lastSuccess = profileCache.get(key);
+        if (lastSuccess && !lastSuccess.payload.fallback) return;
+        profileCache.set(key, {
+          expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_FAILURE_CACHE_MS ?? 15_000),
+          payload: {
+            surfaceId: "profile-home",
+            catalogId: DEFAULT_CATALOG_ID,
+            converted: buildProfileProtocol(input),
+            fallback: true,
+            fallbackReason: failure.code,
+          },
+        });
+      })
+      .finally(() => profilePending.delete(key));
+    profilePending.set(key, pending);
+    return pending;
+  }
+
+  function startSectionGeneration(key: string, input: PortfolioSectionInput): Promise<void> {
+    const existing = sectionPending.get(key);
+    if (existing) return existing;
+    const pending = withTimeout(
+      server.generate({
+        message: buildPortfolioSectionPrompt(input),
+        surfaceId: `portfolio-${input.kind}`,
+        maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
+        systemPrompt: buildCompactEmbedSystemPrompt({
+          surfaceId: `portfolio-${input.kind}`,
+          catalogId: DEFAULT_CATALOG_ID,
+        }),
+      }),
+      Number(process.env.A2UI_SECTION_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
+    )
+      .then(async (generated) => {
+        if (generated.incomplete) {
+          throw new A2UIServerError(502, "SECTION_INCOMPLETE", "generated section protocol is incomplete");
+        }
+        const record = {
+          key,
+          input,
+          expiresAt: Date.now() + Number(process.env.A2UI_SECTION_CACHE_MS ?? 86_400_000),
+          payload: {
+            surfaceId: generated.surfaceId,
+            catalogId: generated.catalogId,
+            converted: generated.messages,
+          },
+        };
+        sectionCache.set(key, record);
+        await persistentCache.set("section", record).catch((error) => console.error("section cache write failed", error));
+      })
+      .catch((error: unknown) => {
+        const failure = error instanceof A2UIServerError
+          ? error
+          : new A2UIServerError(502, "SECTION_GENERATION_FAILED", error instanceof Error ? error.message : "section generation failed");
+        const lastSuccess = sectionCache.get(key);
+        if (lastSuccess && !lastSuccess.payload.fallback) return;
+        sectionCache.set(key, {
+          expiresAt: Date.now() + Number(process.env.A2UI_SECTION_FAILURE_CACHE_MS ?? 15_000),
+          payload: {
+            surfaceId: `portfolio-${input.kind}`,
+            catalogId: DEFAULT_CATALOG_ID,
+            converted: buildPortfolioSectionProtocol(input),
+            fallback: true,
+            fallbackReason: failure.code,
+          },
+        });
+      })
+      .finally(() => sectionPending.delete(key));
+    sectionPending.set(key, pending);
+    return pending;
+  }
+
+  async function refreshPersistentCache(): Promise<void> {
+    if (!persistentCache.enabled) return;
+    const threshold = Date.now() + refreshAheadMs;
+    const [profiles, sections] = await Promise.all([
+      persistentCache.list<ProfileInput>("profile"),
+      persistentCache.list<PortfolioSectionInput>("section"),
+    ]);
+    await Promise.allSettled([
+      ...profiles.filter((record) => record.expiresAt <= threshold).map((record) => startProfileGeneration(record.key, record.input)),
+      ...sections.filter((record) => record.expiresAt <= threshold).map((record) => startSectionGeneration(record.key, record.input)),
+    ]);
+  }
+
+  if (persistentCache.enabled) {
+    const refreshIntervalMs = Number(process.env.A2UI_CACHE_REFRESH_INTERVAL_MS ?? 300_000);
+    const initialRefresh = setTimeout(() => void refreshPersistentCache(), 5_000);
+    const refreshTimer = setInterval(() => void refreshPersistentCache(), refreshIntervalMs);
+    initialRefresh.unref();
+    refreshTimer.unref();
+  }
 
   app.use(cors());
   app.use(async (ctx, next) => {
@@ -108,9 +239,17 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
     }
 
     const key = JSON.stringify({ promptVersion: PROFILE_PROMPT_VERSION, input });
-    const cached = profileCache.get(key);
-    if (cached && cached.expiresAt > Date.now()) {
-      ctx.body = { ...cached.payload, cached: true };
+    let cached = profileCache.get(key);
+    if (!cached) {
+      const persisted = await persistentCache.get<ProfileInput>("profile", key);
+      if (persisted) {
+        cached = persisted;
+        profileCache.set(key, persisted);
+      }
+    }
+    if (cached && !cached.payload.fallback) {
+      if (cached.expiresAt <= Date.now() + refreshAheadMs) void startProfileGeneration(key, input);
+      ctx.body = { ...cached.payload, cached: true, stale: cached.expiresAt <= Date.now() };
       return;
     }
 
@@ -122,51 +261,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
       throw failed.error;
     }
 
-    let pending = profilePending.get(key);
-    if (!pending && !retryBlocked) {
-      pending = withTimeout(
-        server.generate({
-          message: buildProfilePrompt(input),
-          surfaceId: "profile-home",
-          maxOutputTokens: 2_200,
-          systemPrompt: buildCompactEmbedSystemPrompt({ surfaceId: "profile-home", catalogId: DEFAULT_CATALOG_ID }),
-        }),
-        Number(process.env.A2UI_PROFILE_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
-      )
-        .then((generated) => {
-          if (generated.incomplete) {
-            throw new A2UIServerError(502, "PROFILE_INCOMPLETE", "generated profile protocol is incomplete");
-          }
-          const payload: Record<string, unknown> = {
-            surfaceId: generated.surfaceId,
-            catalogId: generated.catalogId,
-            converted: generated.messages,
-          };
-          profileCache.set(key, {
-            expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_CACHE_MS ?? 3_600_000),
-            payload,
-          });
-        })
-        .catch((error: unknown) => {
-          const failure =
-            error instanceof A2UIServerError
-              ? error
-              : new A2UIServerError(502, "PROFILE_GENERATION_FAILED", error instanceof Error ? error.message : "profile generation failed");
-          const fallback = buildProfileProtocol(input);
-          profileCache.set(key, {
-            expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_FAILURE_CACHE_MS ?? 15_000),
-            payload: {
-              surfaceId: "profile-home",
-              catalogId: DEFAULT_CATALOG_ID,
-              converted: fallback,
-              fallback: true,
-              fallbackReason: failure.code,
-            },
-          });
-        })
-        .finally(() => profilePending.delete(key));
-      profilePending.set(key, pending);
-    }
+    const pending = retryBlocked ? profilePending.get(key) : startProfileGeneration(key, input);
     // 同一份资料只创建一个生成任务；后续并发请求复用它，避免客户端轮询放大请求量。
     if (pending) await pending;
 
@@ -195,9 +290,17 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
     }
 
     const key = JSON.stringify({ promptVersion: PORTFOLIO_SECTION_PROMPT_VERSION, input });
-    const cached = sectionCache.get(key);
-    if (cached && cached.expiresAt > Date.now()) {
-      ctx.body = { ...cached.payload, cached: true };
+    let cached = sectionCache.get(key);
+    if (!cached) {
+      const persisted = await persistentCache.get<PortfolioSectionInput>("section", key);
+      if (persisted) {
+        cached = persisted;
+        sectionCache.set(key, persisted);
+      }
+    }
+    if (cached && !cached.payload.fallback) {
+      if (cached.expiresAt <= Date.now() + refreshAheadMs) void startSectionGeneration(key, input);
+      ctx.body = { ...cached.payload, cached: true, stale: cached.expiresAt <= Date.now() };
       return;
     }
 
@@ -207,57 +310,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
     }
     if (failed) sectionFailures.delete(key);
 
-    let pending = sectionPending.get(key);
-    if (!pending) {
-      pending = withTimeout(
-        server.generate({
-          message: buildPortfolioSectionPrompt(input),
-          surfaceId: `portfolio-${input.kind}`,
-          maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
-          systemPrompt: buildCompactEmbedSystemPrompt({
-            surfaceId: `portfolio-${input.kind}`,
-            catalogId: DEFAULT_CATALOG_ID,
-          }),
-        }),
-        Number(process.env.A2UI_SECTION_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
-      )
-        .then((generated) => {
-          if (generated.incomplete) {
-            throw new A2UIServerError(502, "SECTION_INCOMPLETE", "generated section protocol is incomplete");
-          }
-          sectionCache.set(key, {
-            expiresAt: Date.now() + Number(process.env.A2UI_SECTION_CACHE_MS ?? 3_600_000),
-            payload: {
-              surfaceId: generated.surfaceId,
-              catalogId: generated.catalogId,
-              converted: generated.messages,
-            },
-          });
-        })
-        .catch((error: unknown) => {
-          const failure =
-            error instanceof A2UIServerError
-              ? error
-              : new A2UIServerError(
-                  502,
-                  "SECTION_GENERATION_FAILED",
-                  error instanceof Error ? error.message : "section generation failed",
-                );
-          const fallback = buildPortfolioSectionProtocol(input);
-          sectionCache.set(key, {
-            expiresAt: Date.now() + Number(process.env.A2UI_SECTION_FAILURE_CACHE_MS ?? 15_000),
-            payload: {
-              surfaceId: `portfolio-${input.kind}`,
-              catalogId: DEFAULT_CATALOG_ID,
-              converted: fallback,
-              fallback: true,
-              fallbackReason: failure.code,
-            },
-          });
-        })
-        .finally(() => sectionPending.delete(key));
-      sectionPending.set(key, pending);
-    }
+    const pending = startSectionGeneration(key, input);
 
     // 等待共享任务结束，一次请求直接得到协议或明确错误，不再用 202 轮询。
     if (pending) await pending;

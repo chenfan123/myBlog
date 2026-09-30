@@ -128,8 +128,13 @@ services:
       A2UI_SECTION_CACHE_MS: ${A2UI_SECTION_CACHE_MS:-86400000}
       A2UI_SECTION_GENERATION_TIMEOUT_MS: ${A2UI_SECTION_GENERATION_TIMEOUT_MS:-90000}
       A2UI_SECTION_FAILURE_CACHE_MS: ${A2UI_SECTION_FAILURE_CACHE_MS:-15000}
+      A2UI_CACHE_DIR: /app/cache
+      A2UI_CACHE_REFRESH_INTERVAL_MS: ${A2UI_CACHE_REFRESH_INTERVAL_MS:-300000}
+      A2UI_CACHE_REFRESH_AHEAD_MS: ${A2UI_CACHE_REFRESH_AHEAD_MS:-3600000}
       A2UI_SSE_INTERVAL_MS: ${A2UI_SSE_INTERVAL_MS:-160}
       A2UI_MAX_TOKENS: ${A2UI_MAX_TOKENS:-8192}
+    volumes:
+      - a2ui_cache:/app/cache
     networks: [backend]
 
   a2ui-web:
@@ -179,6 +184,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  a2ui_cache:
 
 networks:
   backend:
