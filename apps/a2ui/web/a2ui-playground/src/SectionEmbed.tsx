@@ -76,6 +76,12 @@ export function SectionEmbed() {
             if (requestRef.current === controller) notifyHost("a2ui:section-error", "timeout");
             return;
           }
+          if (retryCountRef.current < 2) {
+            retryCountRef.current += 1;
+            notifyHost("a2ui:section-fallback");
+            retryTimerRef.current = window.setTimeout(() => run(payload), 5_000 * retryCountRef.current);
+            return;
+          }
           notifyHost("a2ui:section-error", error instanceof Error ? error.message : "request failed");
         })
         .finally(() => {

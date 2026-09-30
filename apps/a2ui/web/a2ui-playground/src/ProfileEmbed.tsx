@@ -84,6 +84,12 @@ export function ProfileEmbed() {
             if (requestRef.current === controller) notifyHost("a2ui:profile-error", "timeout");
             return;
           }
+          if (retryCountRef.current < 2) {
+            retryCountRef.current += 1;
+            notifyHost("a2ui:profile-fallback");
+            retryTimerRef.current = window.setTimeout(() => run(payload), 5_000 * retryCountRef.current);
+            return;
+          }
           notifyHost("a2ui:profile-error", error instanceof Error ? error.message : "request failed");
         })
         .finally(() => {
