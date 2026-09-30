@@ -1,7 +1,7 @@
 import { isValidElement, useEffect, useRef, useState } from "react";
 import { messagesToJsonl, parse, resetA2UIStore } from "a2ui-core";
 import { A2uiSurface, renderMap } from "a2ui-react";
-import { apiUrl, payloadErrorMessage, readA2uiMessages } from "./ag-ui";
+import { apiUrl, consumeSse, payloadErrorMessage } from "./ag-ui";
 import "./ProfileEmbed.css";
 
 type ProfilePayload = {
@@ -22,18 +22,42 @@ function notifyHost(type: "a2ui:profile-ready" | "a2ui:profile-fallback" | "a2ui
   window.parent.postMessage({ type, detail }, window.location.origin);
 }
 
-async function requestProfile(payload: ProfilePayload, signal: AbortSignal): Promise<unknown> {
-  const response = await fetch(apiUrl("/v1/profile"), {
+async function streamProfile(
+  payload: ProfilePayload,
+  signal: AbortSignal,
+  onMessage: (message: unknown) => void,
+): Promise<void> {
+  const response = await fetch(apiUrl("/v1/profile?sse=1"), {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
     body: JSON.stringify(payload),
     signal,
     cache: "no-store",
   });
-  const result: unknown = await response.json();
-  const error = payloadErrorMessage(result, `HTTP ${response.status}`);
-  if (!response.ok || error) throw new Error(error ?? `HTTP ${response.status}`);
-  return result;
+  if (!response.ok) {
+    let detail = `HTTP ${response.status}`;
+    try {
+      detail = payloadErrorMessage(await response.json(), detail) ?? detail;
+    } catch {}
+    throw new Error(detail);
+  }
+  if (!response.body) throw new Error("A2UI profile stream is unavailable");
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let leftover = "";
+  let finished = false;
+  while (!signal.aborted) {
+    const { done, value } = await reader.read();
+    leftover += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+    leftover = consumeSse(leftover, (event) => {
+      if (event.type === "A2UI_MESSAGE") onMessage(event.message);
+      if (event.type === "A2UI_DONE") finished = true;
+      if (event.type === "A2UI_ERROR") throw new Error(String(event.message ?? event.code ?? "A2UI stream failed"));
+    });
+    if (done) break;
+  }
+  if (!finished && !signal.aborted) throw new Error("A2UI profile stream ended unexpectedly");
 }
 
 export function ProfileEmbed() {
@@ -64,22 +88,19 @@ export function ProfileEmbed() {
         onUserAction: () => undefined,
       });
 
-      void requestProfile(payload, controller.signal)
-        .then((result) => {
-          if (result && typeof result === "object" && "fallback" in result && result.fallback === true) {
-            notifyHost("a2ui:profile-fallback");
-            if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
-              retryCountRef.current += 1;
-              retryTimerRef.current = window.setTimeout(() => run(payload), BACKGROUND_POLL_MS);
-            }
-            return;
+      let latestTree: unknown = null;
+      let streamingVisible = false;
+      void streamProfile(payload, controller.signal, (message) => {
+          latestTree = parse(messagesToJsonl([message]));
+          if (latestTree && !streamingVisible) {
+            streamingVisible = true;
+            window.requestAnimationFrame(() => notifyHost("a2ui:profile-ready"));
           }
-          const messages = readA2uiMessages(result);
-          if (messages.length === 0) throw new Error("A2UI profile protocol is empty");
-          const nextTree = parse(messagesToJsonl(messages));
+        })
+        .then(() => {
           const errors = Object.values(storeRef.current.getState().errorMap);
-          if (!nextTree || errors.length > 0) throw new Error("A2UI profile render failed");
-          setTree(nextTree);
+          if (!latestTree || errors.length > 0) throw new Error("A2UI profile render failed");
+          setTree(latestTree);
           window.requestAnimationFrame(() => notifyHost("a2ui:profile-ready"));
         })
         .catch((error: unknown) => {
@@ -90,7 +111,7 @@ export function ProfileEmbed() {
           if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
             retryCountRef.current += 1;
             notifyHost("a2ui:profile-fallback");
-            retryTimerRef.current = window.setTimeout(() => run(payload), 5_000 * retryCountRef.current);
+            retryTimerRef.current = window.setTimeout(() => run(payload), BACKGROUND_POLL_MS);
             return;
           }
           notifyHost("a2ui:profile-error", error instanceof Error ? error.message : "request failed");

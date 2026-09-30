@@ -214,6 +214,102 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
     return pending;
   }
 
+  async function streamEmbeddedSurface(
+    ctx: Koa.Context,
+    options: {
+      namespace: "profile" | "section";
+      key: string;
+      input: ProfileInput | PortfolioSectionInput;
+      cached?: { expiresAt: number; payload: Record<string, unknown> };
+      surfaceId: string;
+      maxOutputTokens: number;
+      prompt: string;
+      cacheMs: number;
+    },
+  ): Promise<void> {
+    ctx.respond = false;
+    ctx.req.socket.setTimeout(0);
+    let disconnected = false;
+    const markDisconnected = () => {
+      disconnected = true;
+    };
+    ctx.req.on("close", markDisconnected);
+    ctx.req.on("aborted", markDisconnected);
+    bindResponseDisconnect(ctx.req, ctx.res, markDisconnected);
+    ctx.res.writeHead(200, sseHeaders());
+    ctx.res.flushHeaders?.();
+
+    const send = (event: Record<string, unknown>) => {
+      if (disconnected || !ctx.res.writable || ctx.res.writableEnded) return false;
+      return writeSseJson(ctx.res, event);
+    };
+
+    try {
+      const cachedMessages = options.cached && !options.cached.payload.fallback
+        ? options.cached.payload.converted
+        : undefined;
+      if (Array.isArray(cachedMessages) && cachedMessages.length > 0) {
+        for (const message of cachedMessages) {
+          send({ type: "A2UI_MESSAGE", message, cached: true });
+          await sleep(Math.min(intervalMs, 60));
+        }
+        send({ type: "A2UI_DONE", cached: true });
+        return;
+      }
+
+      let converted: A2UIMessage[] = [];
+      let incomplete: { missingIds: string[] } | undefined;
+      for await (const event of server.stream({
+        message: options.prompt,
+        surfaceId: options.surfaceId,
+        maxOutputTokens: options.maxOutputTokens,
+        systemPrompt: buildCompactEmbedSystemPrompt({
+          surfaceId: options.surfaceId,
+          catalogId: DEFAULT_CATALOG_ID,
+        }),
+      })) {
+        if (event.event === "delta") {
+          send({ type: "A2UI_DELTA" });
+          continue;
+        }
+        if (event.event === "a2ui") {
+          send({ type: "A2UI_MESSAGE", message: event.data });
+          continue;
+        }
+        converted = event.data.messages;
+        incomplete = event.data.incomplete;
+      }
+      if (incomplete || converted.length === 0) {
+        throw new A2UIServerError(502, "EMBED_INCOMPLETE", "generated embedded protocol is incomplete");
+      }
+      const record = {
+        key: options.key,
+        input: options.input,
+        expiresAt: Date.now() + options.cacheMs,
+        payload: {
+          surfaceId: options.surfaceId,
+          catalogId: DEFAULT_CATALOG_ID,
+          converted,
+        },
+      };
+      if (options.namespace === "profile") profileCache.set(options.key, record);
+      else sectionCache.set(options.key, record);
+      await persistentCache.set(options.namespace, record).catch((error) => {
+        console.error(`${options.namespace} stream cache write failed`, error);
+      });
+      send({ type: "A2UI_DONE", cached: false });
+    } catch (error) {
+      const failure = error instanceof A2UIServerError
+        ? error
+        : new A2UIServerError(502, "EMBED_STREAM_FAILED", error instanceof Error ? error.message : "stream failed");
+      console.error(`${options.namespace} stream generation failed`, { code: failure.code, message: failure.message });
+      send({ type: "A2UI_ERROR", code: failure.code, message: failure.message });
+    } finally {
+      if (disconnected) destroyResponse(ctx.res);
+      else endIfOpen(ctx.res);
+    }
+  }
+
   async function refreshPersistentCache(): Promise<void> {
     if (!persistentCache.enabled) return;
     const threshold = Date.now() + refreshAheadMs;
@@ -283,6 +379,19 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         profileCache.set(key, persisted);
       }
     }
+    if (wantsChatSse(ctx)) {
+      await streamEmbeddedSurface(ctx, {
+        namespace: "profile",
+        key,
+        input,
+        cached,
+        surfaceId: "profile-home",
+        maxOutputTokens: 2_200,
+        prompt: buildProfilePrompt(input),
+        cacheMs: Number(process.env.A2UI_PROFILE_CACHE_MS ?? 86_400_000),
+      });
+      return;
+    }
     if (cached && !cached.payload.fallback) {
       if (cached.expiresAt <= Date.now() + refreshAheadMs) void startProfileGeneration(key, input);
       ctx.body = { ...cached.payload, cached: true, stale: cached.expiresAt <= Date.now() };
@@ -322,6 +431,19 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         cached = persisted;
         sectionCache.set(key, persisted);
       }
+    }
+    if (wantsChatSse(ctx)) {
+      await streamEmbeddedSurface(ctx, {
+        namespace: "section",
+        key,
+        input,
+        cached,
+        surfaceId: `portfolio-${input.kind}`,
+        maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
+        prompt: buildPortfolioSectionPrompt(input),
+        cacheMs: Number(process.env.A2UI_SECTION_CACHE_MS ?? 86_400_000),
+      });
+      return;
     }
     if (cached && !cached.payload.fallback) {
       if (cached.expiresAt <= Date.now() + refreshAheadMs) void startSectionGeneration(key, input);

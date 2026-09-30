@@ -20,7 +20,24 @@ test("profile returns fallback immediately while generation continues in backgro
         updatedAt: new Date().toISOString(),
       };
     },
-    async *stream() {},
+    async *stream() {
+      yield { event: "a2ui" as const, data: { beginRendering: { surfaceId: "profile-home", root: "root" } } };
+      await delay(20);
+      const messages = [
+        { beginRendering: { surfaceId: "profile-home", root: "root" } },
+        { surfaceUpdate: { surfaceId: "profile-home", components: [{ id: "root", component: { Column: { children: [] } } }] } },
+      ];
+      yield { event: "a2ui" as const, data: messages[1] };
+      yield {
+        event: "done" as const,
+        data: {
+          surfaceId: "profile-home",
+          catalogId: "a2ui-react:v0.8",
+          modelMessages: messages,
+          messages,
+        },
+      };
+    },
     getSurface() {
       return undefined;
     },
@@ -49,6 +66,18 @@ test("profile returns fallback immediately while generation continues in backgro
     assert.equal(second.status, 200);
     assert.equal(secondBody.fallback, undefined);
     assert.equal(secondBody.cached, true);
+
+    const streamed = await fetch(`${url}?sse=1`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
+      body: JSON.stringify({ name: "陈健华", role: "设计师" }),
+    });
+    assert.equal(streamed.status, 200);
+    assert.match(streamed.headers.get("content-type") ?? "", /text\/event-stream/);
+    const streamBody = await streamed.text();
+    assert.match(streamBody, /"type":"A2UI_MESSAGE"/);
+    assert.match(streamBody, /"type":"A2UI_DONE"/);
+    assert.ok(streamBody.indexOf("A2UI_MESSAGE") < streamBody.indexOf("A2UI_DONE"));
   } finally {
     await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
   }

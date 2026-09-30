@@ -1,7 +1,7 @@
 import { isValidElement, useEffect, useRef, useState } from "react";
 import { messagesToJsonl, parse, resetA2UIStore, type OnUserActionFn } from "a2ui-core";
 import { A2uiSurface, renderMap } from "a2ui-react";
-import { apiUrl, payloadErrorMessage, readA2uiMessages } from "./ag-ui";
+import { apiUrl, consumeSse, payloadErrorMessage } from "./ag-ui";
 import "./SectionEmbed.css";
 
 type SectionPayload = { kind: "strengths" | "experiences" | "agents"; title: string; items: unknown[] };
@@ -13,18 +13,41 @@ function notifyHost(type: "a2ui:section-ready" | "a2ui:section-fallback" | "a2ui
   window.parent.postMessage({ type, detail }, window.location.origin);
 }
 
-async function requestSection(payload: SectionPayload, signal: AbortSignal): Promise<unknown> {
-  const response = await fetch(apiUrl("/v1/portfolio-section"), {
+async function streamSection(
+  payload: SectionPayload,
+  signal: AbortSignal,
+  onMessage: (message: unknown) => void,
+): Promise<void> {
+  const response = await fetch(apiUrl("/v1/portfolio-section?sse=1"), {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
     body: JSON.stringify(payload),
     cache: "no-store",
     signal,
   });
-  const result: unknown = await response.json();
-  const error = payloadErrorMessage(result, `HTTP ${response.status}`);
-  if (!response.ok || error) throw new Error(error ?? `HTTP ${response.status}`);
-  return result;
+  if (!response.ok) {
+    let detail = `HTTP ${response.status}`;
+    try {
+      detail = payloadErrorMessage(await response.json(), detail) ?? detail;
+    } catch {}
+    throw new Error(detail);
+  }
+  if (!response.body) throw new Error("A2UI section stream is unavailable");
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let leftover = "";
+  let finished = false;
+  while (!signal.aborted) {
+    const { done, value } = await reader.read();
+    leftover += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+    leftover = consumeSse(leftover, (event) => {
+      if (event.type === "A2UI_MESSAGE") onMessage(event.message);
+      if (event.type === "A2UI_DONE") finished = true;
+      if (event.type === "A2UI_ERROR") throw new Error(String(event.message ?? event.code ?? "A2UI stream failed"));
+    });
+    if (done) break;
+  }
+  if (!finished && !signal.aborted) throw new Error("A2UI section stream ended unexpectedly");
 }
 
 export function SectionEmbed() {
@@ -53,22 +76,22 @@ export function SectionEmbed() {
       setTree(null);
       storeRef.current = resetA2UIStore({ renderMap, renderTree: setTree, onUserAction });
 
-      void requestSection(payload, controller.signal)
-        .then((result) => {
-          if (result && typeof result === "object" && "fallback" in result && result.fallback === true) {
-            notifyHost("a2ui:section-fallback");
-            if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
-              retryCountRef.current += 1;
-              retryTimerRef.current = window.setTimeout(() => run(payload), BACKGROUND_POLL_MS);
-            }
-            return;
+      let latestTree: unknown = null;
+      let streamingVisible = false;
+      void streamSection(payload, controller.signal, (message) => {
+          latestTree = parse(messagesToJsonl([message]));
+          if (latestTree && !streamingVisible) {
+            streamingVisible = true;
+            window.requestAnimationFrame(() => {
+              const nextHeight = Math.ceil(document.querySelector<HTMLElement>(".section-embed")?.scrollHeight ?? 320);
+              notifyHost("a2ui:section-ready", nextHeight);
+            });
           }
-          const messages = readA2uiMessages(result);
-          if (messages.length === 0) throw new Error("A2UI section protocol is empty");
-          const nextTree = parse(messagesToJsonl(messages));
+        })
+        .then(() => {
           const errors = Object.values(storeRef.current.getState().errorMap);
-          if (!nextTree || errors.length > 0) throw new Error("A2UI section render failed");
-          setTree(nextTree);
+          if (!latestTree || errors.length > 0) throw new Error("A2UI section render failed");
+          setTree(latestTree);
           window.requestAnimationFrame(() => {
             const height = Math.ceil(document.documentElement.scrollHeight);
             notifyHost("a2ui:section-ready", height);
@@ -82,7 +105,7 @@ export function SectionEmbed() {
           if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
             retryCountRef.current += 1;
             notifyHost("a2ui:section-fallback");
-            retryTimerRef.current = window.setTimeout(() => run(payload), 5_000 * retryCountRef.current);
+            retryTimerRef.current = window.setTimeout(() => run(payload), BACKGROUND_POLL_MS);
             return;
           }
           notifyHost("a2ui:section-error", error instanceof Error ? error.message : "request failed");
