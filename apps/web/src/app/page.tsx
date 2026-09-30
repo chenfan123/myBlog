@@ -1,19 +1,15 @@
 import {
   ArrowRight,
-  Bot,
   BrainCircuit,
   Check,
   Code2,
   Database,
   Mail,
-  Search,
-  Sparkles,
   Wrench,
 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { DownloadResumeButton } from '@/components/resume/download-resume-button';
 import { A2UIProfileEnhancement } from '@/components/profile/a2ui-profile-enhancement';
 import { A2UISectionEnhancement } from '@/components/profile/a2ui-section-enhancement';
@@ -150,13 +146,6 @@ const fallbackResume: ResumeData = {
     },
   ],
 };
-
-const workflow = [
-  { icon: BrainCircuit, label: '拆解', text: '分析任务和执行步骤' },
-  { icon: Search, label: '检索', text: '查找需要的上下文' },
-  { icon: Wrench, label: '执行', text: '选择并调用工具' },
-  { icon: Database, label: '记录', text: '保存后续有用的信息' },
-];
 
 export const dynamic = 'force-dynamic';
 
@@ -468,69 +457,51 @@ export default async function Home() {
 
       <section
         id="agent-demo"
-        className="mx-auto max-w-7xl px-6 py-20 lg:px-10"
+        className="border-y bg-white/70"
       >
-        <A2UISectionEnhancement kind="agents" title="Agent 实现" items={visibleAgentDemos}>
-        <div className="mb-10 grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-end">
-          <SectionHeading
-            eyebrow="开发中的功能"
-            title="Agent 实现"
-            description="这里展示可以实际操作的 Agent 项目。"
-          />
-          <AgentWorkflow />
-        </div>
-        <div className="grid gap-5 lg:grid-cols-2">
-          {visibleAgentDemos.map((demo) => (
-            <Card
-              key={demo.title}
-              className="overflow-hidden border-border/80 bg-white py-0 shadow-none"
-            >
-              <CardContent className="p-0">
-                <div className="agent-demo-preview flex min-h-48 items-center justify-center border-b p-6">
-                  <div className="w-full max-w-sm rounded-xl border bg-white p-4 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="flex items-center gap-2 font-mono text-xs">
-                        <Bot className="size-4 text-primary" /> 运行预览
-                      </span>
-                      <span className="size-2 rounded-full bg-emerald-500" />
-                    </div>
-                    <div className="rounded-lg bg-muted p-3 text-xs leading-5 text-muted-foreground">
-                      Agent 完成后，可以在这里直接体验。
-                    </div>
-                  </div>
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
+            Selected Agent Work
+          </p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Agent 实现
+          </h2>
+          <div className="mt-8 grid gap-5 lg:grid-cols-2">
+            {visibleAgentDemos.map((demo) => (
+              <article
+                key={demo.title}
+                className="flex min-h-72 flex-col rounded-[1.35rem] border border-lime-900/15 bg-gradient-to-br from-white via-white to-lime-50/70 p-5 shadow-[0_14px_38px_rgba(73,94,37,0.06)] sm:p-6"
+              >
+                <div className="flex items-start justify-between gap-4 border-b border-lime-900/10 pb-4">
+                  <h3 className="text-lg font-semibold text-primary sm:text-xl">
+                    {demo.title}
+                  </h3>
+                  <span className="shrink-0 rounded-full border border-lime-800/15 bg-lime-50 px-3 py-1 text-xs text-lime-800">
+                    {demo.status}
+                  </span>
                 </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold">{demo.title}</h3>
-                    <Badge variant="secondary">{demo.status}</Badge>
-                  </div>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    {demo.description}
+                <p className="mt-4 min-h-12 text-sm leading-7 text-foreground/80 sm:text-base">
+                  {demo.description}
+                </p>
+                <div className="mt-6">
+                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
+                    Tech Stack
                   </p>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {demo.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="outline"
-                        className="font-mono font-normal"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  {demo.demo_url ? (
-                    <Button asChild className="mt-6" variant="outline">
-                      <Link href={demo.demo_url}>
-                        查看 Agent <ArrowRight />
-                      </Link>
-                    </Button>
-                  ) : null}
+                  <p className="mt-3 rounded-xl bg-lime-950/[0.045] px-4 py-3 font-mono text-xs leading-6 text-muted-foreground">
+                    {demo.tags.join(' · ')}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+                {demo.demo_url ? (
+                  <Button asChild className="mt-5 w-fit bg-[#17212b] text-white hover:bg-[#273443]">
+                    <Link href={demo.demo_url}>
+                      查看 Agent <ArrowRight />
+                    </Link>
+                  </Button>
+                ) : null}
+              </article>
+            ))}
+          </div>
         </div>
-        </A2UISectionEnhancement>
       </section>
 
       <footer id="contact" className="border-t bg-white/75">
@@ -657,39 +628,4 @@ function getSkillGroupIcon(title: string, index: number) {
   if (/后端|服务端|数据库|server|data/i.test(title)) return Database;
   if (/工程|工具|运维|devops/i.test(title)) return Wrench;
   return fallbackSkillIcons[index % fallbackSkillIcons.length];
-}
-
-function AgentWorkflow() {
-  return (
-    <div className="rounded-2xl border bg-white/85 p-5">
-      <div className="mb-5 flex items-center justify-between">
-        <span className="flex items-center gap-2 font-mono text-xs">
-          <Sparkles className="size-4 text-primary" /> WORKFLOW TRACE
-        </span>
-        <Badge
-          variant="outline"
-          className="border-emerald-200 bg-emerald-50 text-emerald-700"
-        >
-          Running
-        </Badge>
-      </div>
-      <div className="grid gap-2 sm:grid-cols-4">
-        {workflow.map(({ icon: Icon, label, text }, index) => (
-          <div
-            key={label}
-            className="relative rounded-xl border bg-background p-3"
-          >
-            <div className="flex items-center gap-2">
-              <Icon className="size-4 text-primary" />
-              <strong className="font-mono text-xs">{label}</strong>
-            </div>
-            <p className="mt-2 text-[11px] text-muted-foreground">{text}</p>
-            {index < workflow.length - 1 ? (
-              <ArrowRight className="absolute -right-3 top-1/2 z-10 hidden size-4 -translate-y-1/2 rounded-full bg-white text-primary sm:block" />
-            ) : null}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 }
