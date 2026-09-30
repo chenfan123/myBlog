@@ -42,6 +42,8 @@ export interface CreateAppOptions {
 
 // 嵌入式主页区块必须在反向代理常见的 30 秒窗口内返回；超时后使用 A2UI 协议兜底。
 const PROFILE_GENERATION_TIMEOUT_MS = 25_000;
+const GENERATION_MAX_ATTEMPTS = 3;
+const GENERATION_RETRY_DELAY_MS = 1_200;
 
 async function withTimeout<T>(task: Promise<T>, timeoutMs: number): Promise<T> {
   let timer = 0;
@@ -56,6 +58,30 @@ async function withTimeout<T>(task: Promise<T>, timeoutMs: number): Promise<T> {
   } finally {
     clearTimeout(timer);
   }
+}
+
+function isPermanentGenerationError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return /(?:^|\D)(?:400|401|403)(?:\D|$)|quota exhausted|invalid api[_ -]?key|authentication|permission denied/i.test(message);
+}
+
+export async function retryGeneration<T>(
+  task: () => Promise<T>,
+  options: { attempts?: number; delayMs?: number } = {},
+): Promise<T> {
+  const attempts = Math.max(1, options.attempts ?? Number(process.env.A2UI_GENERATION_MAX_ATTEMPTS ?? GENERATION_MAX_ATTEMPTS));
+  const delayMs = Math.max(0, options.delayMs ?? Number(process.env.A2UI_GENERATION_RETRY_DELAY_MS ?? GENERATION_RETRY_DELAY_MS));
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await task();
+    } catch (error) {
+      lastError = error;
+      if (attempt >= attempts || isPermanentGenerationError(error)) throw error;
+      await sleep(delayMs * attempt);
+    }
+  }
+  throw lastError;
 }
 
 export function createApp(server: A2UIServer, options: CreateAppOptions = {}): Koa {
@@ -76,18 +102,21 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
     const existing = profilePending.get(key);
     if (existing) return existing;
     const pending = withTimeout(
-      server.generate({
-        message: buildProfilePrompt(input),
-        surfaceId: "profile-home",
-        maxOutputTokens: 2_200,
-        systemPrompt: buildCompactEmbedSystemPrompt({ surfaceId: "profile-home", catalogId: DEFAULT_CATALOG_ID }),
+      retryGeneration(async () => {
+        const generated = await server.generate({
+          message: buildProfilePrompt(input),
+          surfaceId: "profile-home",
+          maxOutputTokens: 2_200,
+          systemPrompt: buildCompactEmbedSystemPrompt({ surfaceId: "profile-home", catalogId: DEFAULT_CATALOG_ID }),
+        });
+        if (generated.incomplete) {
+          throw new A2UIServerError(502, "PROFILE_INCOMPLETE", "generated profile protocol is incomplete");
+        }
+        return generated;
       }),
       Number(process.env.A2UI_PROFILE_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
     )
       .then(async (generated) => {
-        if (generated.incomplete) {
-          throw new A2UIServerError(502, "PROFILE_INCOMPLETE", "generated profile protocol is incomplete");
-        }
         const record = {
           key,
           input,
@@ -108,6 +137,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         // 刷新失败时保留最后一次成功结果；只有首次生成失败才写短期兜底。
         const lastSuccess = profileCache.get(key);
         if (lastSuccess && !lastSuccess.payload.fallback) return;
+        console.error("profile generation failed after retries", { code: failure.code, message: failure.message });
         profileCache.set(key, {
           expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_FAILURE_CACHE_MS ?? 15_000),
           payload: {
@@ -128,21 +158,24 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
     const existing = sectionPending.get(key);
     if (existing) return existing;
     const pending = withTimeout(
-      server.generate({
-        message: buildPortfolioSectionPrompt(input),
-        surfaceId: `portfolio-${input.kind}`,
-        maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
-        systemPrompt: buildCompactEmbedSystemPrompt({
+      retryGeneration(async () => {
+        const generated = await server.generate({
+          message: buildPortfolioSectionPrompt(input),
           surfaceId: `portfolio-${input.kind}`,
-          catalogId: DEFAULT_CATALOG_ID,
-        }),
+          maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
+          systemPrompt: buildCompactEmbedSystemPrompt({
+            surfaceId: `portfolio-${input.kind}`,
+            catalogId: DEFAULT_CATALOG_ID,
+          }),
+        });
+        if (generated.incomplete) {
+          throw new A2UIServerError(502, "SECTION_INCOMPLETE", "generated section protocol is incomplete");
+        }
+        return generated;
       }),
       Number(process.env.A2UI_SECTION_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
     )
       .then(async (generated) => {
-        if (generated.incomplete) {
-          throw new A2UIServerError(502, "SECTION_INCOMPLETE", "generated section protocol is incomplete");
-        }
         const record = {
           key,
           input,
@@ -162,6 +195,11 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
           : new A2UIServerError(502, "SECTION_GENERATION_FAILED", error instanceof Error ? error.message : "section generation failed");
         const lastSuccess = sectionCache.get(key);
         if (lastSuccess && !lastSuccess.payload.fallback) return;
+        console.error("section generation failed after retries", {
+          kind: input.kind,
+          code: failure.code,
+          message: failure.message,
+        });
         sectionCache.set(key, {
           expiresAt: Date.now() + Number(process.env.A2UI_SECTION_FAILURE_CACHE_MS ?? 15_000),
           payload: {
