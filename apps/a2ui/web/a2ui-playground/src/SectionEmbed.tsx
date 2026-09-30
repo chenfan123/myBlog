@@ -6,6 +6,8 @@ import "./SectionEmbed.css";
 
 type SectionPayload = { kind: "strengths" | "experiences" | "agents"; title: string; items: unknown[] };
 type HostMessage = { type: "a2ui:section-input"; payload: SectionPayload };
+const MAX_BACKGROUND_POLLS = 20;
+const BACKGROUND_POLL_MS = 15_000;
 
 function notifyHost(type: "a2ui:section-ready" | "a2ui:section-fallback" | "a2ui:section-error", detail?: string | number) {
   window.parent.postMessage({ type, detail }, window.location.origin);
@@ -55,9 +57,9 @@ export function SectionEmbed() {
         .then((result) => {
           if (result && typeof result === "object" && "fallback" in result && result.fallback === true) {
             notifyHost("a2ui:section-fallback");
-            if (retryCountRef.current < 2) {
+            if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
               retryCountRef.current += 1;
-              retryTimerRef.current = window.setTimeout(() => run(payload), 16_000);
+              retryTimerRef.current = window.setTimeout(() => run(payload), BACKGROUND_POLL_MS);
             }
             return;
           }
@@ -77,7 +79,7 @@ export function SectionEmbed() {
             if (requestRef.current === controller) notifyHost("a2ui:section-error", "timeout");
             return;
           }
-          if (retryCountRef.current < 2) {
+          if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
             retryCountRef.current += 1;
             notifyHost("a2ui:section-fallback");
             retryTimerRef.current = window.setTimeout(() => run(payload), 5_000 * retryCountRef.current);

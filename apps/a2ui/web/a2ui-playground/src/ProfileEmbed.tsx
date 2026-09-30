@@ -15,6 +15,8 @@ type ProfilePayload = {
 };
 
 type HostMessage = { type: "a2ui:profile-input"; payload: ProfilePayload };
+const MAX_BACKGROUND_POLLS = 20;
+const BACKGROUND_POLL_MS = 15_000;
 
 function notifyHost(type: "a2ui:profile-ready" | "a2ui:profile-fallback" | "a2ui:profile-error", detail?: string) {
   window.parent.postMessage({ type, detail }, window.location.origin);
@@ -66,9 +68,9 @@ export function ProfileEmbed() {
         .then((result) => {
           if (result && typeof result === "object" && "fallback" in result && result.fallback === true) {
             notifyHost("a2ui:profile-fallback");
-            if (retryCountRef.current < 2) {
+            if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
               retryCountRef.current += 1;
-              retryTimerRef.current = window.setTimeout(() => run(payload), 16_000);
+              retryTimerRef.current = window.setTimeout(() => run(payload), BACKGROUND_POLL_MS);
             }
             return;
           }
@@ -85,7 +87,7 @@ export function ProfileEmbed() {
             if (requestRef.current === controller) notifyHost("a2ui:profile-error", "timeout");
             return;
           }
-          if (retryCountRef.current < 2) {
+          if (retryCountRef.current < MAX_BACKGROUND_POLLS) {
             retryCountRef.current += 1;
             notifyHost("a2ui:profile-fallback");
             retryTimerRef.current = window.setTimeout(() => run(payload), 5_000 * retryCountRef.current);

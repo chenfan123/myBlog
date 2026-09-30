@@ -40,7 +40,7 @@ export function A2UISectionEnhancement({
 
   useEffect(() => {
     if (status !== "loading") return;
-    const timeout = window.setTimeout(() => setStatus("fallback"), 95_000);
+    const timeout = window.setTimeout(() => setStatus("error"), 290_000);
     return () => window.clearTimeout(timeout);
   }, [status]);
 
@@ -80,7 +80,7 @@ export function A2UISectionEnhancement({
             : status === "ready"
               ? "A2UI 动态生成"
               : status === "fallback"
-                ? "A2UI 生成失败 · 当前为兜底展示"
+                ? "当前为兜底展示 · A2UI 后台生成中"
                 : "A2UI 请求异常 · 当前为兜底展示"}
       </span>
       <div className={status === "ready" ? "hidden print:block" : "block"}>{children}</div>

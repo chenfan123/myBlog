@@ -91,10 +91,8 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
   const router = new Router();
   const profileCache = new Map<string, { expiresAt: number; payload: Record<string, unknown> }>();
   const profilePending = new Map<string, Promise<void>>();
-  const profileFailures = new Map<string, { expiresAt: number; error: A2UIServerError }>();
   const sectionCache = new Map<string, { expiresAt: number; payload: Record<string, unknown> }>();
   const sectionPending = new Map<string, Promise<void>>();
-  const sectionFailures = new Map<string, { expiresAt: number; error: A2UIServerError }>();
   const persistentCache = new PersistentCache();
   const refreshAheadMs = Number(process.env.A2UI_CACHE_REFRESH_AHEAD_MS ?? 3_600_000);
 
@@ -291,28 +289,17 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
       return;
     }
 
-    const failed = profileFailures.get(key);
-    const retryBlocked = Boolean(failed && failed.expiresAt > Date.now());
-    if (failed && !retryBlocked) profileFailures.delete(key);
-
-    if (failed && retryBlocked) {
-      throw failed.error;
-    }
-
-    const pending = retryBlocked ? profilePending.get(key) : startProfileGeneration(key, input);
-    // 同一份资料只创建一个生成任务；后续并发请求复用它，避免客户端轮询放大请求量。
-    if (pending) await pending;
-
-    const generated = profileCache.get(key);
-    if (generated && generated.expiresAt > Date.now()) {
-      ctx.body = { ...generated.payload, cached: false };
-      return;
-    }
-    const generationFailure = profileFailures.get(key);
-    if (generationFailure && generationFailure.expiresAt > Date.now()) {
-      throw generationFailure.error;
-    }
-    throw new A2UIServerError(502, "PROFILE_GENERATION_FAILED", "profile generation produced no result");
+    // 首屏绝不等待慢模型：立即返回确定性兜底，生成任务留在服务端继续执行。
+    // 客户端轻量轮询时会复用 profilePending，不会重复请求模型。
+    if (!cached || cached.expiresAt <= Date.now()) void startProfileGeneration(key, input);
+    ctx.status = 202;
+    ctx.body = {
+      surfaceId: "profile-home",
+      catalogId: DEFAULT_CATALOG_ID,
+      converted: buildProfileProtocol(input),
+      fallback: true,
+      generating: profilePending.has(key),
+    };
   });
 
   router.post("/v1/portfolio-section", async (ctx) => {
@@ -342,27 +329,15 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
       return;
     }
 
-    const failed = sectionFailures.get(key);
-    if (failed && failed.expiresAt > Date.now()) {
-      throw failed.error;
-    }
-    if (failed) sectionFailures.delete(key);
-
-    const pending = startSectionGeneration(key, input);
-
-    // 等待共享任务结束，一次请求直接得到协议或明确错误，不再用 202 轮询。
-    if (pending) await pending;
-
-    const generated = sectionCache.get(key);
-    if (generated && generated.expiresAt > Date.now()) {
-      ctx.body = { ...generated.payload, cached: false };
-      return;
-    }
-    const generationFailure = sectionFailures.get(key);
-    if (generationFailure && generationFailure.expiresAt > Date.now()) {
-      throw generationFailure.error;
-    }
-    throw new A2UIServerError(502, "SECTION_GENERATION_FAILED", "section generation produced no result");
+    if (!cached || cached.expiresAt <= Date.now()) void startSectionGeneration(key, input);
+    ctx.status = 202;
+    ctx.body = {
+      surfaceId: `portfolio-${input.kind}`,
+      catalogId: DEFAULT_CATALOG_ID,
+      converted: buildPortfolioSectionProtocol(input),
+      fallback: true,
+      generating: sectionPending.has(key),
+    };
   });
 
   router.get("/v1/chat", (ctx) => {
