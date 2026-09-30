@@ -16,7 +16,7 @@ type ProfilePayload = {
 
 type HostMessage = { type: "a2ui:profile-input"; payload: ProfilePayload };
 
-function notifyHost(type: "a2ui:profile-ready" | "a2ui:profile-error", detail?: string) {
+function notifyHost(type: "a2ui:profile-ready" | "a2ui:profile-fallback" | "a2ui:profile-error", detail?: string) {
   window.parent.postMessage({ type, detail }, window.location.origin);
 }
 
@@ -37,6 +37,8 @@ async function requestProfile(payload: ProfilePayload, signal: AbortSignal): Pro
 export function ProfileEmbed() {
   const [tree, setTree] = useState<unknown>(null);
   const requestRef = useRef<AbortController | null>(null);
+  const retryTimerRef = useRef<number | null>(null);
+  const retryCountRef = useRef(0);
   const storeRef = useRef(
     resetA2UIStore({
       renderMap,
@@ -46,11 +48,9 @@ export function ProfileEmbed() {
   );
 
   useEffect(() => {
-    const receive = (event: MessageEvent<HostMessage>) => {
-      if (event.origin !== window.location.origin || event.source !== window.parent) return;
-      if (event.data?.type !== "a2ui:profile-input") return;
-
+    const run = (payload: ProfilePayload) => {
       requestRef.current?.abort();
+      if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
       const controller = new AbortController();
       requestRef.current = controller;
       const timeout = window.setTimeout(() => controller.abort(), 180_000);
@@ -61,9 +61,17 @@ export function ProfileEmbed() {
         onUserAction: () => undefined,
       });
 
-      void requestProfile(event.data.payload, controller.signal)
-        .then((payload) => {
-          const messages = readA2uiMessages(payload);
+      void requestProfile(payload, controller.signal)
+        .then((result) => {
+          if (result && typeof result === "object" && "fallback" in result && result.fallback === true) {
+            notifyHost("a2ui:profile-fallback");
+            if (retryCountRef.current < 2) {
+              retryCountRef.current += 1;
+              retryTimerRef.current = window.setTimeout(() => run(payload), 16_000);
+            }
+            return;
+          }
+          const messages = readA2uiMessages(result);
           if (messages.length === 0) throw new Error("A2UI profile protocol is empty");
           const nextTree = parse(messagesToJsonl(messages));
           const errors = Object.values(storeRef.current.getState().errorMap);
@@ -73,7 +81,6 @@ export function ProfileEmbed() {
         })
         .catch((error: unknown) => {
           if (controller.signal.aborted) {
-            // 新一轮资料请求会主动取消旧请求；旧请求不应把当前 UI 短暂标记成失败。
             if (requestRef.current === controller) notifyHost("a2ui:profile-error", "timeout");
             return;
           }
@@ -85,11 +92,20 @@ export function ProfileEmbed() {
         });
     };
 
+    const receive = (event: MessageEvent<HostMessage>) => {
+      if (event.origin !== window.location.origin || event.source !== window.parent) return;
+      if (event.data?.type !== "a2ui:profile-input") return;
+
+      retryCountRef.current = 0;
+      run(event.data.payload);
+    };
+
     window.addEventListener("message", receive);
     window.parent.postMessage({ type: "a2ui:profile-listening" }, window.location.origin);
     return () => {
       window.removeEventListener("message", receive);
       requestRef.current?.abort();
+      if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
     };
   }, []);
 

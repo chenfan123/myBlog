@@ -19,7 +19,7 @@ export function A2UISectionEnhancement({
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [active, setActive] = useState(false);
-  const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "ready" | "fallback" | "error">("idle");
   const [height, setHeight] = useState(kind === "experiences" ? 720 : 480);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export function A2UISectionEnhancement({
 
   useEffect(() => {
     if (status !== "loading") return;
-    const timeout = window.setTimeout(() => setStatus("error"), 35_000);
+    const timeout = window.setTimeout(() => setStatus("fallback"), 95_000);
     return () => window.clearTimeout(timeout);
   }, [status]);
 
@@ -56,6 +56,7 @@ export function A2UISectionEnhancement({
         if (typeof event.data.detail === "number") setHeight(Math.max(320, Math.min(1800, event.data.detail)));
         setStatus("ready");
       }
+      if (event.data?.type === "a2ui:section-fallback") setStatus("fallback");
       if (event.data?.type === "a2ui:section-error") setStatus("error");
       if (event.data?.type === "a2ui:section-navigate") {
         const url = typeof event.data.url === "string" ? event.data.url : "";
@@ -69,10 +70,18 @@ export function A2UISectionEnhancement({
   return (
     <div ref={containerRef} className={kind === "strengths" ? "relative mx-auto max-w-7xl px-6 py-16 lg:px-10" : "relative"}>
       <span className={`print-hidden absolute right-0 top-0 z-20 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-semibold ${
-        status === "error" ? "border-amber-200 bg-amber-50 text-amber-700" : "border-lime-300 bg-lime-100 text-lime-800"
+        status === "error" || status === "fallback" ? "border-amber-200 bg-amber-50 text-amber-700" : "border-lime-300 bg-lime-100 text-lime-800"
       }`}>
         <Sparkles className="size-3.5" />
-        {status === "idle" ? "A2UI 等待生成" : status === "loading" ? "A2UI 生成中" : status === "ready" ? "A2UI 动态生成" : "已切换原始内容"}
+        {status === "idle"
+          ? "当前为兜底展示 · 等待 A2UI 生成"
+          : status === "loading"
+            ? "当前为兜底展示 · A2UI 动态生成中"
+            : status === "ready"
+              ? "A2UI 动态生成"
+              : status === "fallback"
+                ? "A2UI 生成失败 · 当前为兜底展示"
+                : "A2UI 请求异常 · 当前为兜底展示"}
       </span>
       <div className={status === "ready" ? "hidden print:block" : "block"}>{children}</div>
       {active ? <iframe

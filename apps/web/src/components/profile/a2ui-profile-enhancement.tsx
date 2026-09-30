@@ -17,11 +17,11 @@ export function A2UIProfileEnhancement({
   children,
 }: A2UIProfileEnhancementProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "fallback" | "error">("loading");
 
   useEffect(() => {
     if (status !== "loading") return;
-    const timeout = window.setTimeout(() => setStatus("error"), 35_000);
+    const timeout = window.setTimeout(() => setStatus("fallback"), 95_000);
     return () => window.clearTimeout(timeout);
   }, [status]);
 
@@ -48,6 +48,7 @@ export function A2UIProfileEnhancement({
       if (event.origin !== window.location.origin || event.source !== iframeRef.current?.contentWindow) return;
       if (event.data?.type === "a2ui:profile-listening") sendProfile();
       if (event.data?.type === "a2ui:profile-ready") setStatus("ready");
+      if (event.data?.type === "a2ui:profile-fallback") setStatus("fallback");
       if (event.data?.type === "a2ui:profile-error") setStatus("error");
     };
 
@@ -59,15 +60,21 @@ export function A2UIProfileEnhancement({
     <div className="relative min-h-[620px] lg:min-h-0">
       <span
         className={`print-hidden absolute right-6 top-6 z-20 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold shadow-[0_10px_28px_rgba(95,148,0,0.2)] ${
-          status === "error"
+          status === "error" || status === "fallback"
             ? "border-red-200 bg-red-50 text-red-700"
             : "border-lime-300 bg-primary text-primary-foreground"
         }`}
       >
           <Sparkles className="size-4" />
-          {status === "loading" ? "A2UI 生成中" : status === "ready" ? "A2UI 动态生成" : "已切换原始内容"}
+          {status === "loading"
+            ? "当前为兜底展示 · A2UI 动态生成中"
+            : status === "ready"
+              ? "A2UI 动态生成"
+              : status === "fallback"
+                ? "A2UI 生成失败 · 当前为兜底展示"
+                : "A2UI 请求异常 · 当前为兜底展示"}
       </span>
-      <div className={status === "error" ? "block" : "hidden print:block"}>
+      <div className={status === "ready" ? "hidden print:block" : "block"}>
         {children}
       </div>
       <iframe
@@ -78,7 +85,7 @@ export function A2UIProfileEnhancement({
           setStatus("loading");
         }}
         onError={() => setStatus("error")}
-        className={`print-hidden absolute inset-0 size-full border-0 bg-white ${status === "error" ? "invisible pointer-events-none" : "visible"}`}
+        className={`print-hidden absolute inset-0 size-full border-0 bg-white ${status === "ready" ? "visible" : "invisible pointer-events-none"}`}
       />
     </div>
   );

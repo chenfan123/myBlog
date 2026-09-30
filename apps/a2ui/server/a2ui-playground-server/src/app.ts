@@ -154,7 +154,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
               : new A2UIServerError(502, "PROFILE_GENERATION_FAILED", error instanceof Error ? error.message : "profile generation failed");
           const fallback = buildProfileProtocol(input);
           profileCache.set(key, {
-            expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_FAILURE_CACHE_MS ?? 300_000),
+            expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_FAILURE_CACHE_MS ?? 15_000),
             payload: {
               surfaceId: "profile-home",
               catalogId: DEFAULT_CATALOG_ID,
@@ -245,7 +245,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
                 );
           const fallback = buildPortfolioSectionProtocol(input);
           sectionCache.set(key, {
-            expiresAt: Date.now() + Number(process.env.A2UI_SECTION_FAILURE_CACHE_MS ?? 300_000),
+            expiresAt: Date.now() + Number(process.env.A2UI_SECTION_FAILURE_CACHE_MS ?? 15_000),
             payload: {
               surfaceId: `portfolio-${input.kind}`,
               catalogId: DEFAULT_CATALOG_ID,

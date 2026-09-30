@@ -7,7 +7,7 @@ import "./SectionEmbed.css";
 type SectionPayload = { kind: "strengths" | "experiences" | "agents"; title: string; items: unknown[] };
 type HostMessage = { type: "a2ui:section-input"; payload: SectionPayload };
 
-function notifyHost(type: "a2ui:section-ready" | "a2ui:section-error", detail?: string | number) {
+function notifyHost(type: "a2ui:section-ready" | "a2ui:section-fallback" | "a2ui:section-error", detail?: string | number) {
   window.parent.postMessage({ type, detail }, window.location.origin);
 }
 
@@ -29,6 +29,8 @@ export function SectionEmbed() {
   const [tree, setTree] = useState<unknown>(null);
   const [kind, setKind] = useState<SectionPayload["kind"]>("strengths");
   const requestRef = useRef<AbortController | null>(null);
+  const retryTimerRef = useRef<number | null>(null);
+  const retryCountRef = useRef(0);
   const onUserAction: OnUserActionFn = (action) => {
     if (action.name !== "openAgent") return;
     const url = typeof action.context.url === "string" ? action.context.url : "";
@@ -39,20 +41,26 @@ export function SectionEmbed() {
   const storeRef = useRef(resetA2UIStore({ renderMap, renderTree: setTree, onUserAction }));
 
   useEffect(() => {
-    const receive = (event: MessageEvent<HostMessage>) => {
-      if (event.origin !== window.location.origin || event.source !== window.parent) return;
-      if (event.data?.type !== "a2ui:section-input") return;
-      setKind(event.data.payload.kind);
+    const run = (payload: SectionPayload) => {
       requestRef.current?.abort();
+      if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
       const controller = new AbortController();
       requestRef.current = controller;
       const timeout = window.setTimeout(() => controller.abort(), 180_000);
       setTree(null);
       storeRef.current = resetA2UIStore({ renderMap, renderTree: setTree, onUserAction });
 
-      void requestSection(event.data.payload, controller.signal)
-        .then((payload) => {
-          const messages = readA2uiMessages(payload);
+      void requestSection(payload, controller.signal)
+        .then((result) => {
+          if (result && typeof result === "object" && "fallback" in result && result.fallback === true) {
+            notifyHost("a2ui:section-fallback");
+            if (retryCountRef.current < 2) {
+              retryCountRef.current += 1;
+              retryTimerRef.current = window.setTimeout(() => run(payload), 16_000);
+            }
+            return;
+          }
+          const messages = readA2uiMessages(result);
           if (messages.length === 0) throw new Error("A2UI section protocol is empty");
           const nextTree = parse(messagesToJsonl(messages));
           const errors = Object.values(storeRef.current.getState().errorMap);
@@ -65,7 +73,6 @@ export function SectionEmbed() {
         })
         .catch((error: unknown) => {
           if (controller.signal.aborted) {
-            // 只有仍是当前请求时，中止才代表超时；被下一轮请求替换时不应误报失败。
             if (requestRef.current === controller) notifyHost("a2ui:section-error", "timeout");
             return;
           }
@@ -76,11 +83,20 @@ export function SectionEmbed() {
           if (requestRef.current === controller) requestRef.current = null;
         });
     };
+
+    const receive = (event: MessageEvent<HostMessage>) => {
+      if (event.origin !== window.location.origin || event.source !== window.parent) return;
+      if (event.data?.type !== "a2ui:section-input") return;
+      setKind(event.data.payload.kind);
+      retryCountRef.current = 0;
+      run(event.data.payload);
+    };
     window.addEventListener("message", receive);
     window.parent.postMessage({ type: "a2ui:section-listening" }, window.location.origin);
     return () => {
       window.removeEventListener("message", receive);
       requestRef.current?.abort();
+      if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
     };
   }, []);
 
