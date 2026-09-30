@@ -46,7 +46,8 @@ export function SectionEmbed() {
       if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
       const controller = new AbortController();
       requestRef.current = controller;
-      const timeout = window.setTimeout(() => controller.abort(), 180_000);
+      // 工作经历等长协议生成较慢，给服务端完整的 240 秒处理窗口。
+      const timeout = window.setTimeout(() => controller.abort(), 280_000);
       setTree(null);
       storeRef.current = resetA2UIStore({ renderMap, renderTree: setTree, onUserAction });
 

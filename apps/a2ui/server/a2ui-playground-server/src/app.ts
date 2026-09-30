@@ -40,8 +40,8 @@ export interface CreateAppOptions {
   chat?: ChatClient;
 }
 
-// 嵌入式主页区块必须在反向代理常见的 30 秒窗口内返回；超时后使用 A2UI 协议兜底。
-const PROFILE_GENERATION_TIMEOUT_MS = 25_000;
+// 页面会持续展示静态兜底，因此允许慢模型完成长协议生成；代理与浏览器超时需比它更长。
+const GENERATION_TIMEOUT_MS = 240_000;
 const GENERATION_MAX_ATTEMPTS = 3;
 const GENERATION_RETRY_DELAY_MS = 1_200;
 
@@ -114,7 +114,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         }
         return generated;
       }),
-      Number(process.env.A2UI_PROFILE_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
+      Number(process.env.A2UI_PROFILE_GENERATION_TIMEOUT_MS ?? GENERATION_TIMEOUT_MS),
     )
       .then(async (generated) => {
         const record = {
@@ -173,7 +173,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         }
         return generated;
       }),
-      Number(process.env.A2UI_SECTION_GENERATION_TIMEOUT_MS ?? PROFILE_GENERATION_TIMEOUT_MS),
+      Number(process.env.A2UI_SECTION_GENERATION_TIMEOUT_MS ?? GENERATION_TIMEOUT_MS),
     )
       .then(async (generated) => {
         const record = {

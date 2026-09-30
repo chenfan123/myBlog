@@ -53,7 +53,8 @@ export function ProfileEmbed() {
       if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
       const controller = new AbortController();
       requestRef.current = controller;
-      const timeout = window.setTimeout(() => controller.abort(), 180_000);
+      // 服务端允许慢模型最多运行 240 秒；浏览器稍晚中止，避免先于服务端断开。
+      const timeout = window.setTimeout(() => controller.abort(), 280_000);
       setTree(null);
       storeRef.current = resetA2UIStore({
         renderMap,
