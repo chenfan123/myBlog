@@ -373,7 +373,6 @@ export default async function Home() {
         id="experience"
         className="mx-auto max-w-7xl px-6 py-20 lg:px-10"
       >
-        <A2UISectionEnhancement kind="experiences" title="工作经历" items={experiences}>
         <div className="grid gap-14 lg:grid-cols-[0.35fr_1fr]">
         <SectionHeading
           eyebrow="经历"
@@ -407,7 +406,6 @@ export default async function Home() {
           ))}
         </div>
         </div>
-        </A2UISectionEnhancement>
       </section>
 
       <section id="projects" className="border-y bg-white/70">
