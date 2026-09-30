@@ -1,7 +1,14 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   postgres:
     image: postgres:18-alpine
     restart: unless-stopped
+    logging: *default-logging
     environment:
       POSTGRES_DB: myblog
       POSTGRES_USER: myblog
@@ -18,6 +25,7 @@ services:
   redis:
     image: redis:7.4-alpine
     restart: unless-stopped
+    logging: *default-logging
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
@@ -34,6 +42,7 @@ services:
       args:
         PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.cloud.tencent.com/pypi/simple}
     restart: unless-stopped
+    logging: *default-logging
     environment:
       APP_ENV: production
       DATABASE_URL: postgresql+psycopg://myblog:${POSTGRES_PASSWORD}@postgres:5432/myblog
@@ -82,6 +91,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
+    logging: *default-logging
     environment:
       DATABASE_URL: postgresql+psycopg://myblog:${POSTGRES_PASSWORD}@postgres:5432/myblog
       DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
@@ -116,6 +126,7 @@ services:
       context: ./apps/a2ui
       dockerfile: Dockerfile.server
     restart: unless-stopped
+    logging: *default-logging
     environment:
       PORT: 3000
       DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
@@ -142,6 +153,7 @@ services:
       context: ./apps/a2ui
       dockerfile: Dockerfile.web
     restart: unless-stopped
+    logging: *default-logging
     depends_on: [a2ui-server]
     networks: [backend]
 
@@ -153,6 +165,7 @@ services:
         NEXT_PUBLIC_ALIYUN_CAPTCHA_PREFIX: ${ALIYUN_CAPTCHA_PREFIX:?ALIYUN_CAPTCHA_PREFIX is required}
         NEXT_PUBLIC_ALIYUN_CAPTCHA_SCENE_ID: ${ALIYUN_CAPTCHA_SCENE_ID:?ALIYUN_CAPTCHA_SCENE_ID is required}
     restart: unless-stopped
+    logging: *default-logging
     environment:
       API_INTERNAL_URL: http://api:8000
       TRIAGE_AGENT_URL: http://agent:8002
@@ -172,6 +185,7 @@ services:
   nginx:
     image: nginx:1.27-alpine
     restart: unless-stopped
+    logging: *default-logging
     ports:
       - "80:80"
       - "443:443"
