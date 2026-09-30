@@ -10,7 +10,7 @@ const MAX_BACKGROUND_POLLS = 20;
 const BACKGROUND_POLL_MS = 15_000;
 
 function notifyHost(type: "a2ui:section-ready" | "a2ui:section-fallback" | "a2ui:section-error", detail?: string | number) {
-  window.parent.postMessage({ type, detail }, window.location.origin);
+  window.parent.postMessage({ type, detail }, "*");
 }
 
 async function streamSection(
@@ -60,12 +60,13 @@ export function SectionEmbed() {
     if (action.name !== "openAgent") return;
     const url = typeof action.context.url === "string" ? action.context.url : "";
     if (url.startsWith("/") && !url.startsWith("//")) {
-      window.parent.postMessage({ type: "a2ui:section-navigate", url }, window.location.origin);
+      window.parent.postMessage({ type: "a2ui:section-navigate", url }, "*");
     }
   };
-  const storeRef = useRef(resetA2UIStore({ renderMap, renderTree: setTree, onUserAction }));
+  const storeRef = useRef<ReturnType<typeof resetA2UIStore> | null>(null);
 
   useEffect(() => {
+    let receivedInput = false;
     const run = (payload: SectionPayload) => {
       requestRef.current?.abort();
       if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
@@ -79,7 +80,8 @@ export function SectionEmbed() {
       let latestTree: unknown = null;
       let streamingVisible = false;
       void streamSection(payload, controller.signal, (message) => {
-          latestTree = parse(messagesToJsonl([message]));
+          const nextTree = parse(messagesToJsonl([message]));
+          if (nextTree) latestTree = nextTree;
           if (latestTree && !streamingVisible) {
             streamingVisible = true;
             window.requestAnimationFrame(() => {
@@ -89,8 +91,7 @@ export function SectionEmbed() {
           }
         })
         .then(() => {
-          const errors = Object.values(storeRef.current.getState().errorMap);
-          if (!latestTree || errors.length > 0) throw new Error("A2UI section render failed");
+          if (!latestTree) throw new Error("A2UI section render failed");
           setTree(latestTree);
           window.requestAnimationFrame(() => {
             const height = Math.ceil(document.documentElement.scrollHeight);
@@ -117,15 +118,20 @@ export function SectionEmbed() {
     };
 
     const receive = (event: MessageEvent<HostMessage>) => {
-      if (event.origin !== window.location.origin || event.source !== window.parent) return;
       if (event.data?.type !== "a2ui:section-input") return;
+      receivedInput = true;
       setKind(event.data.payload.kind);
       retryCountRef.current = 0;
       run(event.data.payload);
     };
     window.addEventListener("message", receive);
-    window.parent.postMessage({ type: "a2ui:section-listening" }, window.location.origin);
+    const announceReady = () => {
+      if (!receivedInput) window.parent.postMessage({ type: "a2ui:section-listening" }, "*");
+    };
+    announceReady();
+    const handshakeTimer = window.setInterval(announceReady, 500);
     return () => {
+      window.clearInterval(handshakeTimer);
       window.removeEventListener("message", receive);
       requestRef.current?.abort();
       if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);

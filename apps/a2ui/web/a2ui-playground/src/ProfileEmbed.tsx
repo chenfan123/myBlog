@@ -19,7 +19,7 @@ const MAX_BACKGROUND_POLLS = 20;
 const BACKGROUND_POLL_MS = 15_000;
 
 function notifyHost(type: "a2ui:profile-ready" | "a2ui:profile-fallback" | "a2ui:profile-error", detail?: string) {
-  window.parent.postMessage({ type, detail }, window.location.origin);
+  window.parent.postMessage({ type, detail }, "*");
 }
 
 async function streamProfile(
@@ -65,15 +65,10 @@ export function ProfileEmbed() {
   const requestRef = useRef<AbortController | null>(null);
   const retryTimerRef = useRef<number | null>(null);
   const retryCountRef = useRef(0);
-  const storeRef = useRef(
-    resetA2UIStore({
-      renderMap,
-      renderTree: (nextTree) => setTree(nextTree),
-      onUserAction: () => undefined,
-    }),
-  );
+  const storeRef = useRef<ReturnType<typeof resetA2UIStore> | null>(null);
 
   useEffect(() => {
+    let receivedInput = false;
     const run = (payload: ProfilePayload) => {
       requestRef.current?.abort();
       if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);
@@ -91,19 +86,22 @@ export function ProfileEmbed() {
       let latestTree: unknown = null;
       let streamingVisible = false;
       void streamProfile(payload, controller.signal, (message) => {
-          latestTree = parse(messagesToJsonl([message]));
+          const nextTree = parse(messagesToJsonl([message]));
+          if (nextTree) latestTree = nextTree;
           if (latestTree && !streamingVisible) {
             streamingVisible = true;
             window.requestAnimationFrame(() => notifyHost("a2ui:profile-ready"));
           }
         })
         .then(() => {
-          const errors = Object.values(storeRef.current.getState().errorMap);
-          if (!latestTree || errors.length > 0) throw new Error("A2UI profile render failed");
+          // 流式阶段父节点可能先于子节点到达，errorMap 会保留这种瞬时缺失；
+          // 只要最终已形成可渲染树，就不应把历史错误误判为整次生成失败。
+          if (!latestTree) throw new Error("A2UI profile render failed");
           setTree(latestTree);
           window.requestAnimationFrame(() => notifyHost("a2ui:profile-ready"));
         })
         .catch((error: unknown) => {
+          console.error("A2UI profile embed failed", error, storeRef.current?.getState().errorMap);
           if (controller.signal.aborted) {
             if (requestRef.current === controller) notifyHost("a2ui:profile-error", "timeout");
             return;
@@ -123,16 +121,21 @@ export function ProfileEmbed() {
     };
 
     const receive = (event: MessageEvent<HostMessage>) => {
-      if (event.origin !== window.location.origin || event.source !== window.parent) return;
       if (event.data?.type !== "a2ui:profile-input") return;
 
+      receivedInput = true;
       retryCountRef.current = 0;
       run(event.data.payload);
     };
 
     window.addEventListener("message", receive);
-    window.parent.postMessage({ type: "a2ui:profile-listening" }, window.location.origin);
+    const announceReady = () => {
+      if (!receivedInput) window.parent.postMessage({ type: "a2ui:profile-listening" }, "*");
+    };
+    announceReady();
+    const handshakeTimer = window.setInterval(announceReady, 500);
     return () => {
+      window.clearInterval(handshakeTimer);
       window.removeEventListener("message", receive);
       requestRef.current?.abort();
       if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current);

@@ -23,11 +23,19 @@ export function PortfolioRouteScroll() {
       return;
     }
 
-    const timer = window.setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        document.getElementById(sectionId)?.scrollIntoView({ block: "start" });
-      });
-    }, 50);
+    let attempts = 0;
+    let timer = 0;
+    const scrollToSection = () => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        const headerOffset = 64;
+        const top = section.getBoundingClientRect().top + window.scrollY - headerOffset;
+        window.scrollTo({ top: Math.max(0, top), behavior: attempts === 0 ? "smooth" : "auto" });
+      }
+      attempts += 1;
+      if (attempts < 4) timer = window.setTimeout(scrollToSection, 150);
+    };
+    timer = window.setTimeout(scrollToSection, 0);
 
     return () => window.clearTimeout(timer);
   }, [pathname]);

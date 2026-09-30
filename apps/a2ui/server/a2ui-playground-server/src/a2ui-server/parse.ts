@@ -39,7 +39,28 @@ export function parseAgentOutput(raw: string): A2UIMessage[] {
     }
   }
 
+  const looseJsonl = tryParseJsonlLoose(stripFence(trimmed));
+  if (looseJsonl) {
+    return looseJsonl;
+  }
+
   throw new A2UIServerError(502, "AGENT_INVALID_OUTPUT", "Agent output is not valid A2UI JSON/JSONL");
+}
+
+/** 兼容推理模型在 JSONL 前后夹带少量说明文字；只提取合法的 A2UI 消息行。 */
+function tryParseJsonlLoose(text: string): A2UIMessage[] | undefined {
+  const messages: A2UIMessage[] = [];
+  for (const line of text.split(/\r?\n/)) {
+    const trimmed = line.trim().replace(/^[-*]\s+/, "");
+    if (!trimmed.startsWith("{") || !trimmed.endsWith("}")) continue;
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (isObject(parsed) && getAction(parsed)) messages.push(parsed as A2UIMessage);
+    } catch {
+      // 非协议说明行直接忽略，最终仍由 normalizeMessages 校验完整性。
+    }
+  }
+  return messages.length > 0 ? messages : undefined;
 }
 
 export function normalizeMessages(

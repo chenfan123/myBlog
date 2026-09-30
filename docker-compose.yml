@@ -56,6 +56,8 @@ services:
       - ./apps/agent/.env.local
     environment:
       PORT: 3000
+      A2UI_TEXT_MODEL: ${A2UI_TEXT_MODEL:-qwen3.8-2.4t-a95b}
+      DASHSCOPE_MODEL: ${A2UI_TEXT_MODEL:-qwen3.8-2.4t-a95b}
       A2UI_SSE_INTERVAL_MS: ${A2UI_SSE_INTERVAL_MS:-160}
       A2UI_MAX_TOKENS: ${A2UI_MAX_TOKENS:-8192}
     ports:

@@ -104,7 +104,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         const generated = await server.generate({
           message: buildProfilePrompt(input),
           surfaceId: "profile-home",
-          maxOutputTokens: 2_200,
+          maxOutputTokens: dashscopeTextModel() === "qwen3.8-2.4t-a95b" ? 6_000 : 2_200,
           systemPrompt: buildCompactEmbedSystemPrompt({ surfaceId: "profile-home", catalogId: DEFAULT_CATALOG_ID }),
         });
         if (generated.incomplete) {
@@ -160,7 +160,9 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         const generated = await server.generate({
           message: buildPortfolioSectionPrompt(input),
           surfaceId: `portfolio-${input.kind}`,
-          maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
+          maxOutputTokens: dashscopeTextModel() === "qwen3.8-2.4t-a95b"
+            ? 6_000
+            : input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
           systemPrompt: buildCompactEmbedSystemPrompt({
             surfaceId: `portfolio-${input.kind}`,
             catalogId: DEFAULT_CATALOG_ID,
@@ -386,7 +388,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         input,
         cached,
         surfaceId: "profile-home",
-        maxOutputTokens: 2_200,
+        maxOutputTokens: dashscopeTextModel() === "qwen3.8-2.4t-a95b" ? 6_000 : 2_200,
         prompt: buildProfilePrompt(input),
         cacheMs: Number(process.env.A2UI_PROFILE_CACHE_MS ?? 86_400_000),
       });
@@ -439,7 +441,9 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         input,
         cached,
         surfaceId: `portfolio-${input.kind}`,
-        maxOutputTokens: input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
+        maxOutputTokens: dashscopeTextModel() === "qwen3.8-2.4t-a95b"
+          ? 6_000
+          : input.kind === "strengths" ? 1_800 : input.kind === "experiences" ? 2_800 : 2_400,
         prompt: buildPortfolioSectionPrompt(input),
         cacheMs: Number(process.env.A2UI_SECTION_CACHE_MS ?? 86_400_000),
       });

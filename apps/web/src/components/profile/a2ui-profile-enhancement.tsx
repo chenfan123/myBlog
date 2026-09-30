@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Sparkles } from "lucide-react";
 
 import type { Profile, SkillGroup } from "@/lib/resume";
@@ -11,6 +11,11 @@ type A2UIProfileEnhancementProps = {
   children: ReactNode;
 };
 
+const A2UI_EMBED_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:5173/a2ui/index.html?embed=profile"
+    : "/a2ui-profile/index.html?embed=profile";
+
 export function A2UIProfileEnhancement({
   profile,
   skillGroups,
@@ -19,6 +24,24 @@ export function A2UIProfileEnhancement({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "fallback" | "error">("loading");
 
+  const sendProfile = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage(
+      {
+        type: "a2ui:profile-input",
+        payload: {
+          name: profile.name,
+          role: profile.role,
+          introduction: profile.introduction,
+          phone: profile.phone,
+          email: profile.email,
+          availability: profile.availability || "开放机会",
+          skillGroups,
+        },
+      },
+      "*",
+    );
+  }, [profile, skillGroups]);
+
   useEffect(() => {
     if (status !== "loading") return;
     const timeout = window.setTimeout(() => setStatus("error"), 290_000);
@@ -26,26 +49,8 @@ export function A2UIProfileEnhancement({
   }, [status]);
 
   useEffect(() => {
-    const sendProfile = () => {
-      iframeRef.current?.contentWindow?.postMessage(
-        {
-          type: "a2ui:profile-input",
-          payload: {
-            name: profile.name,
-            role: profile.role,
-            introduction: profile.introduction,
-            phone: profile.phone,
-            email: profile.email,
-            availability: profile.availability || "开放机会",
-            skillGroups,
-          },
-        },
-        window.location.origin,
-      );
-    };
-
     const receive = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin || event.source !== iframeRef.current?.contentWindow) return;
+      if (!event.data?.type?.startsWith?.("a2ui:profile-")) return;
       if (event.data?.type === "a2ui:profile-listening") sendProfile();
       if (event.data?.type === "a2ui:profile-ready") setStatus("ready");
       if (event.data?.type === "a2ui:profile-fallback") setStatus("fallback");
@@ -54,7 +59,7 @@ export function A2UIProfileEnhancement({
 
     window.addEventListener("message", receive);
     return () => window.removeEventListener("message", receive);
-  }, [profile, skillGroups]);
+  }, [sendProfile]);
 
   return (
     <div className="relative min-h-[620px] lg:min-h-0">
@@ -79,10 +84,11 @@ export function A2UIProfileEnhancement({
       </div>
       <iframe
         ref={iframeRef}
-        src="/a2ui-profile/index.html?embed=profile"
+        src={A2UI_EMBED_URL}
         title="A2UI 个人介绍"
         onLoad={() => {
           setStatus("loading");
+          sendProfile();
         }}
         onError={() => setStatus("error")}
         className={`print-hidden absolute inset-0 size-full border-0 bg-white ${status === "ready" ? "visible" : "invisible pointer-events-none"}`}

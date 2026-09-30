@@ -67,6 +67,10 @@ export function buildCompactEmbedSystemPrompt(input: BuildAgentSystemPromptInput
     'Button 格式：{\"Button\":{\"child\":\"label-id\",\"primary\":true,\"action\":{\"name\":\"openAgent\",\"context\":[{\"key\":\"url\",\"value\":{\"literalString\":\"/path\"}}]}}}。',
     "styles 使用 theme=apple、primaryColor=#5f9400、background=#ffffff、surfaceColor=#ffffff、textColor=#17212b、mutedTextColor=#667085、radius=16、formFactor=desktop。",
     "必须忠实使用用户消息中的数据，不得补写公司、项目、数字、技能或经历事实。",
+    "严格仿照以下三行结构直接开始输出，不要先思考或解释：",
+    `{"beginRendering":{"surfaceId":${JSON.stringify(input.surfaceId)},"root":"root","catalogId":${JSON.stringify(catalogId)},"styles":{"theme":"apple","primaryColor":"#5f9400"}}}`,
+    `{"surfaceUpdate":{"surfaceId":${JSON.stringify(input.surfaceId)},"components":[{"id":"root","component":{"Card":{"child":"content"}}}]}}`,
+    `{"surfaceUpdate":{"surfaceId":${JSON.stringify(input.surfaceId)},"components":[{"id":"content","component":{"Text":{"text":{"literalString":"请替换为用户数据"},"usageHint":"body"}}}]}}`,
   ].join("\n");
 }
 

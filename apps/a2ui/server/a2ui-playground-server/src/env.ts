@@ -32,7 +32,7 @@ export function loadDotEnv(file = resolve(__dirname, "../.env")): void {
 
 /** 纯文本 A2UI 协议和界面对话使用主文本模型。 */
 export function dashscopeTextModel(): string {
-  return process.env.DASHSCOPE_MODEL?.trim() || "qwen-plus";
+  return process.env.A2UI_TEXT_MODEL?.trim() || process.env.DASHSCOPE_MODEL?.trim() || "qwen-plus";
 }
 
 /** 带图理解并生成 A2UI 协议使用 MODEL2；VL 仅兼容旧配置。 */

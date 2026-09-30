@@ -15,10 +15,16 @@ function outputTokensFor(input: GenerateA2UIInput) {
   return Number.isFinite(requested) && requested > 0 ? requested : maxOutputTokens();
 }
 
-/** 百炼 Qwen3.8-Max / DeepSeek 默认会先长思考，A2UI 协议半天出不来。默认关掉。 */
-function thinkingOff(kind: string): { extra_body?: { enable_thinking: boolean } } {
+/** 百炼推理模型默认会先长思考；能关闭则关闭，thinking-only 模型降到低推理强度。 */
+function thinkingOptions(
+  kind: string,
+  model: string,
+): { extra_body?: { enable_thinking: boolean }; reasoning_effort?: "low" } {
   if (kind !== "dashscope" || process.env.A2UI_ENABLE_THINKING === "1") {
     return {};
+  }
+  if (model === "qwen3.8-2.4t-a95b") {
+    return { reasoning_effort: "low" };
   }
   return { extra_body: { enable_thinking: false } };
 }
@@ -106,7 +112,7 @@ export function createOpenAIAgent(options?: OpenAIAgentOptions): A2UIAgent {
           temperature: 0.2,
           max_tokens: outputTokensFor(input),
           messages: buildChatMessages(input),
-          ...thinkingOff(kind),
+          ...thinkingOptions(kind, selectedModel),
         });
         content = completion.choices[0]?.message?.content ?? "";
       } catch (error) {
@@ -130,7 +136,7 @@ export function createOpenAIAgent(options?: OpenAIAgentOptions): A2UIAgent {
           max_tokens: outputTokensFor(input),
           stream: true,
           messages: buildChatMessages(input),
-          ...thinkingOff(kind),
+          ...thinkingOptions(kind, selectedModel),
         });
       } catch (error) {
         const detail = error instanceof Error ? error.message : "LLM request failed";
@@ -138,6 +144,9 @@ export function createOpenAIAgent(options?: OpenAIAgentOptions): A2UIAgent {
       }
 
       const parser = createAgentStreamParser();
+      let completeContent = "";
+      let completeThinking = "";
+      let parsedMessageCount = 0;
       try {
         for await (const chunk of completion) {
           const raw = chunk.choices[0]?.delta as
@@ -146,17 +155,29 @@ export function createOpenAIAgent(options?: OpenAIAgentOptions): A2UIAgent {
           const thinking = raw?.reasoning_content ?? "";
           const content = raw?.content ?? "";
           if (thinking) {
+            completeThinking += thinking;
             yield { type: "delta", text: thinking };
           }
           if (content) {
+            completeContent += content;
             yield { type: "delta", text: content };
             for (const message of parser.push(content)) {
+              parsedMessageCount += 1;
               yield message;
             }
           }
         }
         for (const message of parser.finish()) {
+          parsedMessageCount += 1;
           yield message;
+        }
+        // 部分兼容模型会在流式响应里返回完整 JSON、数组或代码围栏，
+        // 增量 JSONL 解析器无法逐行产出时，回退到已有的完整输出解析器。
+        const fallbackOutput = completeContent.trim() || completeThinking.trim();
+        if (parsedMessageCount === 0 && fallbackOutput) {
+          for (const message of parseAgentOutput(fallbackOutput)) {
+            yield message;
+          }
         }
       } catch (error) {
         if (error instanceof A2UIServerError) {

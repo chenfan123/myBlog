@@ -28,6 +28,7 @@ export function SiteHeader({
         <Link
           className="flex items-center gap-2 font-mono text-sm font-semibold"
           href="/"
+          prefetch={false}
         >
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             C
@@ -40,6 +41,7 @@ export function SiteHeader({
               key={item.href}
               href={item.href}
               scroll={false}
+              prefetch={false}
               aria-current={item.key === activePath ? "page" : undefined}
               className="transition-colors hover:text-foreground aria-[current=page]:font-medium aria-[current=page]:text-primary"
             >
@@ -50,7 +52,7 @@ export function SiteHeader({
         <div className="flex items-center gap-1.5">
           <HeaderAccount />
           <Button asChild size="sm" variant="outline">
-            <Link href="/contact" scroll={false}>
+            <Link href="/contact" scroll={false} prefetch={false}>
               <Mail />
               <span className="hidden sm:inline">联系我</span>
             </Link>
