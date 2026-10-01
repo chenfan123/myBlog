@@ -292,8 +292,8 @@ export function BlogWorkspace() {
 
   const tree = buildBlogTree(nodes);
   return (
-    <div className="grid min-h-[calc(100vh-8rem)] overflow-hidden rounded-3xl border bg-background/90 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="border-b bg-white/55 lg:border-b-0 lg:border-r">
+    <div className="grid h-[calc(100dvh-13rem)] min-h-[560px] grid-rows-[minmax(180px,35%)_minmax(0,1fr)] overflow-hidden rounded-3xl border bg-background/90 lg:grid-cols-[280px_minmax(0,1fr)] lg:grid-rows-1">
+      <aside className="flex min-h-0 flex-col border-b bg-white/55 lg:border-b-0 lg:border-r">
         <div className="flex items-center justify-between border-b p-3">
           <p className="px-2 text-sm font-semibold">博客文件</p>
           <div className="flex gap-1">
@@ -303,14 +303,14 @@ export function BlogWorkspace() {
             <Button size="icon-sm" variant="ghost" title="删除" disabled={!selectedId} onClick={() => void deleteSelected()}><Trash2 /></Button>
           </div>
         </div>
-        <div className="max-h-[calc(100vh-12rem)] overflow-auto p-2">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
           {loading ? <p className="p-3 text-sm text-muted-foreground">读取目录中…</p> : null}
           {!loading && tree.length === 0 ? <p className="p-3 text-sm text-muted-foreground">新建文件夹或文章开始写作。</p> : null}
           <AdminTree nodes={tree} selectedId={selectedId} expanded={expanded} onSelect={(node) => void selectNode(node)} />
         </div>
       </aside>
 
-      <section className="min-w-0">
+      <section className="grid min-h-0 min-w-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden">
         {document ? (
           <>
             <div className="grid gap-3 border-b p-4 md:grid-cols-[1fr_240px_auto]">
@@ -343,17 +343,17 @@ export function BlogWorkspace() {
               onDivider={() => insertAtCursor("\n\n---\n\n")}
               onTable={() => insertAtCursor("\n\n| 列一 | 列二 | 列三 |\n| --- | --- | --- |\n| 内容 | 内容 | 内容 |\n\n")}
             />
-            <div className="grid min-h-[650px] xl:grid-cols-2">
-              <div className="relative border-b xl:border-b-0 xl:border-r">
+            <div className="grid min-h-0 grid-rows-2 overflow-hidden xl:grid-cols-2 xl:grid-rows-1">
+              <div className="relative flex min-h-0 flex-col overflow-hidden border-b xl:border-b-0 xl:border-r">
                 <div className="flex items-center justify-between border-b bg-muted/25 px-6 py-2 text-xs font-medium text-muted-foreground">
                   <span>Markdown</span><span>支持粘贴图片</span>
                 </div>
-                <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="h-full min-h-[650px] resize-none rounded-none border-0 bg-transparent p-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
+                <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="min-h-0 flex-1 resize-none overflow-y-auto overscroll-contain rounded-none border-0 bg-transparent p-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
                 <span className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1 rounded-lg border bg-background/90 px-2 py-1 text-xs text-muted-foreground"><ImagePlus className="size-3" />{uploading ? "上传中…" : "可直接粘贴图片"}</span>
               </div>
-              <div className="min-w-0 overflow-auto bg-white/45">
-                <div className="sticky top-0 z-10 border-b bg-background/90 px-6 py-2 text-xs font-medium text-muted-foreground backdrop-blur">实时预览</div>
-                <div className="p-6"><MarkdownContent content={document.content || "*预览会显示在这里*"} /></div>
+              <div className="flex min-h-0 min-w-0 flex-col overflow-hidden bg-white/45">
+                <div className="shrink-0 border-b bg-background/90 px-6 py-2 text-xs font-medium text-muted-foreground backdrop-blur">实时预览</div>
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6"><MarkdownContent content={document.content || "*预览会显示在这里*"} /></div>
               </div>
             </div>
           </>
@@ -408,7 +408,7 @@ function MarkdownToolbar(props: MarkdownToolbarProps) {
   ] as const;
 
   return (
-    <div className="sticky top-16 z-20 flex flex-wrap items-center gap-1 border-b bg-background/95 px-4 py-2 shadow-sm backdrop-blur">
+    <div className="z-20 flex flex-wrap items-center gap-1 border-b bg-background/95 px-4 py-2 shadow-sm backdrop-blur">
       <span className="mr-2 hidden text-xs font-semibold text-muted-foreground sm:inline">Markdown 工具栏</span>
       {tools.map(({ label, icon: Icon, action }) => (
         <Button key={label} type="button" size="icon-sm" variant="ghost" title={label} aria-label={label} onClick={action}>
