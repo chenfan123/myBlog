@@ -19,9 +19,18 @@ test("persistent cache keeps the last successful payload even after logical expi
     await cache.set("profile", record);
 
     assert.deepEqual(await cache.get("profile", record.key), record);
+    assert.deepEqual(await cache.latest("profile"), record);
     assert.deepEqual(await cache.list("profile"), [record]);
+
+    const replacement = {
+      ...record,
+      key: "new-profile-key",
+      input: { name: "新的个人资料" },
+      payload: { converted: [{ beginRendering: { surfaceId: "new-profile" } }] },
+    };
+    await cache.set("profile", replacement);
+    assert.deepEqual(await cache.latest("profile"), replacement);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
 });
-

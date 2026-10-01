@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { mkdtemp, rm } from "node:fs/promises";
 import http from "node:http";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import test from "node:test";
 
@@ -7,6 +10,10 @@ import type { A2UIServer } from "../src/a2ui-server";
 import { createApp } from "../src/app";
 
 test("profile returns fallback immediately while generation continues in background", async () => {
+  const cacheDirectory = await mkdtemp(join(tmpdir(), "a2ui-profile-cache-"));
+  const previousCacheDirectory = process.env.A2UI_CACHE_DIR;
+  process.env.A2UI_CACHE_DIR = cacheDirectory;
+  let failStream = false;
   const a2ui: A2UIServer = {
     async generate() {
       await delay(100);
@@ -21,6 +28,7 @@ test("profile returns fallback immediately while generation continues in backgro
       };
     },
     async *stream() {
+      if (failStream) throw new Error("model unavailable");
       yield { event: "a2ui" as const, data: { beginRendering: { surfaceId: "profile-home", root: "root" } } };
       await delay(20);
       const messages = [
@@ -78,7 +86,21 @@ test("profile returns fallback immediately while generation continues in backgro
     assert.match(streamBody, /"type":"A2UI_MESSAGE"/);
     assert.match(streamBody, /"type":"A2UI_DONE"/);
     assert.ok(streamBody.indexOf("A2UI_MESSAGE") < streamBody.indexOf("A2UI_DONE"));
+
+    failStream = true;
+    const failedGeneration = await fetch(`${url}?sse=1`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
+      body: JSON.stringify({ name: "陈健华", role: "新的职位" }),
+    });
+    const fallbackBody = await failedGeneration.text();
+    assert.match(fallbackBody, /"previousVersion":true/);
+    assert.match(fallbackBody, /"type":"A2UI_DONE"/);
+    assert.doesNotMatch(fallbackBody, /"type":"A2UI_ERROR"/);
   } finally {
     await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+    if (previousCacheDirectory === undefined) delete process.env.A2UI_CACHE_DIR;
+    else process.env.A2UI_CACHE_DIR = previousCacheDirectory;
+    await rm(cacheDirectory, { recursive: true, force: true });
   }
 });

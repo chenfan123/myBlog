@@ -94,7 +94,6 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
   const sectionCache = new Map<string, { expiresAt: number; payload: Record<string, unknown> }>();
   const sectionPending = new Map<string, Promise<void>>();
   const persistentCache = new PersistentCache();
-  const refreshAheadMs = Number(process.env.A2UI_CACHE_REFRESH_AHEAD_MS ?? 3_600_000);
 
   function startProfileGeneration(key: string, input: ProfileInput): Promise<void> {
     const existing = profilePending.get(key);
@@ -128,13 +127,16 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         profileCache.set(key, record);
         await persistentCache.set("profile", record).catch((error) => console.error("profile cache write failed", error));
       })
-      .catch((error: unknown) => {
+      .catch(async (error: unknown) => {
         const failure = error instanceof A2UIServerError
           ? error
           : new A2UIServerError(502, "PROFILE_GENERATION_FAILED", error instanceof Error ? error.message : "profile generation failed");
         // 刷新失败时保留最后一次成功结果；只有首次生成失败才写短期兜底。
-        const lastSuccess = profileCache.get(key);
-        if (lastSuccess && !lastSuccess.payload.fallback) return;
+        const lastSuccess = profileCache.get(key) ?? await persistentCache.latest<ProfileInput>("profile");
+        if (lastSuccess && !lastSuccess.payload.fallback) {
+          profileCache.set(key, lastSuccess);
+          return;
+        }
         console.error("profile generation failed after retries", { code: failure.code, message: failure.message });
         profileCache.set(key, {
           expiresAt: Date.now() + Number(process.env.A2UI_PROFILE_FAILURE_CACHE_MS ?? 15_000),
@@ -223,6 +225,7 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
       key: string;
       input: ProfileInput | PortfolioSectionInput;
       cached?: { expiresAt: number; payload: Record<string, unknown> };
+      failureFallback?: { expiresAt: number; payload: Record<string, unknown> };
       surfaceId: string;
       maxOutputTokens: number;
       prompt: string;
@@ -305,32 +308,20 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         ? error
         : new A2UIServerError(502, "EMBED_STREAM_FAILED", error instanceof Error ? error.message : "stream failed");
       console.error(`${options.namespace} stream generation failed`, { code: failure.code, message: failure.message });
+      const fallbackMessages = options.failureFallback?.payload.converted;
+      if (Array.isArray(fallbackMessages) && fallbackMessages.length > 0) {
+        for (const message of fallbackMessages) {
+          send({ type: "A2UI_MESSAGE", message, cached: true, previousVersion: true });
+          await sleep(Math.min(intervalMs, 60));
+        }
+        send({ type: "A2UI_DONE", cached: true, previousVersion: true });
+        return;
+      }
       send({ type: "A2UI_ERROR", code: failure.code, message: failure.message });
     } finally {
       if (disconnected) destroyResponse(ctx.res);
       else endIfOpen(ctx.res);
     }
-  }
-
-  async function refreshPersistentCache(): Promise<void> {
-    if (!persistentCache.enabled) return;
-    const threshold = Date.now() + refreshAheadMs;
-    const [profiles, sections] = await Promise.all([
-      persistentCache.list<ProfileInput>("profile"),
-      persistentCache.list<PortfolioSectionInput>("section"),
-    ]);
-    await Promise.allSettled([
-      ...profiles.filter((record) => record.expiresAt <= threshold).map((record) => startProfileGeneration(record.key, record.input)),
-      ...sections.filter((record) => record.expiresAt <= threshold).map((record) => startSectionGeneration(record.key, record.input)),
-    ]);
-  }
-
-  if (persistentCache.enabled) {
-    const refreshIntervalMs = Number(process.env.A2UI_CACHE_REFRESH_INTERVAL_MS ?? 300_000);
-    const initialRefresh = setTimeout(() => void refreshPersistentCache(), 5_000);
-    const refreshTimer = setInterval(() => void refreshPersistentCache(), refreshIntervalMs);
-    initialRefresh.unref();
-    refreshTimer.unref();
   }
 
   app.use(cors());
@@ -381,12 +372,16 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
         profileCache.set(key, persisted);
       }
     }
+    const previousSuccess = cached && !cached.payload.fallback
+      ? cached
+      : await persistentCache.latest<ProfileInput>("profile");
     if (wantsChatSse(ctx)) {
       await streamEmbeddedSurface(ctx, {
         namespace: "profile",
         key,
         input,
         cached,
+        failureFallback: previousSuccess,
         surfaceId: "profile-home",
         maxOutputTokens: dashscopeTextModel() === "qwen3.8-2.4t-a95b" ? 6_000 : 2_200,
         prompt: buildProfilePrompt(input),
@@ -395,7 +390,6 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
       return;
     }
     if (cached && !cached.payload.fallback) {
-      if (cached.expiresAt <= Date.now() + refreshAheadMs) void startProfileGeneration(key, input);
       ctx.body = { ...cached.payload, cached: true, stale: cached.expiresAt <= Date.now() };
       return;
     }
@@ -450,7 +444,6 @@ export function createApp(server: A2UIServer, options: CreateAppOptions = {}): K
       return;
     }
     if (cached && !cached.payload.fallback) {
-      if (cached.expiresAt <= Date.now() + refreshAheadMs) void startSectionGeneration(key, input);
       ctx.body = { ...cached.payload, cached: true, stale: cached.expiresAt <= Date.now() };
       return;
     }
