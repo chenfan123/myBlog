@@ -141,27 +141,44 @@
   .project-card { transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
   .project-card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--primary) 45%, var(--border)); box-shadow: 0 18px 50px -34px oklch(0.3 0.04 145 / 0.35); }
 
-  .markdown-content { color: var(--foreground); line-height: 1.85; overflow-wrap: anywhere; }
+  .markdown-content { color: var(--foreground); font-size: 1rem; line-height: 1.85; overflow-wrap: anywhere; }
   .markdown-content > * + * { margin-top: 1.15rem; }
+  .markdown-content > :first-child { margin-top: 0; }
+  .markdown-content > :last-child { margin-bottom: 0; }
   .markdown-content h1 { margin-top: 2rem; font-size: 2rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.03em; }
   .markdown-content h2 { margin-top: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.45rem; font-size: 1.5rem; font-weight: 650; line-height: 1.35; }
   .markdown-content h3 { margin-top: 1.5rem; font-size: 1.2rem; font-weight: 650; }
   .markdown-content h4 { margin-top: 1.35rem; font-size: 1.05rem; font-weight: 650; color: var(--primary); }
   .markdown-content h5 { margin-top: 1.15rem; font-size: 0.98rem; font-weight: 650; }
   .markdown-content h6 { margin-top: 1rem; font-size: 0.9rem; font-weight: 650; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.04em; }
-  .markdown-content ul { list-style: disc; padding-left: 1.5rem; }
-  .markdown-content ol { list-style: decimal; padding-left: 1.5rem; }
+  .markdown-content p { white-space: normal; }
+  .markdown-content strong { font-weight: 700; }
+  .markdown-content ul { list-style: disc; padding-left: 1.6rem; }
+  .markdown-content ol { list-style: decimal; padding-left: 1.75rem; }
+  .markdown-content ul ul { list-style: circle; }
+  .markdown-content ul ul ul { list-style: square; }
+  .markdown-content ol ol { list-style: lower-alpha; }
+  .markdown-content ol ol ol { list-style: lower-roman; }
+  .markdown-content li > ul, .markdown-content li > ol { margin-top: 0.35rem; }
   .markdown-content li + li { margin-top: 0.3rem; }
+  .markdown-content li > p { margin: 0; }
+  .markdown-content .contains-task-list { list-style: none; padding-left: 0.25rem; }
+  .markdown-content .task-list-item { display: flex; align-items: flex-start; gap: 0.6rem; }
+  .markdown-content .task-list-item input { margin-top: 0.55rem; accent-color: var(--primary); }
   .markdown-content a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
-  .markdown-content blockquote { border-left: 3px solid var(--primary); background: color-mix(in oklab, var(--muted) 70%, transparent); padding: 0.75rem 1rem; color: var(--muted-foreground); }
+  .markdown-content del { color: var(--muted-foreground); }
+  .markdown-content blockquote { border-left: 3px solid var(--primary); border-radius: 0 0.75rem 0.75rem 0; background: color-mix(in oklab, var(--muted) 70%, transparent); padding: 0.75rem 1rem; color: var(--muted-foreground); }
+  .markdown-content blockquote > :first-child { margin-top: 0; }
+  .markdown-content blockquote > :last-child { margin-bottom: 0; }
   .markdown-content code { border-radius: 0.35rem; background: var(--muted); padding: 0.15rem 0.35rem; font-family: var(--font-mono); font-size: 0.9em; }
-  .markdown-content pre { overflow-x: auto; border-radius: 0.85rem; background: oklch(0.22 0.025 250); padding: 1rem; color: oklch(0.94 0.01 250); }
-  .markdown-content pre code { background: transparent; padding: 0; color: inherit; }
+  .markdown-content pre { overflow-x: auto; border: 1px solid oklch(0.35 0.025 250); border-radius: 0.85rem; background: oklch(0.22 0.025 250); padding: 1rem; color: oklch(0.94 0.01 250); tab-size: 2; }
+  .markdown-content pre code { display: block; min-width: max-content; background: transparent; padding: 0; color: inherit; line-height: 1.65; }
   .markdown-content img { max-width: 100%; height: auto; border-radius: 1rem; border: 1px solid var(--border); }
-  .markdown-content table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
+  .markdown-content table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; border-radius: 0.75rem; }
   .markdown-content th, .markdown-content td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; }
   .markdown-content th { background: var(--muted); font-weight: 600; }
-  .markdown-content hr { border-color: var(--border); }
+  .markdown-content tbody tr:nth-child(even) { background: color-mix(in oklab, var(--muted) 35%, transparent); }
+  .markdown-content hr { margin-block: 2rem; border-color: var(--border); }
 
   @media (prefers-reduced-motion: reduce) {
     .project-card { transition: none; }
