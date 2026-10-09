@@ -2,22 +2,27 @@
 
 import {
   Bold,
+  Check,
   ChevronDown,
   ChevronRight,
+  Cloud,
   Code2,
   FilePlus2,
   FileText,
   Folder,
   FolderPlus,
+  GripVertical,
   Heading1,
   Heading2,
   ImagePlus,
   Italic,
   Link2,
+  LoaderCircle,
   List,
   ListChecks,
   ListOrdered,
   Minus,
+  MoreHorizontal,
   Pencil,
   Quote,
   Save,
@@ -43,6 +48,9 @@ import {
 import { uploadImageToCdn } from "@/lib/cdn-upload";
 
 type Notice = { tone: "error" | "success" | "idle"; message: string };
+type AutoSaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
+type ContextMenuState = { nodeId: string; x: number; y: number };
+type DropState = { nodeId: string; position: "before" | "after" | "inside" };
 type NameDialogState =
   | { action: "create"; kind: BlogNodeKind; initialValue: "" }
   | { action: "rename"; kind: BlogNodeKind; initialValue: string };
@@ -57,11 +65,68 @@ export function BlogWorkspace() {
   const [uploading, setUploading] = useState(false);
   const [notice, setNotice] = useState<Notice>({ tone: "idle", message: "" });
   const [nameDialog, setNameDialog] = useState<NameDialogState | null>(null);
+  const [autoSaveStatus, setAutoSaveStatus] = useState<AutoSaveStatus>("idle");
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dropState, setDropState] = useState<DropState | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const lastSavedSignatureRef = useRef("");
+  const activeDocumentIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     void loadTree();
   }, []);
+
+  useEffect(() => {
+    if (!contextMenu) return;
+    const close = () => setContextMenu(null);
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+    };
+    window.addEventListener("pointerdown", close);
+    window.addEventListener("keydown", closeOnEscape);
+    window.addEventListener("blur", close);
+    return () => {
+      window.removeEventListener("pointerdown", close);
+      window.removeEventListener("keydown", closeOnEscape);
+      window.removeEventListener("blur", close);
+    };
+  }, [contextMenu]);
+
+  useEffect(() => {
+    if (!document) return;
+    const signature = editorSignature(document);
+    if (!lastSavedSignatureRef.current || signature === lastSavedSignatureRef.current) return;
+    setAutoSaveStatus("dirty");
+    const snapshot = document;
+    const timer = window.setTimeout(async () => {
+      setAutoSaveStatus("saving");
+      try {
+        const response = await fetch(`${blogApiBaseUrl}/api/v1/admin/blog/nodes/${snapshot.id}`, {
+          method: "PATCH",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: snapshot.name, slug: snapshot.slug, content: snapshot.content }),
+        });
+        if (!response.ok) throw new Error(await readApiError(response));
+        const saved = (await response.json()) as BlogNodeDetail;
+        setNodes((current) => current.map((node) => node.id === saved.id ? saved : node));
+        if (activeDocumentIdRef.current !== saved.id) return;
+        lastSavedSignatureRef.current = editorSignature(saved);
+        setDocument((current) => {
+          if (!current || current.id !== saved.id) return current;
+          if (editorSignature(current) !== signature) return { ...current, updated_at: saved.updated_at };
+          return saved;
+        });
+        setAutoSaveStatus("saved");
+      } catch (error) {
+        if (activeDocumentIdRef.current !== snapshot.id) return;
+        setAutoSaveStatus("error");
+        setNotice({ tone: "error", message: `自动保存失败：${getErrorMessage(error)}` });
+      }
+    }, 1_200);
+    return () => window.clearTimeout(timer);
+  }, [document]);
 
   async function loadTree() {
     setLoading(true);
@@ -83,10 +148,12 @@ export function BlogWorkspace() {
     setSelectedId(node.id);
     setNotice({ tone: "idle", message: "" });
     if (node.kind === "folder") {
+      activeDocumentIdRef.current = null;
       setDocument(null);
       toggleFolder(node.id);
       return;
     }
+    activeDocumentIdRef.current = node.id;
     const response = await fetch(
       `${blogApiBaseUrl}/api/v1/admin/blog/nodes/${node.id}`,
       { credentials: "include", cache: "no-store" },
@@ -95,7 +162,11 @@ export function BlogWorkspace() {
       setNotice({ tone: "error", message: "无法读取文章" });
       return;
     }
-    setDocument((await response.json()) as BlogNodeDetail);
+    const detail = (await response.json()) as BlogNodeDetail;
+    if (activeDocumentIdRef.current !== node.id) return;
+    lastSavedSignatureRef.current = editorSignature(detail);
+    setAutoSaveStatus("saved");
+    setDocument(detail);
   }
 
   function toggleFolder(id: string) {
@@ -130,29 +201,33 @@ export function BlogWorkspace() {
 
   async function saveDocument(publishState = document?.is_published ?? false) {
     if (!document) return;
+    const snapshot = document;
     setSaving(true);
     setNotice({ tone: "idle", message: "" });
     try {
       const response = await fetch(
-        `${blogApiBaseUrl}/api/v1/admin/blog/nodes/${document.id}`,
+        `${blogApiBaseUrl}/api/v1/admin/blog/nodes/${snapshot.id}`,
         {
           method: "PATCH",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: document.name,
-            slug: document.slug,
-            content: document.content,
+            name: snapshot.name,
+            slug: snapshot.slug,
+            content: snapshot.content,
             is_published: publishState,
           }),
         },
       );
       if (!response.ok) throw new Error(await readApiError(response));
       const saved = (await response.json()) as BlogNodeDetail;
-      setDocument(saved);
       setNodes((current) =>
         current.map((node) => (node.id === saved.id ? saved : node)),
       );
+      if (activeDocumentIdRef.current !== saved.id) return;
+      lastSavedSignatureRef.current = editorSignature(saved);
+      setAutoSaveStatus("saved");
+      setDocument(saved);
       setNotice({
         tone: "success",
         message: publishState ? "文章已发布，普通用户现在可以在博客列表中看到" : "草稿已保存，仅管理员可见",
@@ -178,6 +253,7 @@ export function BlogWorkspace() {
     }
     await loadTree();
     setSelectedId(null);
+    activeDocumentIdRef.current = null;
     setDocument(null);
   }
 
@@ -206,6 +282,59 @@ export function BlogWorkspace() {
       current?.id === renamed.id ? { ...current, name: renamed.name } : current,
     );
     return true;
+  }
+
+  async function reorderNodes(sourceId: string, targetId: string, position: DropState["position"]) {
+    if (sourceId === targetId) return;
+    const source = nodes.find((node) => node.id === sourceId);
+    const target = nodes.find((node) => node.id === targetId);
+    if (!source || !target) return;
+    const nextParentId = position === "inside" && target.kind === "folder" ? target.id : target.parent_id;
+    if (source.kind === "folder" && nextParentId && isDescendant(nodes, nextParentId, source.id)) {
+      setNotice({ tone: "error", message: "文件夹不能移动到自己的子目录" });
+      return;
+    }
+
+    const previousNodes = nodes;
+    const sourceSiblings = nodes
+      .filter((node) => node.parent_id === source.parent_id && node.id !== source.id)
+      .toSorted(compareBlogNodes);
+    const destinationSiblings = (source.parent_id === nextParentId ? sourceSiblings : nodes
+      .filter((node) => node.parent_id === nextParentId && node.id !== source.id))
+      .toSorted(compareBlogNodes);
+    const targetIndex = destinationSiblings.findIndex((node) => node.id === target.id);
+    const insertIndex = position === "inside"
+      ? destinationSiblings.length
+      : Math.max(0, targetIndex + (position === "after" ? 1 : 0));
+    destinationSiblings.splice(insertIndex, 0, { ...source, parent_id: nextParentId });
+
+    const positions = new Map<string, { parent_id: string | null; sort_order: number }>();
+    destinationSiblings.forEach((node, index) => positions.set(node.id, { parent_id: nextParentId, sort_order: index * 10 }));
+    if (source.parent_id !== nextParentId) {
+      sourceSiblings.forEach((node, index) => positions.set(node.id, { parent_id: source.parent_id, sort_order: index * 10 }));
+    }
+    const optimistic = nodes.map((node) => {
+      const next = positions.get(node.id);
+      return next ? { ...node, ...next } : node;
+    });
+    setNodes(optimistic);
+    if (nextParentId) setExpanded((current) => new Set(current).add(nextParentId));
+
+    try {
+      const response = await fetch(`${blogApiBaseUrl}/api/v1/admin/blog/reorder`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: Array.from(positions, ([id, value]) => ({ id, ...value })),
+        }),
+      });
+      if (!response.ok) throw new Error(await readApiError(response));
+      setNotice({ tone: "success", message: nextParentId === source.parent_id ? "排序已保存" : "文件已移动并保存" });
+    } catch (error) {
+      setNodes(previousNodes);
+      setNotice({ tone: "error", message: getErrorMessage(error) });
+    }
   }
 
   async function pasteImages(files: File[]) {
@@ -279,6 +408,76 @@ export function BlogWorkspace() {
     );
   }
 
+  function handleEditorKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (!document) return;
+    const textarea = event.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    if (event.key === "Enter" && start === end) {
+      const lineStart = document.content.lastIndexOf("\n", Math.max(0, start - 1)) + 1;
+      const currentLine = document.content.slice(lineStart, start);
+      const listMatch = currentLine.match(/^(\s*)([-+*]|\d+[.)])\s+(\[(?: |x|X)\]\s+)?(.*)$/);
+      const quoteMatch = currentLine.match(/^(\s*>\s?)(.*)$/);
+      if (listMatch) {
+        event.preventDefault();
+        const [, indentation, marker, taskMarker, value] = listMatch;
+        if (!value.trim()) {
+          const nextContent = `${document.content.slice(0, lineStart)}${indentation}${document.content.slice(start)}`;
+          updateEditorContent(nextContent, lineStart + indentation.length);
+          return;
+        }
+        const nextMarker = /^\d/.test(marker)
+          ? marker.replace(/\d+/, (number) => String(Number(number) + 1))
+          : marker;
+        const continuation = `\n${indentation}${nextMarker} ${taskMarker ? "[ ] " : ""}`;
+        const nextContent = `${document.content.slice(0, start)}${continuation}${document.content.slice(end)}`;
+        updateEditorContent(nextContent, start + continuation.length);
+        return;
+      }
+      if (quoteMatch) {
+        event.preventDefault();
+        const [, prefix, value] = quoteMatch;
+        const continuation = value.trim() ? `\n${prefix}` : "\n";
+        const replaceStart = value.trim() ? start : lineStart;
+        const nextContent = `${document.content.slice(0, replaceStart)}${continuation}${document.content.slice(end)}`;
+        updateEditorContent(nextContent, replaceStart + continuation.length);
+        return;
+      }
+    }
+
+    if (event.key !== "Tab") return;
+    event.preventDefault();
+    const lineStart = document.content.lastIndexOf("\n", Math.max(0, start - 1)) + 1;
+    const lineEndIndex = document.content.indexOf("\n", end);
+    const lineEnd = lineEndIndex === -1 ? document.content.length : lineEndIndex;
+    const selectedLines = document.content.slice(lineStart, lineEnd);
+    const indent = "  ";
+    const replacement = event.shiftKey
+      ? selectedLines.replace(/^(?: {1,2}|\t)/gm, "")
+      : selectedLines.replace(/^/gm, indent);
+    const nextContent = `${document.content.slice(0, lineStart)}${replacement}${document.content.slice(lineEnd)}`;
+    const originalFirstLine = selectedLines.split("\n", 1)[0];
+    const replacementFirstLine = replacement.split("\n", 1)[0];
+    const firstLineDelta = replacementFirstLine.length - originalFirstLine.length;
+    const totalDelta = replacement.length - selectedLines.length;
+    setDocument((current) => current ? { ...current, content: nextContent } : current);
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const nextStart = Math.max(lineStart, start + firstLineDelta);
+      const nextEnd = Math.max(nextStart, end + totalDelta);
+      textarea.setSelectionRange(nextStart, nextEnd);
+    });
+
+    function updateEditorContent(content: string, cursor: number) {
+      setDocument((current) => current ? { ...current, content } : current);
+      requestAnimationFrame(() => {
+        textarea.focus();
+        textarea.setSelectionRange(cursor, cursor);
+      });
+    }
+  }
+
   async function submitNameDialog(name: string) {
     if (!nameDialog) return;
     let succeeded = false;
@@ -295,7 +494,10 @@ export function BlogWorkspace() {
     <div className="grid h-[calc(100dvh-13rem)] min-h-[560px] grid-rows-[minmax(180px,35%)_minmax(0,1fr)] overflow-hidden rounded-3xl border bg-background/90 lg:grid-cols-[280px_minmax(0,1fr)] lg:grid-rows-1">
       <aside className="flex min-h-0 flex-col border-b bg-white/55 lg:border-b-0 lg:border-r">
         <div className="flex items-center justify-between border-b p-3">
-          <p className="px-2 text-sm font-semibold">博客文件</p>
+          <div className="min-w-0 px-2">
+            <p className="text-sm font-semibold">内容空间</p>
+            <p className="mt-0.5 text-[11px] text-muted-foreground">{nodes.length} 个文件与目录</p>
+          </div>
           <div className="flex gap-1">
             <Button size="icon-sm" variant="ghost" title="新建文件夹" onClick={() => setNameDialog({ action: "create", kind: "folder", initialValue: "" })}><FolderPlus /></Button>
             <Button size="icon-sm" variant="ghost" title="新建文章" onClick={() => setNameDialog({ action: "create", kind: "document", initialValue: "" })}><FilePlus2 /></Button>
@@ -306,7 +508,29 @@ export function BlogWorkspace() {
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
           {loading ? <p className="p-3 text-sm text-muted-foreground">读取目录中…</p> : null}
           {!loading && tree.length === 0 ? <p className="p-3 text-sm text-muted-foreground">新建文件夹或文章开始写作。</p> : null}
-          <AdminTree nodes={tree} selectedId={selectedId} expanded={expanded} onSelect={(node) => void selectNode(node)} />
+          <AdminTree
+            nodes={tree}
+            selectedId={selectedId}
+            expanded={expanded}
+            draggedId={draggedId}
+            dropState={dropState}
+            onSelect={(node) => void selectNode(node)}
+            onContextMenu={(node, x, y) => {
+              setSelectedId(node.id);
+              setContextMenu({ nodeId: node.id, x, y });
+            }}
+            onDragStart={setDraggedId}
+            onDragOver={setDropState}
+            onDrop={(targetId, position) => {
+              if (draggedId) void reorderNodes(draggedId, targetId, position);
+              setDraggedId(null);
+              setDropState(null);
+            }}
+            onDragEnd={() => {
+              setDraggedId(null);
+              setDropState(null);
+            }}
+          />
         </div>
       </aside>
 
@@ -317,6 +541,7 @@ export function BlogWorkspace() {
               <Input value={document.name} aria-label="文章标题" onChange={(event) => setDocument((current) => current ? { ...current, name: event.target.value } : current)} />
               <Input value={document.slug ?? ""} aria-label="文章地址" placeholder="article-slug" onChange={(event) => setDocument((current) => current ? { ...current, slug: event.target.value } : current)} />
               <div className="flex items-center gap-2">
+                <AutoSaveIndicator status={autoSaveStatus} />
                 {document.is_published ? (
                   <Button variant="outline" disabled={saving} onClick={() => void saveDocument(false)}>转为草稿</Button>
                 ) : (
@@ -346,9 +571,9 @@ export function BlogWorkspace() {
             <div className="grid min-h-0 grid-rows-2 overflow-hidden xl:grid-cols-2 xl:grid-rows-1">
               <div className="relative flex min-h-0 flex-col overflow-hidden border-b xl:border-b-0 xl:border-r">
                 <div className="flex items-center justify-between border-b bg-muted/25 px-6 py-2 text-xs font-medium text-muted-foreground">
-                  <span>Markdown</span><span>支持粘贴图片</span>
+                  <span>Markdown</span><span>Enter 延续列表 · Tab 调整层级 · 支持粘贴图片</span>
                 </div>
-                <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="min-h-0 flex-1 resize-none overflow-y-auto overscroll-contain rounded-none border-0 bg-transparent p-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
+                <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onKeyDown={handleEditorKeyDown} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="min-h-0 flex-1 resize-none overflow-y-auto overscroll-contain rounded-none border-0 bg-transparent p-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
                 <span className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1 rounded-lg border bg-background/90 px-2 py-1 text-xs text-muted-foreground"><ImagePlus className="size-3" />{uploading ? "上传中…" : "可直接粘贴图片"}</span>
               </div>
               <div className="flex min-h-0 min-w-0 flex-col overflow-hidden bg-white/45">
@@ -367,6 +592,25 @@ export function BlogWorkspace() {
           state={nameDialog}
           onClose={() => setNameDialog(null)}
           onSubmit={submitNameDialog}
+        />
+      ) : null}
+      {contextMenu ? (
+        <BlogContextMenu
+          state={contextMenu}
+          node={nodes.find((node) => node.id === contextMenu.nodeId)}
+          onCreate={(kind) => {
+            setContextMenu(null);
+            setNameDialog({ action: "create", kind, initialValue: "" });
+          }}
+          onRename={() => {
+            const selected = nodes.find((node) => node.id === contextMenu.nodeId);
+            setContextMenu(null);
+            if (selected) setNameDialog({ action: "rename", kind: selected.kind, initialValue: selected.name });
+          }}
+          onDelete={() => {
+            setContextMenu(null);
+            void deleteSelected();
+          }}
         />
       ) : null}
     </div>
@@ -532,8 +776,149 @@ function NameDialog({
   );
 }
 
-function AdminTree({ nodes, selectedId, expanded, onSelect }: { nodes: BlogTreeNode[]; selectedId: string | null; expanded: Set<string>; onSelect: (node: BlogTreeNode) => void }) {
-  return <ul>{nodes.map((node) => { const open = expanded.has(node.id); return <li key={node.id}><button type="button" onClick={() => onSelect(node)} className={`flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-left text-sm ${selectedId === node.id ? "bg-primary/10 text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>{node.kind === "folder" ? open ? <ChevronDown className="size-3.5" /> : <ChevronRight className="size-3.5" /> : <span className="w-3.5" />}{node.kind === "folder" ? <Folder className="size-4 text-primary" /> : <FileText className="size-4" />}<span className="truncate">{node.name}</span>{node.kind === "document" && node.is_published ? <span className="ml-auto size-1.5 rounded-full bg-emerald-500" /> : null}</button>{node.kind === "folder" && open ? <div className="ml-4 border-l pl-1"><AdminTree nodes={node.children} selectedId={selectedId} expanded={expanded} onSelect={onSelect} /></div> : null}</li>; })}</ul>;
+type AdminTreeProps = {
+  nodes: BlogTreeNode[];
+  selectedId: string | null;
+  expanded: Set<string>;
+  draggedId: string | null;
+  dropState: DropState | null;
+  onSelect: (node: BlogTreeNode) => void;
+  onContextMenu: (node: BlogTreeNode, x: number, y: number) => void;
+  onDragStart: (id: string) => void;
+  onDragOver: (state: DropState) => void;
+  onDrop: (targetId: string, position: DropState["position"]) => void;
+  onDragEnd: () => void;
+};
+
+function AdminTree(props: AdminTreeProps) {
+  return (
+    <ul className="space-y-0.5">
+      {props.nodes.map((node) => {
+        const open = props.expanded.has(node.id);
+        const activeDrop = props.dropState?.nodeId === node.id ? props.dropState.position : null;
+        return (
+          <li key={node.id}>
+            <button
+              type="button"
+              draggable
+              onClick={() => props.onSelect(node)}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                props.onContextMenu(node, event.clientX, event.clientY);
+              }}
+              onDragStart={(event) => {
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData("text/plain", node.id);
+                props.onDragStart(node.id);
+              }}
+              onDragOver={(event) => {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = "move";
+                const bounds = event.currentTarget.getBoundingClientRect();
+                const relativeY = (event.clientY - bounds.top) / bounds.height;
+                const position = node.kind === "folder" && relativeY > 0.25 && relativeY < 0.75
+                  ? "inside"
+                  : relativeY < 0.5 ? "before" : "after";
+                props.onDragOver({ nodeId: node.id, position });
+              }}
+              onDrop={(event) => {
+                event.preventDefault();
+                props.onDrop(node.id, activeDrop ?? "after");
+              }}
+              onDragEnd={props.onDragEnd}
+              className={`group relative flex w-full items-center gap-1.5 rounded-lg px-2 py-2 text-left text-sm transition-colors ${
+                props.selectedId === node.id ? "bg-primary/10 text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              } ${props.draggedId === node.id ? "opacity-40" : ""} ${activeDrop === "inside" ? "ring-1 ring-primary bg-primary/10" : ""}`}
+            >
+              {activeDrop === "before" ? <span className="absolute inset-x-1 -top-px h-0.5 rounded-full bg-primary" /> : null}
+              {activeDrop === "after" ? <span className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-primary" /> : null}
+              <GripVertical className="size-3.5 shrink-0 cursor-grab opacity-0 transition-opacity group-hover:opacity-50" />
+              {node.kind === "folder" ? open ? <ChevronDown className="size-3.5" /> : <ChevronRight className="size-3.5" /> : <span className="w-3.5" />}
+              {node.kind === "folder" ? <Folder className="size-4 text-primary" /> : <FileText className="size-4" />}
+              <span className="truncate">{node.name}</span>
+              {node.kind === "document" && node.is_published ? <span className="ml-auto size-1.5 rounded-full bg-emerald-500" title="已发布" /> : null}
+              <MoreHorizontal className="ml-auto size-3.5 opacity-0 group-hover:opacity-50" />
+            </button>
+            {node.kind === "folder" && open ? (
+              <div className="ml-5 border-l pl-1.5">
+                <AdminTree {...props} nodes={node.children} />
+              </div>
+            ) : null}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function AutoSaveIndicator({ status }: { status: AutoSaveStatus }) {
+  const content = status === "saving"
+    ? { icon: LoaderCircle, label: "正在保存", className: "text-primary" }
+    : status === "saved"
+      ? { icon: Check, label: "已自动保存", className: "text-emerald-600" }
+      : status === "error"
+        ? { icon: Cloud, label: "保存失败", className: "text-destructive" }
+        : { icon: Cloud, label: status === "dirty" ? "等待保存" : "云端草稿", className: "text-muted-foreground" };
+  const Icon = content.icon;
+  return (
+    <span className={`hidden items-center gap-1.5 whitespace-nowrap text-xs md:inline-flex ${content.className}`}>
+      <Icon className={`size-3.5 ${status === "saving" ? "animate-spin" : ""}`} />
+      {content.label}
+    </span>
+  );
+}
+
+function BlogContextMenu({
+  state,
+  node,
+  onCreate,
+  onRename,
+  onDelete,
+}: {
+  state: ContextMenuState;
+  node?: BlogNodeSummary;
+  onCreate: (kind: BlogNodeKind) => void;
+  onRename: () => void;
+  onDelete: () => void;
+}) {
+  if (!node) return null;
+  return (
+    <div
+      role="menu"
+      className="fixed z-[70] min-w-48 overflow-hidden rounded-xl border bg-background/98 p-1.5 text-sm shadow-2xl shadow-foreground/15 backdrop-blur"
+      style={{ left: Math.min(state.x, window.innerWidth - 210), top: Math.min(state.y, window.innerHeight - 220) }}
+      onPointerDown={(event) => event.stopPropagation()}
+    >
+      {node.kind === "folder" ? (
+        <>
+          <button type="button" role="menuitem" className="flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-muted" onClick={() => onCreate("document")}><FilePlus2 className="size-4" />新建文章</button>
+          <button type="button" role="menuitem" className="flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-muted" onClick={() => onCreate("folder")}><FolderPlus className="size-4" />新建子文件夹</button>
+          <div className="my-1 border-t" />
+        </>
+      ) : null}
+      <button type="button" role="menuitem" className="flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-muted" onClick={onRename}><Pencil className="size-4" />重命名</button>
+      <button type="button" role="menuitem" className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-destructive hover:bg-destructive/10" onClick={onDelete}><Trash2 className="size-4" />删除</button>
+      <div className="border-t px-3 pb-1 pt-2 text-[11px] text-muted-foreground">拖拽可排序或移动到文件夹</div>
+    </div>
+  );
+}
+
+function editorSignature(document: Pick<BlogNodeDetail, "name" | "slug" | "content">) {
+  return JSON.stringify([document.name, document.slug, document.content]);
+}
+
+function compareBlogNodes(left: BlogNodeSummary, right: BlogNodeSummary) {
+  return left.sort_order - right.sort_order || left.name.localeCompare(right.name, "zh-CN");
+}
+
+function isDescendant(nodes: BlogNodeSummary[], candidateId: string, ancestorId: string) {
+  const byId = new Map(nodes.map((node) => [node.id, node]));
+  let current = byId.get(candidateId);
+  while (current?.parent_id) {
+    if (current.parent_id === ancestorId) return true;
+    current = byId.get(current.parent_id);
+  }
+  return false;
 }
 
 async function readApiError(response: Response) {

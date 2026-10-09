@@ -12,6 +12,7 @@ from app.models.user import User
 from app.schemas.blog import (
     BlogNodeCreate,
     BlogNodeDetail,
+    BlogNodeReorder,
     BlogNodeSummary,
     BlogNodeUpdate,
 )
@@ -21,6 +22,7 @@ from app.services.blog import (
     get_blog_node,
     get_published_post,
     list_blog_nodes,
+    reorder_blog_nodes,
     update_blog_node,
 )
 
@@ -79,6 +81,15 @@ def update_admin_blog_node(
     _: Annotated[User, Depends(require_admin)],
 ) -> BlogNodeDetail:
     return update_blog_node(db, get_blog_node(db, node_id), data)
+
+
+@router.put("/admin/blog/reorder", response_model=list[BlogNodeSummary])
+def reorder_admin_blog_nodes(
+    data: BlogNodeReorder,
+    db: Annotated[Session, Depends(get_db)],
+    _: Annotated[User, Depends(require_admin)],
+) -> list[BlogNodeSummary]:
+    return reorder_blog_nodes(db, data)
 
 
 @router.delete("/admin/blog/nodes/{node_id}", status_code=status.HTTP_204_NO_CONTENT)

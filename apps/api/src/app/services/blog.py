@@ -5,13 +5,13 @@ import uuid
 from datetime import UTC, datetime
 
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.blog import BlogNode
 from app.models.user import User
-from app.schemas.blog import BlogNodeCreate, BlogNodeUpdate
+from app.schemas.blog import BlogNodeCreate, BlogNodeReorder, BlogNodeUpdate
 
 slug_pattern = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
@@ -60,12 +60,20 @@ def get_published_post(db: Session, slug: str) -> BlogNode:
 def create_blog_node(db: Session, data: BlogNodeCreate, *, creator: User) -> BlogNode:
     _validate_parent(db, data.parent_id)
     node_id = uuid.uuid4()
+    last_order = db.scalar(
+        select(func.max(BlogNode.sort_order)).where(
+            BlogNode.parent_id == data.parent_id
+            if data.parent_id is not None
+            else BlogNode.parent_id.is_(None)
+        )
+    )
     node = BlogNode(
         id=node_id,
         parent_id=data.parent_id,
         kind=data.kind,
         name=data.name,
         slug=f"post-{node_id.hex[:10]}" if data.kind == "document" else None,
+        sort_order=(last_order or 0) + 10,
         created_by=creator.id,
     )
     db.add(node)
@@ -113,6 +121,46 @@ def update_blog_node(db: Session, node: BlogNode, data: BlogNodeUpdate) -> BlogN
 def delete_blog_node(db: Session, node: BlogNode) -> None:
     db.delete(node)
     db.commit()
+
+
+def reorder_blog_nodes(db: Session, data: BlogNodeReorder) -> list[BlogNode]:
+    nodes = list(db.scalars(select(BlogNode)))
+    by_id = {node.id: node for node in nodes}
+    requested_ids = [item.id for item in data.items]
+    if len(requested_ids) != len(set(requested_ids)):
+        raise HTTPException(status_code=400, detail="排序节点不能重复")
+    if any(node_id not in by_id for node_id in requested_ids):
+        raise HTTPException(status_code=404, detail="排序节点不存在")
+
+    parent_by_id = {node.id: node.parent_id for node in nodes}
+    for item in data.items:
+        if item.parent_id is not None:
+            parent = by_id.get(item.parent_id)
+            if parent is None:
+                raise HTTPException(status_code=404, detail="目标文件夹不存在")
+            if parent.kind != "folder":
+                raise HTTPException(status_code=400, detail="只能移动到文件夹节点")
+        parent_by_id[item.id] = item.parent_id
+
+    for node_id in requested_ids:
+        visited = {node_id}
+        parent_id = parent_by_id[node_id]
+        while parent_id is not None:
+            if parent_id in visited:
+                raise HTTPException(status_code=400, detail="不能形成循环目录")
+            visited.add(parent_id)
+            parent_id = parent_by_id.get(parent_id)
+
+    updated: list[BlogNode] = []
+    for item in data.items:
+        node = by_id[item.id]
+        node.parent_id = item.parent_id
+        node.sort_order = item.sort_order
+        updated.append(node)
+    db.commit()
+    for node in updated:
+        db.refresh(node)
+    return updated
 
 
 def _validate_parent(

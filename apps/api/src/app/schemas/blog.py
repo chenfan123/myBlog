@@ -34,6 +34,16 @@ class BlogNodeUpdate(BaseModel):
         return value.strip() if value is not None else None
 
 
+class BlogNodePosition(BaseModel):
+    id: uuid.UUID
+    parent_id: uuid.UUID | None = None
+    sort_order: int = Field(ge=0)
+
+
+class BlogNodeReorder(BaseModel):
+    items: list[BlogNodePosition] = Field(min_length=1, max_length=500)
+
+
 class BlogNodeSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

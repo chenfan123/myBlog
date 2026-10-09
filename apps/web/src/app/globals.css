@@ -155,8 +155,8 @@
   .markdown-content strong { font-weight: 700; }
   .markdown-content ul { list-style: disc; padding-left: 1.6rem; }
   .markdown-content ol { list-style: decimal; padding-left: 1.75rem; }
-  .markdown-content ul ul { list-style: circle; }
-  .markdown-content ul ul ul { list-style: square; }
+  .markdown-content ul ul { list-style: lower-alpha; }
+  .markdown-content ul ul ul { list-style: lower-roman; }
   .markdown-content ol ol { list-style: lower-alpha; }
   .markdown-content ol ol ol { list-style: lower-roman; }
   .markdown-content li > ul, .markdown-content li > ol { margin-top: 0.35rem; }
