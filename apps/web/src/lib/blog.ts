@@ -25,6 +25,23 @@ const serverApiBaseUrl =
   typeof window === "undefined"
     ? (process.env.API_INTERNAL_URL ?? publicApiBaseUrl)
     : publicApiBaseUrl;
+const developmentPublicFallback = "https://ainew.gz.cn";
+
+async function fetchPublicResource(path: string): Promise<Response | null> {
+  try {
+    const response = await fetch(`${serverApiBaseUrl}${path}`, { cache: "no-store" });
+    if (response.ok || process.env.NODE_ENV === "production") return response;
+  } catch {
+    if (process.env.NODE_ENV === "production") return null;
+  }
+
+  if (serverApiBaseUrl === developmentPublicFallback) return null;
+  try {
+    return await fetch(`${developmentPublicFallback}${path}`, { cache: "no-store" });
+  } catch {
+    return null;
+  }
+}
 
 export function buildBlogTree(nodes: BlogNodeSummary[]): BlogTreeNode[] {
   const byId = new Map<string, BlogTreeNode>();
@@ -49,19 +66,16 @@ export function buildBlogTree(nodes: BlogNodeSummary[]): BlogTreeNode[] {
 }
 
 export async function fetchPublicBlogTree() {
-  const response = await fetch(`${serverApiBaseUrl}/api/v1/blog/tree`, {
-    cache: "no-store",
-  });
-  if (!response.ok) return [];
+  const response = await fetchPublicResource("/api/v1/blog/tree");
+  if (!response?.ok) return [];
   return (await response.json()) as BlogNodeSummary[];
 }
 
 export async function fetchPublishedPost(slug: string) {
-  const response = await fetch(
-    `${serverApiBaseUrl}/api/v1/blog/posts/${encodeURIComponent(slug)}`,
-    { cache: "no-store" },
+  const response = await fetchPublicResource(
+    `/api/v1/blog/posts/${encodeURIComponent(slug)}`,
   );
-  if (!response.ok) return null;
+  if (!response?.ok) return null;
   return (await response.json()) as BlogNodeDetail;
 }
 

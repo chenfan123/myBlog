@@ -49,6 +49,7 @@ import { uploadImageToCdn } from "@/lib/cdn-upload";
 
 type Notice = { tone: "error" | "success" | "idle"; message: string };
 type AutoSaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
+type EditorPane = "write" | "preview" | "split";
 type ContextMenuState = { nodeId: string; x: number; y: number };
 type DropState = { nodeId: string; position: "before" | "after" | "inside" };
 type NameDialogState =
@@ -66,12 +67,15 @@ export function BlogWorkspace() {
   const [notice, setNotice] = useState<Notice>({ tone: "idle", message: "" });
   const [nameDialog, setNameDialog] = useState<NameDialogState | null>(null);
   const [autoSaveStatus, setAutoSaveStatus] = useState<AutoSaveStatus>("idle");
+  const [editorPane, setEditorPane] = useState<EditorPane>("split");
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dropState, setDropState] = useState<DropState | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lastSavedSignatureRef = useRef("");
   const activeDocumentIdRef = useRef<string | null>(null);
+  const saveDocumentRef = useRef<(publishState?: boolean) => Promise<void>>(async () => {});
+  saveDocumentRef.current = saveDocument;
 
   useEffect(() => {
     void loadTree();
@@ -126,6 +130,16 @@ export function BlogWorkspace() {
       }
     }, 1_200);
     return () => window.clearTimeout(timer);
+  }, [document]);
+
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "s") return;
+      event.preventDefault();
+      if (document) void saveDocumentRef.current(document.is_published);
+    };
+    window.addEventListener("keydown", handleShortcut);
+    return () => window.removeEventListener("keydown", handleShortcut);
   }, [document]);
 
   async function loadTree() {
@@ -491,7 +505,7 @@ export function BlogWorkspace() {
 
   const tree = buildBlogTree(nodes);
   return (
-    <div className="grid h-[calc(100dvh-13rem)] min-h-[560px] grid-rows-[minmax(180px,35%)_minmax(0,1fr)] overflow-hidden rounded-3xl border bg-background/90 lg:grid-cols-[280px_minmax(0,1fr)] lg:grid-rows-1">
+    <div className="grid h-[calc(100dvh-12rem)] min-h-[620px] grid-rows-[minmax(180px,32%)_minmax(0,1fr)] overflow-hidden rounded-[1.5rem] border border-black/10 bg-[#fffefa] shadow-[0_30px_80px_-55px_rgba(20,35,20,.35)] lg:grid-cols-[300px_minmax(0,1fr)] lg:grid-rows-1">
       <aside className="flex min-h-0 flex-col border-b bg-white/55 lg:border-b-0 lg:border-r">
         <div className="flex items-center justify-between border-b p-3">
           <div className="min-w-0 px-2">
@@ -537,10 +551,10 @@ export function BlogWorkspace() {
       <section className="grid min-h-0 min-w-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden">
         {document ? (
           <>
-            <div className="grid gap-3 border-b p-4 md:grid-cols-[1fr_240px_auto]">
+            <div className="grid gap-3 border-b border-black/10 p-4 md:grid-cols-[1fr_220px_auto]">
               <Input value={document.name} aria-label="文章标题" onChange={(event) => setDocument((current) => current ? { ...current, name: event.target.value } : current)} />
               <Input value={document.slug ?? ""} aria-label="文章地址" placeholder="article-slug" onChange={(event) => setDocument((current) => current ? { ...current, slug: event.target.value } : current)} />
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-end gap-2">
                 <AutoSaveIndicator status={autoSaveStatus} />
                 {document.is_published ? (
                   <Button variant="outline" disabled={saving} onClick={() => void saveDocument(false)}>转为草稿</Button>
@@ -551,6 +565,13 @@ export function BlogWorkspace() {
                   <Save />{saving ? "处理中" : document.is_published ? "保存更新" : "发布文章"}
                 </Button>
               </div>
+            </div>
+            <div className="flex items-center justify-between border-b border-black/10 bg-[#f7f6f0] px-4 py-2 xl:hidden">
+              <div className="flex rounded-lg border border-black/10 bg-white p-0.5 text-xs">
+                <button className={`rounded-md px-3 py-1.5 ${editorPane === "write" ? "bg-[#172019] text-white" : "text-muted-foreground"}`} onClick={() => setEditorPane("write")}>编写</button>
+                <button className={`rounded-md px-3 py-1.5 ${editorPane === "preview" ? "bg-[#172019] text-white" : "text-muted-foreground"}`} onClick={() => setEditorPane("preview")}>预览</button>
+              </div>
+              <span className="font-mono text-[10px] text-muted-foreground">{document.content.length} 字符 · ⌘/Ctrl + S 保存</span>
             </div>
             <MarkdownToolbar
               onBold={() => replaceSelection((value) => `**${value}**`, "加粗文本")}
@@ -568,15 +589,15 @@ export function BlogWorkspace() {
               onDivider={() => insertAtCursor("\n\n---\n\n")}
               onTable={() => insertAtCursor("\n\n| 列一 | 列二 | 列三 |\n| --- | --- | --- |\n| 内容 | 内容 | 内容 |\n\n")}
             />
-            <div className="grid min-h-0 grid-rows-2 overflow-hidden xl:grid-cols-2 xl:grid-rows-1">
-              <div className="relative flex min-h-0 flex-col overflow-hidden border-b xl:border-b-0 xl:border-r">
+            <div className={`grid min-h-0 overflow-hidden ${editorPane === "split" ? "grid-rows-2" : "grid-rows-1"} xl:grid-cols-2 xl:grid-rows-1`}>
+              <div className={`relative min-h-0 flex-col overflow-hidden border-b xl:flex xl:border-b-0 xl:border-r ${editorPane === "preview" ? "hidden" : "flex"}`}>
                 <div className="flex items-center justify-between border-b bg-muted/25 px-6 py-2 text-xs font-medium text-muted-foreground">
                   <span>Markdown</span><span>Enter 延续列表 · Tab 调整层级 · 支持粘贴图片</span>
                 </div>
                 <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onKeyDown={handleEditorKeyDown} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="min-h-0 flex-1 resize-none overflow-y-auto overscroll-contain rounded-none border-0 bg-transparent p-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
                 <span className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1 rounded-lg border bg-background/90 px-2 py-1 text-xs text-muted-foreground"><ImagePlus className="size-3" />{uploading ? "上传中…" : "可直接粘贴图片"}</span>
               </div>
-              <div className="flex min-h-0 min-w-0 flex-col overflow-hidden bg-white/45">
+              <div className={`min-h-0 min-w-0 flex-col overflow-hidden bg-white/70 xl:flex ${editorPane === "write" ? "hidden" : "flex"}`}>
                 <div className="shrink-0 border-b bg-background/90 px-6 py-2 text-xs font-medium text-muted-foreground backdrop-blur">实时预览</div>
                 <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6"><MarkdownContent content={document.content || "*预览会显示在这里*"} /></div>
               </div>
