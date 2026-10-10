@@ -1,0 +1,16 @@
+services:
+  shop:
+    build:
+      context: .
+      args:
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmmirror.com}
+    image: atelier-market:latest
+    container_name: atelier-market
+    restart: unless-stopped
+    ports:
+      - "${SHOP_PORT:-4173}:80"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
