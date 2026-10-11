@@ -23,6 +23,7 @@ import {
   ListOrdered,
   Minus,
   MoreHorizontal,
+  Palette,
   Pencil,
   Quote,
   Save,
@@ -50,11 +51,21 @@ import { uploadImageToCdn } from "@/lib/cdn-upload";
 type Notice = { tone: "error" | "success" | "idle"; message: string };
 type AutoSaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
 type EditorPane = "write" | "preview" | "split";
+type MarkdownTheme = "editorial" | "github" | "smartblue" | "cyanosis" | "fancy" | "night-purple";
 type ContextMenuState = { nodeId: string; x: number; y: number };
 type DropState = { nodeId: string; position: "before" | "after" | "inside" };
 type NameDialogState =
   | { action: "create"; kind: BlogNodeKind; initialValue: "" }
   | { action: "rename"; kind: BlogNodeKind; initialValue: string };
+
+const MARKDOWN_THEMES: Array<{ value: MarkdownTheme; label: string }> = [
+  { value: "editorial", label: "编辑绿" },
+  { value: "github", label: "GitHub" },
+  { value: "smartblue", label: "Smart Blue" },
+  { value: "cyanosis", label: "青色" },
+  { value: "fancy", label: "典雅" },
+  { value: "night-purple", label: "夜紫" },
+];
 
 export function BlogWorkspace() {
   const [nodes, setNodes] = useState<BlogNodeSummary[]>([]);
@@ -68,6 +79,7 @@ export function BlogWorkspace() {
   const [nameDialog, setNameDialog] = useState<NameDialogState | null>(null);
   const [autoSaveStatus, setAutoSaveStatus] = useState<AutoSaveStatus>("idle");
   const [editorPane, setEditorPane] = useState<EditorPane>("split");
+  const [markdownTheme, setMarkdownTheme] = useState<MarkdownTheme>("editorial");
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dropState, setDropState] = useState<DropState | null>(null);
@@ -80,6 +92,18 @@ export function BlogWorkspace() {
   useEffect(() => {
     void loadTree();
   }, []);
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem("blog-markdown-theme");
+    if (!MARKDOWN_THEMES.some(({ value }) => value === savedTheme)) return;
+    const frame = window.requestAnimationFrame(() => setMarkdownTheme(savedTheme as MarkdownTheme));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  function changeMarkdownTheme(theme: MarkdownTheme) {
+    setMarkdownTheme(theme);
+    window.localStorage.setItem("blog-markdown-theme", theme);
+  }
 
   useEffect(() => {
     if (!contextMenu) return;
@@ -597,9 +621,26 @@ export function BlogWorkspace() {
                 <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onKeyDown={handleEditorKeyDown} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="min-h-0 flex-1 resize-none overflow-y-auto overscroll-contain rounded-none border-0 bg-transparent p-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
                 <span className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1 rounded-lg border bg-background/90 px-2 py-1 text-xs text-muted-foreground"><ImagePlus className="size-3" />{uploading ? "上传中…" : "可直接粘贴图片"}</span>
               </div>
-              <div className={`min-h-0 min-w-0 flex-col overflow-hidden bg-white/70 xl:flex ${editorPane === "write" ? "hidden" : "flex"}`}>
-                <div className="shrink-0 border-b bg-background/90 px-6 py-2 text-xs font-medium text-muted-foreground backdrop-blur">实时预览</div>
-                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6"><MarkdownContent content={document.content || "*预览会显示在这里*"} /></div>
+              <div className={`markdown-preview-pane markdown-theme-${markdownTheme} min-h-0 min-w-0 flex-col overflow-hidden xl:flex ${editorPane === "write" ? "hidden" : "flex"}`}>
+                <div className="flex shrink-0 items-center justify-between border-b border-black/8 bg-white/85 px-6 py-2.5 text-xs font-medium text-muted-foreground backdrop-blur">
+                  <span className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary" />实时预览</span>
+                  <label className="flex items-center gap-2" title="切换 Markdown 预览主题">
+                    <Palette className="size-3.5" />
+                    <span className="sr-only">Markdown 主题</span>
+                    <select
+                      value={markdownTheme}
+                      onChange={(event) => changeMarkdownTheme(event.target.value as MarkdownTheme)}
+                      className="h-7 rounded-md border border-black/10 bg-white px-2 text-xs font-medium text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                    >
+                      {MARKDOWN_THEMES.map((theme) => <option key={theme.value} value={theme.value}>{theme.label}</option>)}
+                    </select>
+                  </label>
+                </div>
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-7">
+                  <div className="markdown-preview-paper">
+                    <MarkdownContent variant="preview" content={document.content || "*预览会显示在这里*"} />
+                  </div>
+                </div>
               </div>
             </div>
           </>

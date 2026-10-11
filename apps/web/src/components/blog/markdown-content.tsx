@@ -4,9 +4,9 @@ import remarkGfm from "remark-gfm";
 
 import { MarkdownCodeBlock } from "@/components/blog/markdown-code-block";
 
-export function MarkdownContent({ content }: { content: string }) {
+export function MarkdownContent({ content, variant = "article" }: { content: string; variant?: "article" | "preview" }) {
   return (
-    <div className="markdown-content">
+    <div className={`markdown-content markdown-content--${variant}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
