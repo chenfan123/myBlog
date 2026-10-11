@@ -19,6 +19,23 @@ export type BlogNodeDetail = BlogNodeSummary & {
 
 export type BlogTreeNode = BlogNodeSummary & { children: BlogTreeNode[] };
 
+export type BlogComment = {
+  id: string;
+  parent_id: string | null;
+  author_id: string;
+  author_name: string;
+  content: string;
+  created_at: string;
+  can_delete: boolean;
+};
+
+export type BlogEngagement = {
+  like_count: number;
+  comment_count: number;
+  liked_by_me: boolean;
+  comments: BlogComment[];
+};
+
 const publicApiBaseUrl =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 const serverApiBaseUrl =
@@ -63,6 +80,14 @@ export function buildBlogTree(nodes: BlogNodeSummary[]): BlogTreeNode[] {
   };
   sortTree(roots);
   return roots;
+}
+
+export function countBlogDocuments(node: BlogTreeNode): number {
+  if (node.kind === "document") return 1;
+  return node.children.reduce(
+    (total, child) => total + countBlogDocuments(child),
+    0,
+  );
 }
 
 export async function fetchPublicBlogTree() {

@@ -61,3 +61,38 @@ class BlogNodeDetail(BlogNodeSummary):
     content: str
     created_at: datetime
     published_at: datetime | None
+
+
+class BlogCommentCreate(BaseModel):
+    content: str = Field(min_length=1, max_length=2000)
+    parent_id: uuid.UUID | None = None
+
+    @field_validator("content")
+    @classmethod
+    def trim_comment(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("评论内容不能为空")
+        return value
+
+
+class BlogCommentItem(BaseModel):
+    id: uuid.UUID
+    parent_id: uuid.UUID | None
+    author_id: uuid.UUID
+    author_name: str
+    content: str
+    created_at: datetime
+    can_delete: bool = False
+
+
+class BlogEngagement(BaseModel):
+    like_count: int
+    comment_count: int
+    liked_by_me: bool
+    comments: list[BlogCommentItem]
+
+
+class BlogLikeResult(BaseModel):
+    liked: bool
+    like_count: int

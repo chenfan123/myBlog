@@ -1,12 +1,12 @@
-import { ArrowDown, BookOpen, Braces, FolderTree } from "lucide-react";
+import { ArrowDown, BookOpen, FolderTree } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
 import { BlogWorkspace } from "@/components/blog/blog-workspace";
-import { countDocuments, PublicBlogDirectory, PublicBlogTree } from "@/components/blog/public-blog-tree";
+import { PublicBlogDirectory, PublicBlogTree } from "@/components/blog/public-blog-tree";
 import { SiteHeader } from "@/components/site/site-header";
 import { Button } from "@/components/ui/button";
-import { buildBlogTree, fetchPublicBlogTree } from "@/lib/blog";
+import { buildBlogTree, countBlogDocuments, fetchPublicBlogTree } from "@/lib/blog";
 import { getAdminVerificationStatus } from "@/lib/server/admin-auth";
 
 export const metadata = {
@@ -58,8 +58,8 @@ export default async function BlogPage({
   // 普通访问者只需要公开目录；管理员分支不会产生这次额外请求。
   const nodes = await fetchPublicBlogTree();
   const tree = buildBlogTree(nodes);
-  const articleCount = tree.reduce((total, node) => total + countDocuments(node), 0);
-  const categoryCount = nodes.filter((node) => node.kind === "folder").length;
+  const articleCount = tree.reduce((total, node) => total + countBlogDocuments(node), 0);
+  const categoryCount = tree.filter((node) => node.kind === "folder").length;
   return (
     <>
       <SiteHeader activePath="blog" />
@@ -85,8 +85,8 @@ export default async function BlogPage({
         <section id="articles" className="mt-10 scroll-mt-20 lg:mt-14">
           {tree.length ? (
             <div>
-              <div className="mb-12 border-y border-black/10 py-5 sm:flex sm:items-center sm:gap-5">
-                <div className="mb-3 flex shrink-0 items-center gap-2 text-sm text-muted-foreground sm:mb-0"><Braces className="size-4 text-primary" />文章分类</div>
+              <div className="mb-10 rounded-2xl border bg-card/70 p-4 sm:flex sm:items-center sm:gap-5 sm:p-5">
+                <div className="mb-3 flex shrink-0 items-center gap-2 text-sm font-medium sm:mb-0"><FolderTree className="size-4 text-primary" />大分类</div>
                 <PublicBlogDirectory nodes={tree} />
               </div>
               <div className="mb-8 flex items-end justify-between gap-4">

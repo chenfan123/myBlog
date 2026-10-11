@@ -27,6 +27,17 @@ def get_current_user(
     return user
 
 
+def get_optional_current_user(
+    request: Request,
+    db: Annotated[Session, Depends(get_db)],
+) -> User | None:
+    """公开接口可选读取登录用户，不因匿名访问返回 401。"""
+    token = request.cookies.get(get_settings().auth_cookie_name)
+    user_id = decode_access_token(token) if token else None
+    user = get_user_by_id(db, user_id) if user_id else None
+    return user if user is not None and user.is_active else None
+
+
 def require_admin(
     user: Annotated[User, Depends(get_current_user)],
 ) -> User:

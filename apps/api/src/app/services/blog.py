@@ -9,7 +9,7 @@ from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.models.blog import BlogNode
+from app.models.blog import BlogComment, BlogNode, BlogPostLike
 from app.models.user import User
 from app.schemas.blog import BlogNodeCreate, BlogNodeReorder, BlogNodeUpdate
 
@@ -57,6 +57,99 @@ def get_published_post(db: Session, slug: str) -> BlogNode:
     return node
 
 
+def get_blog_engagement(db: Session, post: BlogNode, user: User | None) -> dict:
+    comments = list(
+        db.execute(
+            select(BlogComment, User.display_name)
+            .join(User, User.id == BlogComment.author_id)
+            .where(BlogComment.post_id == post.id)
+            .order_by(BlogComment.created_at)
+        ).all()
+    )
+    like_count = db.scalar(
+        select(func.count())
+        .select_from(BlogPostLike)
+        .where(BlogPostLike.post_id == post.id)
+    ) or 0
+    liked = bool(
+        user
+        and db.scalar(
+            select(BlogPostLike.id).where(
+                BlogPostLike.post_id == post.id, BlogPostLike.user_id == user.id
+            )
+        )
+    )
+    return {
+        "like_count": like_count,
+        "comment_count": len(comments),
+        "liked_by_me": liked,
+        "comments": [
+            {
+                "id": comment.id,
+                "parent_id": comment.parent_id,
+                "author_id": comment.author_id,
+                "author_name": author_name,
+                "content": comment.content,
+                "created_at": comment.created_at,
+                "can_delete": bool(
+                    user and (user.id == comment.author_id or user.is_admin)
+                ),
+            }
+            for comment, author_name in comments
+        ],
+    }
+
+
+def create_blog_comment(
+    db: Session, post: BlogNode, user: User, content: str, parent_id: uuid.UUID | None
+) -> BlogComment:
+    if parent_id is not None:
+        parent = db.get(BlogComment, parent_id)
+        if parent is None or parent.post_id != post.id:
+            raise HTTPException(status_code=404, detail="回复的评论不存在")
+    comment = BlogComment(
+        post_id=post.id,
+        author_id=user.id,
+        parent_id=parent_id,
+        content=content,
+    )
+    db.add(comment)
+    db.commit()
+    db.refresh(comment)
+    return comment
+
+
+def toggle_blog_like(db: Session, post: BlogNode, user: User) -> tuple[bool, int]:
+    like = db.scalar(
+        select(BlogPostLike).where(
+            BlogPostLike.post_id == post.id, BlogPostLike.user_id == user.id
+        )
+    )
+    if like is None:
+        db.add(BlogPostLike(post_id=post.id, user_id=user.id))
+        liked = True
+    else:
+        db.delete(like)
+        liked = False
+    db.commit()
+    count = db.scalar(
+        select(func.count())
+        .select_from(BlogPostLike)
+        .where(BlogPostLike.post_id == post.id)
+    ) or 0
+    return liked, count
+
+
+def delete_blog_comment(db: Session, comment_id: uuid.UUID, user: User) -> None:
+    comment = db.get(BlogComment, comment_id)
+    if comment is None:
+        raise HTTPException(status_code=404, detail="评论不存在")
+    if comment.author_id != user.id and not user.is_admin:
+        raise HTTPException(status_code=403, detail="不能删除其他用户的评论")
+    db.delete(comment)
+    db.commit()
+
+
 def create_blog_node(db: Session, data: BlogNodeCreate, *, creator: User) -> BlogNode:
     _validate_parent(db, data.parent_id)
     node_id = uuid.uuid4()
@@ -91,7 +184,9 @@ def update_blog_node(db: Session, node: BlogNode, data: BlogNodeUpdate) -> BlogN
         node.name = data.name
     if "slug" in fields:
         if node.kind != "document":
-            raise HTTPException(status_code=400, detail="文件夹不能设置文章地址")
+            raise HTTPException(
+                status_code=400, detail="文件夹不能设置文章地址"
+            )
         if not data.slug or not slug_pattern.fullmatch(data.slug):
             raise HTTPException(
                 status_code=400,
@@ -113,7 +208,9 @@ def update_blog_node(db: Session, node: BlogNode, data: BlogNodeUpdate) -> BlogN
         db.commit()
     except IntegrityError as error:
         db.rollback()
-        raise HTTPException(status_code=409, detail="文章地址已经存在") from error
+        raise HTTPException(
+            status_code=409, detail="文章地址已经存在"
+        ) from error
     db.refresh(node)
     return node
 
@@ -139,7 +236,9 @@ def reorder_blog_nodes(db: Session, data: BlogNodeReorder) -> list[BlogNode]:
             if parent is None:
                 raise HTTPException(status_code=404, detail="目标文件夹不存在")
             if parent.kind != "folder":
-                raise HTTPException(status_code=400, detail="只能移动到文件夹节点")
+                raise HTTPException(
+                    status_code=400, detail="只能移动到文件夹节点"
+                )
         parent_by_id[item.id] = item.parent_id
 
     for node_id in requested_ids:
@@ -181,5 +280,7 @@ def _validate_parent(
     ancestor = parent
     while ancestor.parent_id:
         if ancestor.parent_id == moving_node.id:
-            raise HTTPException(status_code=400, detail="不能移动到自己的子文件夹")
+            raise HTTPException(
+                status_code=400, detail="不能移动到自己的子文件夹"
+            )
         ancestor = get_blog_node(db, ancestor.parent_id)
