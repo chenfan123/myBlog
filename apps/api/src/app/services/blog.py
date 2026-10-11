@@ -197,6 +197,10 @@ def update_blog_node(db: Session, node: BlogNode, data: BlogNodeUpdate) -> BlogN
         if node.kind != "document":
             raise HTTPException(status_code=400, detail="文件夹不能保存正文")
         node.content = data.content
+    if data.markdown_theme is not None:
+        if node.kind != "document":
+            raise HTTPException(status_code=400, detail="文件夹不能设置 Markdown 主题")
+        node.markdown_theme = data.markdown_theme
     if data.sort_order is not None:
         node.sort_order = data.sort_order
     if data.is_published is not None:

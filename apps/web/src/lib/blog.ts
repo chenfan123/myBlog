@@ -1,4 +1,5 @@
 export type BlogNodeKind = "folder" | "document";
+export type MarkdownTheme = "editorial" | "github" | "smartblue" | "cyanosis" | "fancy" | "night-purple";
 
 export type BlogNodeSummary = {
   id: string;
@@ -7,6 +8,7 @@ export type BlogNodeSummary = {
   name: string;
   slug: string | null;
   is_published: boolean;
+  markdown_theme: MarkdownTheme;
   sort_order: number;
   updated_at: string;
 };

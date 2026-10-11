@@ -34,6 +34,9 @@ class BlogNode(Base):
     name: Mapped[str] = mapped_column(String(160))
     slug: Mapped[str | None] = mapped_column(String(180), unique=True, index=True)
     content: Mapped[str] = mapped_column(Text, default="", server_default="")
+    markdown_theme: Mapped[str] = mapped_column(
+        String(32), default="editorial", server_default="editorial", nullable=False
+    )
     is_published: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default="false", nullable=False
     )

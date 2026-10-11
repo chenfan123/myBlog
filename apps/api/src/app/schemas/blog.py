@@ -7,6 +7,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 BlogNodeKind = Literal["folder", "document"]
+MarkdownTheme = Literal["editorial", "github", "smartblue", "cyanosis", "fancy", "night-purple"]
 
 
 class BlogNodeCreate(BaseModel):
@@ -25,6 +26,7 @@ class BlogNodeUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=160)
     slug: str | None = Field(default=None, max_length=180)
     content: str | None = Field(default=None, max_length=2_000_000)
+    markdown_theme: MarkdownTheme | None = None
     is_published: bool | None = None
     sort_order: int | None = None
 
@@ -53,6 +55,7 @@ class BlogNodeSummary(BaseModel):
     name: str
     slug: str | None
     is_published: bool
+    markdown_theme: MarkdownTheme
     sort_order: int
     updated_at: datetime
 

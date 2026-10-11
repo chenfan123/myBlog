@@ -174,27 +174,42 @@
     background-size: 12px 12px;
     mask-image: linear-gradient(225deg, black, transparent 72%);
   }
+  .markdown-public-paper {
+    --md-accent: var(--primary);
+    --md-paper: #fffefb;
+    --md-ink: #172019;
+    --md-soft: #f2f3ed;
+    --md-border: #dfe3d7;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--md-border);
+    border-radius: 1.25rem;
+    background: var(--md-paper);
+    padding: clamp(1.5rem, 5vw, 3.75rem);
+    box-shadow: 0 28px 80px -58px oklch(0.25 0.04 140 / 0.5);
+  }
+  .markdown-public-paper::before { content: ""; position: absolute; inset: 0 0 auto auto; width: 12rem; height: 12rem; pointer-events: none; background: radial-gradient(circle, color-mix(in oklab, var(--md-accent) 18%, transparent) 1.2px, transparent 1.5px); background-size: 12px 12px; mask-image: linear-gradient(225deg, black, transparent 72%); }
   .markdown-theme-github { --md-accent: #1f883d; --md-paper: #ffffff; --md-ink: #1f2328; --md-soft: #f6f8fa; --md-border: #d0d7de; background-color: #f6f8fa; background-image: none; }
   .markdown-theme-smartblue { --md-accent: #2468c9; --md-paper: #fbfdff; --md-ink: #15243a; --md-soft: #eef5ff; --md-border: #ccdaf0; background-color: #edf3fa; background-image: radial-gradient(circle at 1px 1px, #b7c9e544 1px, transparent 0); }
   .markdown-theme-cyanosis { --md-accent: #0891a1; --md-paper: #fbffff; --md-ink: #17383b; --md-soft: #eaf8f7; --md-border: #bee1df; background-color: #eaf6f4; background-image: linear-gradient(135deg, #ffffff55 25%, transparent 25%, transparent 50%, #ffffff55 50%, #ffffff55 75%, transparent 75%); background-size: 24px 24px; }
   .markdown-theme-fancy { --md-accent: #98622d; --md-paper: #fffcf5; --md-ink: #32271d; --md-soft: #f8efdf; --md-border: #e5d5bd; background-color: #f3eadc; background-image: radial-gradient(circle at 1px 1px, #9b744022 1px, transparent 0); }
   .markdown-theme-night-purple { --md-accent: #b69cff; --md-paper: #191523; --md-ink: #eeeaf8; --md-soft: #282136; --md-border: #403653; background-color: #100d18; background-image: radial-gradient(circle at 1px 1px, #b69cff25 1px, transparent 0); }
-  .markdown-preview-pane .markdown-content { color: var(--md-ink); }
-  .markdown-preview-pane .markdown-content p { color: color-mix(in oklab, var(--md-ink) 82%, transparent); }
-  .markdown-preview-pane .markdown-content h1::after,
-  .markdown-preview-pane .markdown-content h2::before { background: var(--md-accent); }
-  .markdown-preview-pane .markdown-content h1::after { box-shadow: 1.1rem 0 0 color-mix(in oklab, var(--md-accent) 35%, transparent); }
-  .markdown-preview-pane .markdown-content h3::before { background: color-mix(in oklab, var(--md-accent) 13%, var(--md-paper)); color: var(--md-accent); }
-  .markdown-preview-pane .markdown-content ul > li::before { border-color: var(--md-accent); background: color-mix(in oklab, var(--md-accent) 10%, var(--md-paper)); }
-  .markdown-preview-pane .markdown-content ol > li::before { background: color-mix(in oklab, var(--md-accent) 13%, var(--md-paper)); color: var(--md-accent); }
-  .markdown-preview-pane .markdown-content blockquote { border-color: color-mix(in oklab, var(--md-accent) 28%, var(--md-border)); border-left-color: var(--md-accent); background: linear-gradient(115deg, color-mix(in oklab, var(--md-accent) 10%, var(--md-paper)), var(--md-soft)); }
-  .markdown-preview-pane .markdown-content blockquote::before { color: color-mix(in oklab, var(--md-accent) 60%, transparent); }
-  .markdown-preview-pane .markdown-content code { border-color: var(--md-border); background: var(--md-soft); color: var(--md-accent); }
-  .markdown-preview-pane .markdown-content th { background: color-mix(in oklab, var(--md-accent) 12%, var(--md-paper)); color: var(--md-ink); }
-  .markdown-preview-pane .markdown-content table { background: var(--md-paper); border-color: var(--md-border); }
-  .markdown-preview-pane .markdown-content th,
-  .markdown-preview-pane .markdown-content td { border-color: var(--md-border); }
-  .markdown-preview-pane .markdown-content hr { background-image: radial-gradient(circle, color-mix(in oklab, var(--md-accent) 65%, transparent) 2px, transparent 2.5px); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content { position: relative; color: var(--md-ink); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content p { color: color-mix(in oklab, var(--md-ink) 82%, transparent); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content h1::after,
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content h2::before { background: var(--md-accent); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content h1::after { box-shadow: 1.1rem 0 0 color-mix(in oklab, var(--md-accent) 35%, transparent); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content h3::before { background: color-mix(in oklab, var(--md-accent) 13%, var(--md-paper)); color: var(--md-accent); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content ul > li::before { border-color: var(--md-accent); background: color-mix(in oklab, var(--md-accent) 10%, var(--md-paper)); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content ol > li::before { background: color-mix(in oklab, var(--md-accent) 13%, var(--md-paper)); color: var(--md-accent); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content blockquote { border-color: color-mix(in oklab, var(--md-accent) 28%, var(--md-border)); border-left-color: var(--md-accent); background: linear-gradient(115deg, color-mix(in oklab, var(--md-accent) 10%, var(--md-paper)), var(--md-soft)); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content blockquote::before { color: color-mix(in oklab, var(--md-accent) 60%, transparent); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content code { border-color: var(--md-border); background: var(--md-soft); color: var(--md-accent); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content th { background: color-mix(in oklab, var(--md-accent) 12%, var(--md-paper)); color: var(--md-ink); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content table { background: var(--md-paper); border-color: var(--md-border); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content th,
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content td { border-color: var(--md-border); }
+  :is(.markdown-preview-pane, .markdown-themed) .markdown-content hr { background-image: radial-gradient(circle, color-mix(in oklab, var(--md-accent) 65%, transparent) 2px, transparent 2.5px); }
   .markdown-theme-night-purple .markdown-preview-paper::before { opacity: 0.45; }
   .markdown-theme-night-purple .markdown-content a { color: #cabaff; }
   .markdown-content { color: color-mix(in oklab, var(--foreground) 94%, #22352a); font-size: 1rem; line-height: 1.9; overflow-wrap: anywhere; }
