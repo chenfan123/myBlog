@@ -443,6 +443,30 @@ export function BlogWorkspace() {
     const textarea = event.currentTarget;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
+    const modifier = event.metaKey || event.ctrlKey;
+
+    if (modifier) {
+      const shortcut = `${event.altKey ? "alt+" : ""}${event.shiftKey ? "shift+" : ""}${event.code}`;
+      const actions: Record<string, () => void> = {
+        KeyB: () => replaceSelection((value) => `**${value}**`, "加粗文本"),
+        KeyI: () => replaceSelection((value) => `*${value}*`, "斜体文本"),
+        KeyK: () => replaceSelection((value) => `[${value}](https://)`, "链接文字"),
+        KeyE: () => replaceSelection((value) => `\`${value}\``, "代码"),
+        "shift+KeyX": () => replaceSelection((value) => `~~${value}~~`, "删除线文本"),
+        "alt+Digit1": () => prefixSelectedLines("# ", "一级标题"),
+        "alt+Digit2": () => prefixSelectedLines("## ", "二级标题"),
+        "shift+Digit7": () => prefixSelectedLines("{n}. "),
+        "shift+Digit8": () => prefixSelectedLines("- "),
+        "shift+Digit9": () => prefixSelectedLines("> ", "引用内容"),
+        "alt+KeyC": () => replaceSelection((value) => `\n\`\`\`text\n${value}\n\`\`\`\n`, "代码块"),
+      };
+      const action = actions[shortcut];
+      if (action) {
+        event.preventDefault();
+        action();
+        return;
+      }
+    }
 
     if (event.key === "Enter" && start === end) {
       const lineStart = document.content.lastIndexOf("\n", Math.max(0, start - 1)) + 1;
@@ -690,17 +714,17 @@ type MarkdownToolbarProps = {
 
 function MarkdownToolbar(props: MarkdownToolbarProps) {
   const tools = [
-    { label: "一级标题", icon: Heading1, action: props.onHeading1 },
-    { label: "二级标题", icon: Heading2, action: props.onHeading2 },
-    { label: "加粗", icon: Bold, action: props.onBold },
-    { label: "斜体", icon: Italic, action: props.onItalic },
-    { label: "删除线", icon: Strikethrough, action: props.onStrike },
-    { label: "引用", icon: Quote, action: props.onQuote },
-    { label: "无序列表", icon: List, action: props.onUnorderedList },
-    { label: "有序列表", icon: ListOrdered, action: props.onOrderedList },
+    { label: "一级标题", shortcut: "⌘/Ctrl+Alt+1", icon: Heading1, action: props.onHeading1 },
+    { label: "二级标题", shortcut: "⌘/Ctrl+Alt+2", icon: Heading2, action: props.onHeading2 },
+    { label: "加粗", shortcut: "⌘/Ctrl+B", icon: Bold, action: props.onBold },
+    { label: "斜体", shortcut: "⌘/Ctrl+I", icon: Italic, action: props.onItalic },
+    { label: "删除线", shortcut: "⌘/Ctrl+Shift+X", icon: Strikethrough, action: props.onStrike },
+    { label: "引用", shortcut: "⌘/Ctrl+Shift+9", icon: Quote, action: props.onQuote },
+    { label: "无序列表", shortcut: "⌘/Ctrl+Shift+8", icon: List, action: props.onUnorderedList },
+    { label: "有序列表", shortcut: "⌘/Ctrl+Shift+7", icon: ListOrdered, action: props.onOrderedList },
     { label: "任务列表", icon: ListChecks, action: props.onTaskList },
-    { label: "行内代码", icon: Code2, action: props.onInlineCode },
-    { label: "链接", icon: Link2, action: props.onLink },
+    { label: "行内代码", shortcut: "⌘/Ctrl+E", icon: Code2, action: props.onInlineCode },
+    { label: "链接", shortcut: "⌘/Ctrl+K", icon: Link2, action: props.onLink },
     { label: "表格", icon: Table2, action: props.onTable },
     { label: "分隔线", icon: Minus, action: props.onDivider },
   ] as const;
@@ -708,12 +732,12 @@ function MarkdownToolbar(props: MarkdownToolbarProps) {
   return (
     <div className="z-20 flex flex-wrap items-center gap-1 border-b bg-background/95 px-4 py-2 shadow-sm backdrop-blur">
       <span className="mr-2 hidden text-xs font-semibold text-muted-foreground sm:inline">Markdown 工具栏</span>
-      {tools.map(({ label, icon: Icon, action }) => (
-        <Button key={label} type="button" size="icon-sm" variant="ghost" title={label} aria-label={label} onClick={action}>
+      {tools.map(({ label, icon: Icon, action, ...tool }) => (
+        <Button key={label} type="button" size="icon-sm" variant="ghost" title={`${label}${"shortcut" in tool ? `（${tool.shortcut}）` : ""}`} aria-label={label} onClick={action}>
           <Icon className="size-4" />
         </Button>
       ))}
-      <Button type="button" size="sm" variant="ghost" title="代码块" onClick={props.onCodeBlock}>
+      <Button type="button" size="sm" variant="ghost" title="代码块（⌘/Ctrl+Alt+C）" onClick={props.onCodeBlock}>
         <Code2 className="size-4" />
         代码块
       </Button>
