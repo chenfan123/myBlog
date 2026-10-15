@@ -225,6 +225,9 @@
   .markdown-content h4 { margin-top: 1.35rem; font-size: 1.05rem; font-weight: 650; color: var(--primary); }
   .markdown-content h5 { margin-top: 1.15rem; font-size: 0.98rem; font-weight: 650; }
   .markdown-content h6 { margin-top: 1rem; font-size: 0.9rem; font-weight: 650; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.04em; }
+  .markdown-content .markdown-heading { scroll-margin-top: 6rem; }
+  .markdown-heading-anchor { float: left; width: 1em; margin-left: -1.05em; color: var(--primary); opacity: 0; text-decoration: none !important; transition: opacity 160ms ease; }
+  .markdown-heading:hover .markdown-heading-anchor, .markdown-heading-anchor:focus-visible { opacity: 0.55; }
   .markdown-content p { white-space: normal; color: color-mix(in oklab, var(--foreground) 84%, #536057); }
   .markdown-content strong { font-weight: 700; }
   .markdown-content ul { list-style: none; padding-left: 1.55rem; }

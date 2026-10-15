@@ -83,6 +83,8 @@ export function BlogWorkspace() {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dropState, setDropState] = useState<DropState | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const previewScrollRef = useRef<HTMLDivElement>(null);
+  const scrollFrameRef = useRef<number | null>(null);
   const lastSavedSignatureRef = useRef("");
   const activeDocumentIdRef = useRef<string | null>(null);
   const saveDocumentRef = useRef<(publishState?: boolean) => Promise<void>>(async () => {});
@@ -90,6 +92,9 @@ export function BlogWorkspace() {
 
   useEffect(() => {
     void loadTree();
+    return () => {
+      if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
+    };
   }, []);
 
   function changeMarkdownTheme(theme: MarkdownTheme) {
@@ -532,6 +537,17 @@ export function BlogWorkspace() {
     }
   }
 
+  function syncPreviewScroll(event: React.UIEvent<HTMLTextAreaElement>) {
+    const editor = event.currentTarget;
+    const progress = editor.scrollTop / Math.max(1, editor.scrollHeight - editor.clientHeight);
+    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
+    scrollFrameRef.current = window.requestAnimationFrame(() => {
+      const preview = previewScrollRef.current;
+      if (preview) preview.scrollTop = progress * Math.max(0, preview.scrollHeight - preview.clientHeight);
+      scrollFrameRef.current = null;
+    });
+  }
+
   async function submitNameDialog(name: string) {
     if (!nameDialog) return;
     let succeeded = false;
@@ -634,7 +650,7 @@ export function BlogWorkspace() {
                 <div className="flex items-center justify-between border-b bg-muted/25 px-6 py-2 text-xs font-medium text-muted-foreground">
                   <span>Markdown</span><span>Enter 延续列表 · Tab 调整层级 · 支持粘贴图片</span>
                 </div>
-                <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onKeyDown={handleEditorKeyDown} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="min-h-0 flex-1 resize-none overflow-y-auto overscroll-contain rounded-none border-0 bg-transparent p-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
+                <Textarea ref={textareaRef} value={document.content} onChange={(event) => setDocument((current) => current ? { ...current, content: event.target.value } : current)} onKeyDown={handleEditorKeyDown} onScroll={syncPreviewScroll} onPaste={(event) => { const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/")); if (files.length) { event.preventDefault(); void pasteImages(files); } }} className="min-h-0 flex-1 resize-none overflow-y-auto overscroll-contain rounded-none border-0 bg-transparent px-6 pb-[38vh] pt-6 font-mono text-sm leading-7 shadow-none focus-visible:ring-0" placeholder="# 从这里开始写 Markdown…" />
                 <span className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1 rounded-lg border bg-background/90 px-2 py-1 text-xs text-muted-foreground"><ImagePlus className="size-3" />{uploading ? "上传中…" : "可直接粘贴图片"}</span>
               </div>
               <div className={`markdown-preview-pane markdown-theme-${document.markdown_theme} min-h-0 min-w-0 flex-col overflow-hidden xl:flex ${editorPane === "write" ? "hidden" : "flex"}`}>
@@ -652,7 +668,7 @@ export function BlogWorkspace() {
                     </select>
                   </label>
                 </div>
-                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-7">
+                <div ref={previewScrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 pb-[38vh] sm:p-7 sm:pb-[38vh]">
                   <div className="markdown-preview-paper">
                     <MarkdownContent variant="preview" content={document.content || "*预览会显示在这里*"} />
                   </div>

@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react";
+import { BookOpen, Mail } from "lucide-react";
 import Link from "next/link";
 
 import { HeaderAccount } from "@/components/auth/header-account";
@@ -50,6 +50,12 @@ export function SiteHeader({
           ))}
         </div>
         <div className="flex items-center gap-1.5">
+          <Button asChild size="sm" variant={activePath === "blog" ? "default" : "ghost"} className="lg:hidden">
+            <Link href="/blog" prefetch={false} aria-current={activePath === "blog" ? "page" : undefined}>
+              <BookOpen />
+              <span className="hidden min-[430px]:inline">博客</span>
+            </Link>
+          </Button>
           <HeaderAccount />
           <Button asChild size="sm" variant="outline">
             <Link href="/contact" scroll={false} prefetch={false}>
